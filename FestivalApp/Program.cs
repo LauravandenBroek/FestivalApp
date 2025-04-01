@@ -1,10 +1,13 @@
 using FestivalApp.Data;
+using FestivalApp.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<DatabaseService>();
+builder.Services.AddSingleton<DatabaseConnection>();
+builder.Services.AddScoped<ArtistRepository>();
+builder.Services.AddScoped<ArtistManager>();
 
 
 var app = builder.Build();

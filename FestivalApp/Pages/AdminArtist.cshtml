@@ -1,0 +1,33 @@
+﻿@page
+@model FestivalApp.Pages.AdminArtistModel
+@{
+    ViewData["Title"] = "Artist Overview";
+}
+
+<h2>Artist Overview</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Nationality</th>
+            <th>Genre</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var artist in Model.Artists)
+        {
+            <tr>
+                <td>@artist.Id</td>
+                <td>@artist.Name</td>
+                <td>@artist.Nationality</td>
+                <td>@artist.Genre</td>
+                <td>
+                    <a href="@Url.Page("ArtistDetails", new { id = artist.Id })" class="btn btn-info">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

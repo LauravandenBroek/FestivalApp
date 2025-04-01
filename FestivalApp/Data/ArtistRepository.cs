@@ -14,7 +14,7 @@ namespace FestivalApp.Data
             _databaseConnection = databaseConnection;
         }
 
-
+        //Add artist to database/create artist
         public void AddArtist(Artist artist)
         {
             using (SqlConnection connection = _databaseConnection.GetConnection())
@@ -51,13 +51,18 @@ namespace FestivalApp.Data
                 {
                     while (reader.Read())
                     {
+
+                        byte[] image = reader.IsDBNull(reader.GetOrdinal("Image"))
+                        ? null
+                        : (byte[])reader["Image"];
+
                         artists.Add(new Artist(
                             reader.GetInt32(0), // Id
                             reader.GetString(1), // Name
                             reader.GetString(2), // Nationality
                             reader.GetString(3), // Genre
                             reader.GetString(4), // Description
-                            (byte[])reader["Image"] // Image
+                            image
                         ));
                     }
                 }
