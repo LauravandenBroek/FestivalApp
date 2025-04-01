@@ -1,0 +1,37 @@
+﻿@page
+@model FestivalApp.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login page";
+}
+
+<style>
+    body {
+        background-color: #f4f4f4;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h3>Login</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="Password" required>
+                        </div>
+                        <button type="submit" class="btn w-100" style="background-color: #712F89; color: white;">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

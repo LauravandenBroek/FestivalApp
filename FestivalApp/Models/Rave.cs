@@ -10,7 +10,7 @@
         private int _Minimum_age;
         private string _Ticket_link;
         private string _Time;
-        private string _Image; 
+        private byte[] _Image; 
 
         public int Id { get { return _Id; } }
         public string Name { get { return _Name; } set { _Name = value; } }
@@ -20,9 +20,9 @@
         public int Minimum_age { get { return _Minimum_age; } set { _Minimum_age = value; } }
         public string Ticket_link { get { return _Ticket_link; } set { _Ticket_link = value; } }
         public string Time { get { return _Time; } set { _Time = value; } }
-        public string Image { get { return _Image; } set { _Image = value; } }
+        public byte[] Image { get { return _Image; } set { _Image = value; } }
 
-        public Rave (int id, string name, string location, DateOnly date, string website, int minimum_age, string ticket_link, string time, string image)
+        public Rave (int id, string name, string location, DateOnly date, string website, int minimum_age, string ticket_link, string time, byte[] image)
         {
             _Id = id;
             _Name = name;
@@ -34,5 +34,14 @@
             _Time = time;
             _Image = image;
         }
+
+        public Rave(int id, string name, DateOnly date, byte[] image)
+        {
+            _Id = id;
+            _Name = name;
+            _Date = date;
+            _Image = image;
+        }
+
     }
 }

@@ -12,5 +12,23 @@
 </div>
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <@if (Model.IsConnected)
+    {
+        <p style="color: green;">✅ Database connection successful!</p>
+    }
+    else
+    {
+        <p style="color: red;">❌ Failed to connect to the database.</p>
+    }
+@* 
+    @foreach (var rave in Model.LatestRaves)
+    {
+        <div class="rave-preview">
+            <h3>@rave.Name</h3>
+            <p>@rave.Date.ToString("dd MMM yyyy")</p>
+            <img src="@rave.Image" alt="@rave.Name" width="200" />
+        </div>
+    } *@
+
+
 </div>

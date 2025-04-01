@@ -11,7 +11,7 @@
         private List <Rave> _AttendingRaves; 
         private List <Rave> _Wishlist;
         //private List <Ticket> TicketWallet;
-        public int Id { get { return _Id; } set { _Id = value; } }
+        public int Id { get { return _Id; } }
 
         public string Name { get { return _Name; } set {  _Name = value; } }
 

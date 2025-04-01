@@ -3,15 +3,15 @@
     public class RecapPhoto
     {
         private int _Id;
-        private string _Photo;
+        private byte[] _Photo;
 
         public int Id { get { return _Id; } }
-        public string Photo { get { return _Photo; } set { _Photo = value; } }
+        public byte[] Photo { get { return _Photo; } set { _Photo = value; } }
 
-        public RecapPhoto(int id, string photo)
+        public RecapPhoto(int id, byte[] photo)
         {
             int _Id = id;
-            string _Photo = photo;
+            byte[] _Photo = photo;
         }
     }
 }
