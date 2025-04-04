@@ -4,20 +4,21 @@ using Microsoft.Data.SqlClient;
 
 namespace FestivalApp.Data
 {
-    public class ArtistRepository
+    public class ArtistRepository : DatabaseConnection
     {
 
-        private readonly DatabaseConnection _databaseConnection;
+//        private readonly DatabaseConnection _databaseConnection;
 
-        public ArtistRepository(DatabaseConnection databaseConnection)
+        public ArtistRepository(string connectionString) 
+            : base(connectionString) 
         {
-            _databaseConnection = databaseConnection;
+//            _databaseConnection = databaseConnection;
         }
 
         //Add artist to database/create artist
         public void AddArtist(Artist artist)
         {
-            using (SqlConnection connection = _databaseConnection.GetConnection())
+            using (SqlConnection connection = GetConnection())
             {
                 connection.Open();
                 string sql = @"INSERT INTO Artist (Name, Nationality, Genre, Description, Image) 

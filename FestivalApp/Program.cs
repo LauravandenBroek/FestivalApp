@@ -1,5 +1,6 @@
 using FestivalApp.Data;
 using FestivalApp.Managers;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddSingleton<DatabaseConnection>();
 builder.Services.AddScoped<ArtistRepository>();
 builder.Services.AddScoped<ArtistManager>();
+
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+//DatabaseConnection connection = new DatabaseConnection(connectionString);
+ArtistManager manager = new ArtistManager(new ArtistRepository(connectionString));
 
 
 var app = builder.Build();

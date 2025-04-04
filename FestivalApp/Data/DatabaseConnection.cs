@@ -9,13 +9,13 @@ namespace FestivalApp.Data
     {
         private readonly string _connectionString;
 
-        public DatabaseConnection(IConfiguration configuration)
+        public DatabaseConnection(string connectionString)
         {
             // Haal de connection string op uit appsettings.json
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = connectionString;
         }
 
-        public SqlConnection GetConnection()
+        protected SqlConnection GetConnection()
         {
             return new SqlConnection(_connectionString);
         }
