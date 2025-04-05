@@ -12,23 +12,4 @@
 </div>
 <div class="text-left">
     <h5>Upcoming raves</h5>
-    @if (Model.IsConnected)
-    {
-        <p style="color: green;">✅ Database connection successful!</p>
-    }
-    else
-    {
-        <p style="color: red;">❌ Failed to connect to the database.</p>
-    }
-@* 
-    @foreach (var rave in Model.LatestRaves)
-    {
-        <div class="rave-preview">
-            <h3>@rave.Name</h3>
-            <p>@rave.Date.ToString("dd MMM yyyy")</p>
-            <img src="@rave.Image" alt="@rave.Name" width="200" />
-        </div>
-    } *@
-
-
 </div>

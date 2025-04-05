@@ -1,18 +1,17 @@
 using FestivalApp.Data;
 using FestivalApp.Managers;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<DatabaseConnection>();
-builder.Services.AddScoped<ArtistRepository>();
+builder.Services.AddScoped<ArtistRepository>(provider => new ArtistRepository(connectionString));
 builder.Services.AddScoped<ArtistManager>();
 
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
-//DatabaseConnection connection = new DatabaseConnection(connectionString);
-ArtistManager manager = new ArtistManager(new ArtistRepository(connectionString));
 
 
 var app = builder.Build();

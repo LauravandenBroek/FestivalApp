@@ -7,12 +7,9 @@ namespace FestivalApp.Data
     public class ArtistRepository : DatabaseConnection
     {
 
-//        private readonly DatabaseConnection _databaseConnection;
-
         public ArtistRepository(string connectionString) 
             : base(connectionString) 
         {
-//            _databaseConnection = databaseConnection;
         }
 
         //Add artist to database/create artist
@@ -42,7 +39,7 @@ namespace FestivalApp.Data
         {
             List<Artist> artists = new List<Artist>();
 
-            using (SqlConnection connection = _databaseConnection.GetConnection())
+            using (SqlConnection connection = GetConnection())
             {
                 connection.Open();
                 string sql = "SELECT Id, Name, Nationality, Genre, Description, Image FROM Artist";
@@ -74,7 +71,7 @@ namespace FestivalApp.Data
         //Get artist from database by artist ID
         public Artist? GetArtistById(int id)
         {
-            using var connection = _databaseConnection.GetConnection();
+            using var connection = GetConnection();
             connection.Open();
 
             string sql = "SELECT Id, Name, Nationality, Genre, Description, Image FROM Artist WHERE id = @Id";
@@ -102,7 +99,7 @@ namespace FestivalApp.Data
         //Update artist in database
         public void UpdateArtist (Artist artist)
         {
-            using var connection = _databaseConnection.GetConnection();
+            using var connection = GetConnection();
             connection.Open();
 
 
@@ -121,7 +118,7 @@ namespace FestivalApp.Data
         //Delete artist from database
         public void DeleteArtist (int id)
         {
-            using var connection = _databaseConnection.GetConnection();
+            using var connection = GetConnection();
             connection.Open();
 
             string sql = "DELETE FROM Artist WHERE Id = @Id";
