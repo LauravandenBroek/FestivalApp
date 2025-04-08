@@ -97,21 +97,27 @@ namespace FestivalApp.Data
         }
 
         //Update artist in database
-        public void UpdateArtist (Artist artist)
+        public void UpdateArtist(Artist artist)
         {
             using var connection = GetConnection();
             connection.Open();
 
 
-            string sql = @"UPDATE Artist SET Name = @Name, Nationality = @Nationality, Genre = @Genre, Description = @Description, Image = @Image, WHERE Id = @Id";
+            string sql = @"UPDATE Artist SET Name = @Name, Nationality = @Nationality, Genre = @Genre, Description = @Description, Image = @Image WHERE Id = @ID";
 
             using var command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@ID", artist.Id);
             command.Parameters.AddWithValue("@Name", artist.Name);
             command.Parameters.AddWithValue("@Nationality", artist.Nationality);
             command.Parameters.AddWithValue("@Genre", artist.Genre);
             command.Parameters.AddWithValue("@Description", artist.Description);
-            command.Parameters.AddWithValue("@Image", artist.Image);
+            command.Parameters.AddWithValue("@Image", (object)artist.Image ?? DBNull.Value);
 
+            Console.WriteLine("Repository: Artist ID: " + artist.Id);
+            Console.WriteLine("Repository: Artist Name: " + artist.Name);
+            Console.WriteLine("Repository: Artist Nationality: " + artist.Nationality);
+            Console.WriteLine("Repository: Artist Genre: " + artist.Genre);
+            Console.WriteLine("Repository: Artist Description: " + artist.Description);
             command.ExecuteNonQuery();
         }
 

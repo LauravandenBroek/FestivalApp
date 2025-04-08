@@ -1,0 +1,37 @@
+﻿@page "{id:int}"
+@model FestivalApp.Pages.EditArtistModel
+<h2>Edit Artist</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Artist.Id" />
+
+    <label>Name:</label>
+    <input asp-for="Artist.Name" class="form-control" />
+
+    <label>Nationality:</label>
+    <input asp-for="Artist.Nationality" class="form-control" />
+
+    <label>Genre:</label>
+    <input asp-for="Artist.Genre" class="form-control" />
+
+    <label>Description:</label>
+    <textarea asp-for="Artist.Description" class="form-control"></textarea>
+
+
+    @if (Model.Artist.Image != null)
+    {
+        var base64 = Convert.ToBase64String(Model.Artist.Image);
+        var imgSrc = $"data:image/jpeg;base64,{base64}";
+        <img src="@imgSrc" alt="Current image" style="max-height: 200px; margin-bottom: 10px;" />
+    }
+    else
+    {
+        <p><em>No image uploaded yet</em></p>
+    }
+
+    <label>Upload New Image:</label>
+    <input type="file" name="uploadedImage" class="form-control" />
+
+    <button type="submit">Save</button>
+</form>
+
