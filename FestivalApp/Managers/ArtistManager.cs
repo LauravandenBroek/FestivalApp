@@ -29,12 +29,6 @@ namespace FestivalApp.Managers
 
         public void UpdateArtist(Artist artist)
         {
-            
-            Console.WriteLine("manager: Artist ID: " + artist.Id);
-            Console.WriteLine("manager: Artist Name: " + artist.Name);
-            Console.WriteLine("manager: Artist Nationality: " + artist.Nationality);
-            Console.WriteLine("manager: Artist Genre: " + artist.Genre);
-            Console.WriteLine("manager: Artist Description: " + artist.Description);
             _artistRepository.UpdateArtist(artist);
         }
 

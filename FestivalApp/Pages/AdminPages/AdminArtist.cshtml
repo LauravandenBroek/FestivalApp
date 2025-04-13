@@ -1,11 +1,11 @@
 ﻿@page
-@model FestivalApp.Pages.AdminArtistModel
+@model AdminArtistModel
 @{
     ViewData["Title"] = "Artist Overview";
 }
 
 <h2>Artist Overview</h2>
-
+<a href="@Url.Page("AddArtist")" class="btn btn-info"> Add new artist </a>
 <table class="table">
     <thead>
         <tr>
@@ -25,7 +25,11 @@
                 <td>@artist.Nationality</td>
                 <td>@artist.Genre</td>
                 <td>
-                    <a href="@Url.Page("EditArtist", new { id = artist.Id })" class="btn btn-info">Edit</a>
+                    <a asp-page="./EditArtist" asp-route-id="@artist.Id" class="btn btn-info">Edit</a>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@artist.Id" style="display:inline;">
+                        <button type= "submit" classbtn btn-danger>Delete </button>
+                    </form>
+
                 </td>
             </tr>
         }

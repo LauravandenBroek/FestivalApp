@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IO;
 
-namespace FestivalApp.Pages
+namespace FestivalApp.Pages.AdminPages
 {
 
     public class EditArtistModel : PageModel
@@ -20,9 +20,6 @@ namespace FestivalApp.Pages
         [BindProperty]
         public Artist Artist { get; set; }
 
-
-
-
         public async Task<IActionResult> OnGetAsync(int id)
         {
             Artist = _artistManager.GetArtistById(id);
@@ -31,26 +28,18 @@ namespace FestivalApp.Pages
             {
                 return NotFound();
             }
-
-
             return Page();
         }
 
-
         public async Task<IActionResult> OnPostAsync(int id, IFormFile UploadedImage)
         {
-           
-            
+
+
             if (Artist == null)
             {
                 return NotFound();
             }
 
-            Console.WriteLine("Artist ID: " + Artist.Id);
-            Console.WriteLine("Artist Name: " + Artist.Name);
-            Console.WriteLine("Artist Nationality: " + Artist.Nationality);
-            Console.WriteLine("Artist Genre: " + Artist.Genre);
-            Console.WriteLine("Artist Description: " + Artist.Description);
 
             if (UploadedImage != null)
             {
@@ -62,15 +51,8 @@ namespace FestivalApp.Pages
             if (UploadedImage == null)
             {
                 var existingArtist = _artistManager.GetArtistById(id);
-                Artist.Image = existingArtist.Image; // behoud oude afbeelding
+                Artist.Image = existingArtist.Image; 
             }
-
-
-
-
-
-            Console.WriteLine("Updating Artist: " + Artist.Name);
-
 
             _artistManager.UpdateArtist(Artist);
 

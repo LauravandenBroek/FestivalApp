@@ -11,7 +11,6 @@ namespace FestivalApp.Data
 
         public DatabaseConnection(string connectionString)
         {
-            // Haal de connection string op uit appsettings.json
             _connectionString = connectionString;
         }
 
@@ -39,7 +38,6 @@ namespace FestivalApp.Data
             }
             catch (Exception ex)
             {
-                // Eventueel loggen of tonen voor debugging
                 Console.WriteLine("Connection failed: " + ex.Message);
                 return false;
             }

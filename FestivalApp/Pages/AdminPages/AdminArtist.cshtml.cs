@@ -3,7 +3,7 @@ using FestivalApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FestivalApp.Pages
+namespace FestivalApp.Pages.AdminPages
 {
     public class AdminArtistModel : PageModel
     {
@@ -18,8 +18,13 @@ namespace FestivalApp.Pages
 
         public void OnGet()
         {
-            // Haal de artiesten op via de ArtistManager
             Artists = _artistManager.GetArtists();
+        }
+
+        public IActionResult OnPostDeleteAsync(int id)
+        {
+           _artistManager.DeleteArtist(id);
+            return RedirectToPage();
         }
     }
 }
