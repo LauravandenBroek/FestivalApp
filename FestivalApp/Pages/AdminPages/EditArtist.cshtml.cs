@@ -20,7 +20,7 @@ namespace FestivalApp.Pages.AdminPages
         [BindProperty]
         public Artist Artist { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public  IActionResult OnGet(int id)
         {
             Artist = _artistManager.GetArtistById(id);
 
@@ -31,7 +31,7 @@ namespace FestivalApp.Pages.AdminPages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int id, IFormFile UploadedImage)
+        public async Task<IActionResult> OnPostASync(int id, IFormFile UploadedImage)
         {
 
 

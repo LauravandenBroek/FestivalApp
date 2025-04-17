@@ -1,13 +1,14 @@
 ﻿using FestivalApp.Data;
+using FestivalApp.Interfaces;
 using FestivalApp.Models;
-
 namespace FestivalApp.Managers
 {
     public class ArtistManager
-    {
-        private readonly ArtistRepository _artistRepository;
 
-        public ArtistManager(ArtistRepository artistRepository)
+    {
+        //private readonly ArtistRepository _artistRepository;
+        private readonly IArtistRepository _artistRepository;
+        public ArtistManager(IArtistRepository artistRepository)
         {
             _artistRepository = artistRepository;
         }

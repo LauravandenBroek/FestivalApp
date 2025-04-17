@@ -1,4 +1,5 @@
 using FestivalApp.Data;
+using FestivalApp.Interfaces;
 using FestivalApp.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,8 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
 
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<ArtistRepository>(provider => new ArtistRepository(connectionString));
+builder.Services.AddScoped<IArtistRepository>(provider => new ArtistRepository(connectionString));
+builder.Services.AddScoped<RaveRepository>(provider => new RaveRepository(connectionString));
 builder.Services.AddScoped<ArtistManager>();
+builder.Services.AddScoped<RaveManager>();
+
 
 
 

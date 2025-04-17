@@ -1,10 +1,11 @@
 ﻿using FestivalApp.Models;
 using Microsoft.Data.SqlClient;
+using FestivalApp.Interfaces;
 
 
 namespace FestivalApp.Data
 {
-    public class ArtistRepository : DatabaseConnection
+    public class ArtistRepository : DatabaseConnection, IArtistRepository
     {
 
         public ArtistRepository(string connectionString) 

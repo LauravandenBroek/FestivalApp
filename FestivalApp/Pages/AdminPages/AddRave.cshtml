@@ -1,0 +1,40 @@
+﻿@page
+@model FestivalApp.Pages.AdminPages.AddRaveModel
+@{
+
+    <h2>Add Rave</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Rave.Id" />
+
+        <label>Name:*</label>
+        <input asp-for="Rave.Name" class="form-control" />
+
+        <label>Location:*</label>
+        <input asp-for="Rave.Location" class="form-control" />
+
+        <label>Date:*</label>
+        <input asp-for="Rave.Date" type="date" class="form-control" />
+
+        <label>Website:</label>
+        <input asp-for="Rave.Website" type="url" placeholder="https://" class=" form-control" />
+
+        <label>Minimum age:</label>
+        <input asp-for="Rave.Minimum_age" type="number" class="form-control"/>
+
+        <label>Ticket link:</label>
+        <input asp-for="Rave.Ticket_link" placeholder="https://" type="url" class="form-control" />
+
+        <label>Description:</label>
+        <textarea asp-for="Rave.Description" class="form-control" rows="3"></textarea>
+
+        <label>Time:</label>
+        <input asp-for="Rave.Time" class="form-control" />
+
+        <label>Image:*</label>
+        <input type="file" name="uploadedImage" class="form-control" />
+
+        <button type="submit">Save</button>
+    </form>
+
+}

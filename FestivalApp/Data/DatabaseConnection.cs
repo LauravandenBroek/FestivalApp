@@ -23,25 +23,5 @@ namespace FestivalApp.Data
             return new SqlConnection(_connectionString);
         }
 
-
-
-
-        public bool TestConnection()
-        {
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    connection.Open();
-                    return connection.State == System.Data.ConnectionState.Open;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Connection failed: " + ex.Message);
-                return false;
-            }
-        }
-
     }
 }

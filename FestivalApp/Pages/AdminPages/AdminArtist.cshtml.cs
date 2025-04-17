@@ -21,10 +21,10 @@ namespace FestivalApp.Pages.AdminPages
             Artists = _artistManager.GetArtists();
         }
 
-        public IActionResult OnPostDeleteAsync(int id)
+        public IActionResult OnPostDelete(int id)
         {
            _artistManager.DeleteArtist(id);
-            return RedirectToPage();
+           return RedirectToPage();
         }
     }
 }
