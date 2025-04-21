@@ -16,7 +16,13 @@ namespace FestivalApp.Pages.AdminPages
         public List<Rave> Raves { get; set; }
         public void OnGet()
         {
-            //Raves = _raveManager.GetRaves();
+            Raves = _raveManager.GetRaves();
+        }
+
+        public IActionResult OnPostDelete(int id)
+        {
+            _raveManager.DeleteRave(id);
+            return RedirectToPage();
         }
     }
 }

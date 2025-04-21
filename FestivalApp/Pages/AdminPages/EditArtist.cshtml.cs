@@ -31,7 +31,7 @@ namespace FestivalApp.Pages.AdminPages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostASync(int id, IFormFile UploadedImage)
+        public async Task<IActionResult> OnPostAsync(int id, IFormFile UploadedImage)
         {
 
 

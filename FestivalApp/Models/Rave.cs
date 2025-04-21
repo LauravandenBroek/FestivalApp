@@ -13,7 +13,7 @@
         private string _Time;
         private byte[] _Image; 
 
-        public int Id { get { return _Id; } }
+        public int Id { get { return _Id; } set { _Id = value; } }
         public string Name { get { return _Name; } set { _Name = value; } }
         public string Location { get { return _Location; } set { _Location = value; } }
         public DateOnly Date { get { return _Date; } set { _Date = value; } }

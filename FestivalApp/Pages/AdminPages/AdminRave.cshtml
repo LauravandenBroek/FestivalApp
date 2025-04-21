@@ -4,6 +4,47 @@
 	ViewData["Title"] = "Rave Overview";
 }
 
-<h2>Rave Overview</h2>
 <a asp-page="./AddRave" class="btn btn-info"> Add new rave </a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Date</th>
+            <th>Minimum age</th>
+            <th>Ticket link</th>
+            <th>Description</th>
+            <th>Time</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rave in Model.Raves)
+        {
+            <tr>
+                <td>@rave.Id</td>
+                <td>@rave.Name</td>
+                <td>@rave.Location </td>
+                <td>@rave.Date</td>
+                <td>@rave.Minimum_age</td>
+                <td>@rave.Ticket_link</td>
+                <td>@rave.Description</td>
+                <td>@rave.Time</td>
+                <td>@rave.Image</td>
+
+                <td>
+                    <a asp-page="./EditRave" asp-route-id="@rave.Id" class="btn btn-info">Edit</a>
+                     <form method="post" asp-page-handler="Delete" asp-route-id="@rave.Id" style="display:inline;">
+                        <button type="submit" classbtn btn-danger>Delete </button>
+                    </form> 
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 

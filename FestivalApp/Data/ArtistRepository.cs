@@ -114,11 +114,6 @@ namespace FestivalApp.Data
             command.Parameters.AddWithValue("@Description", artist.Description);
             command.Parameters.AddWithValue("@Image", (object)artist.Image ?? DBNull.Value);
 
-            Console.WriteLine("Repository: Artist ID: " + artist.Id);
-            Console.WriteLine("Repository: Artist Name: " + artist.Name);
-            Console.WriteLine("Repository: Artist Nationality: " + artist.Nationality);
-            Console.WriteLine("Repository: Artist Genre: " + artist.Genre);
-            Console.WriteLine("Repository: Artist Description: " + artist.Description);
             command.ExecuteNonQuery();
         }
 

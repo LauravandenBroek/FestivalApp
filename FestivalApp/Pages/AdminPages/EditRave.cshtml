@@ -1,0 +1,47 @@
+﻿@page "{id:int}"
+@model FestivalApp.Pages.AdminPages.EditRaveModel
+
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Rave.Id" />
+
+    <label>Name:*</label>
+    <input asp-for="Rave.Name" class="form-control" />
+
+    <label>Location:*</label>
+    <input asp-for="Rave.Location" class="form-control" />
+
+    <label>Date:*</label>
+    <input asp-for="Rave.Date" type="date" class="form-control" />
+
+    <label>Website:</label>
+    <input asp-for="Rave.Website" class=" form-control" />
+
+    <label>Minimum age:</label>
+    <input asp-for="Rave.Minimum_age" type="number" class="form-control" />
+
+    <label>Ticket link:</label>
+    <input asp-for="Rave.Ticket_link"  class="form-control" />
+
+    <label>Description:</label>
+    <textarea asp-for="Rave.Description" class="form-control" rows="3"></textarea>
+
+    <label>Time:</label>
+    <input asp-for="Rave.Time" class="form-control" />
+
+
+    @if (Model.Rave.Image != null)
+    {
+        var base64 = Convert.ToBase64String(Model.Rave.Image);
+        var imgSrc = $"data:image/jpeg;base64,{base64}";
+        <img src="@imgSrc" alt="Current image" style="max-height: 200px; margin-bottom: 10px;" />
+    }
+    else
+    {
+        <p><em>No image uploaded yet</em></p>
+    }
+
+    <label>Upload New Image:</label>
+    <input type="file" name="UploadedImage" class="form-control" />
+
+    <button type="submit">Save</button>
+</form>
