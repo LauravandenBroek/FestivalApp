@@ -12,6 +12,8 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IArtistRepository>(provider => new ArtistRepository(connectionString));
 builder.Services.AddScoped<RaveRepository>(provider => new RaveRepository(connectionString));
+builder.Services.AddScoped<UserRepository>(provider => new UserRepository(connectionString));
+builder.Services.AddScoped<UserManager>();
 builder.Services.AddScoped<ArtistManager>();
 builder.Services.AddScoped<RaveManager>();
 

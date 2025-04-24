@@ -1,0 +1,42 @@
+﻿@page
+@model FestivalApp.Pages.RegisterModel
+@{
+}
+
+<form method="post">
+    <div>
+        <label>Name:</label>
+        <input asp-for="Input.Name" />
+        <span asp-validation-for="Input.Name"></span>
+    </div>
+
+    <div>
+        <label>Email:</label>
+        <input asp-for="Input.Email" />
+        <span asp-validation-for="Input.Email"></span>
+    </div>
+
+    <div>
+        <label>Password:</label>
+        <input asp-for="Input.Password" type="password" />
+        <span asp-validation-for="Input.Password"></span>
+    </div>
+
+    <div>
+        <label>Confirm Password:</label>
+        <input asp-for="Input.ConfirmPassword" type="password" />
+        <span asp-validation-for="Input.ConfirmPassword"></span>
+    </div>
+
+    <div>
+        <label>Birthdate:</label>
+        <input asp-for="Input.Birthdate" type="date" />
+        <span asp-validation-for="Input.Birthdate"></span>
+    </div>
+
+    <button type="submit">Register</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
