@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using FestivalApp.Pages.Shared;
+
 
 namespace FestivalApp.Pages
 {
-    public class PrivacyModel : PageModel
+    public class PrivacyModel : BasePageModel
     {
         private readonly ILogger<PrivacyModel> _logger;
 

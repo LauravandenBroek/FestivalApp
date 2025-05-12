@@ -1,5 +1,5 @@
-using FestivalApp.Managers;
-using FestivalApp.ViewModels;
+using Logic.Managers;
+using Logic.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BCrypt.Net;
@@ -34,6 +34,12 @@ namespace FestivalApp.Pages
                 ModelState.AddModelError(string.Empty, "Invalid email or password");
                 return Page();
             }
+
+            HttpContext.Session.SetString("Username", user.Name);
+            HttpContext.Session.SetInt32("UserId", user.Id);
+            HttpContext.Session.SetString("UserRole", user.Role);
+            HttpContext.Session.SetString("UserEmail", user.Email);
+
 
             return RedirectToPage("Index");
         }

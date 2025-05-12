@@ -1,6 +1,6 @@
-using FestivalApp.Data;
-using FestivalApp.Interfaces;
-using FestivalApp.Managers;
+using Interfaces;
+using Logic.Managers;
+using Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,12 +10,19 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
 
 builder.Services.AddRazorPages();
+builder.Services.AddSession();
+
+//repo's
 builder.Services.AddScoped<IArtistRepository>(provider => new ArtistRepository(connectionString));
-builder.Services.AddScoped<RaveRepository>(provider => new RaveRepository(connectionString));
-builder.Services.AddScoped<UserRepository>(provider => new UserRepository(connectionString));
+builder.Services.AddScoped<IRaveRepository>(provider => new RaveRepository(connectionString));
+builder.Services.AddScoped<IUserRepository>(provider => new UserRepository(connectionString));
+builder.Services.AddScoped<ILineUpRepository>(provider => new LineUpRepository(connectionString));
+
+//Managers
 builder.Services.AddScoped<UserManager>();
 builder.Services.AddScoped<ArtistManager>();
 builder.Services.AddScoped<RaveManager>();
+builder.Services.AddScoped<LineUpManager>();
 
 
 
@@ -35,6 +42,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
 app.UseAuthorization();
 
 app.MapRazorPages();

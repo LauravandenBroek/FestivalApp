@@ -4,6 +4,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FestivalApp", "FestivalApp\FestivalApp.csproj", "{DD006B8D-1992-4587-931A-20853CFC5A37}"
+	ProjectSection(ProjectDependencies) = postProject
+		{55CC5E2C-B255-4DF4-A9BF-B972DE765F42} = {55CC5E2C-B255-4DF4-A9BF-B972DE765F42}
+		{AA7E10F7-B185-4E80-8F80-EAA23C2B638B} = {AA7E10F7-B185-4E80-8F80-EAA23C2B638B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{55CC5E2C-B255-4DF4-A9BF-B972DE765F42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{AA7E10F7-B185-4E80-8F80-EAA23C2B638B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{55CC5E2C-B255-4DF4-A9BF-B972DE765F42} = {55CC5E2C-B255-4DF4-A9BF-B972DE765F42}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{96001A8A-2180-4AA1-B2F8-743CE69A5514}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +28,18 @@ Global
 		{DD006B8D-1992-4587-931A-20853CFC5A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD006B8D-1992-4587-931A-20853CFC5A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD006B8D-1992-4587-931A-20853CFC5A37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55CC5E2C-B255-4DF4-A9BF-B972DE765F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55CC5E2C-B255-4DF4-A9BF-B972DE765F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55CC5E2C-B255-4DF4-A9BF-B972DE765F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55CC5E2C-B255-4DF4-A9BF-B972DE765F42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA7E10F7-B185-4E80-8F80-EAA23C2B638B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA7E10F7-B185-4E80-8F80-EAA23C2B638B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA7E10F7-B185-4E80-8F80-EAA23C2B638B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA7E10F7-B185-4E80-8F80-EAA23C2B638B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96001A8A-2180-4AA1-B2F8-743CE69A5514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96001A8A-2180-4AA1-B2F8-743CE69A5514}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96001A8A-2180-4AA1-B2F8-743CE69A5514}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96001A8A-2180-4AA1-B2F8-743CE69A5514}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

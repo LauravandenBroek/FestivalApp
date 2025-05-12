@@ -1,15 +1,15 @@
-using FestivalApp.Managers;
-using FestivalApp.Models;
+using Logic.Managers;
+using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using FestivalApp.Pages.Shared;
 
 namespace FestivalApp.Pages.AdminPages
 {
-    public class AdminArtistModel : PageModel
+    public class AdminArtistModel : AdminPageModel
     {
         private readonly ArtistManager _artistManager;
 
-        public AdminArtistModel(ArtistManager artistManager)
+        public AdminArtistModel(UserManager userManager, ArtistManager artistManager) : base(userManager)
         {
             _artistManager = artistManager;
         }

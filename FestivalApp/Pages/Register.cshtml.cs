@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FestivalApp.Models;
-using FestivalApp.ViewModels;
-using FestivalApp.Managers;
+using Interfaces.Models;
+using Logic.ViewModels;
+using Logic.Managers;
 
 
 namespace FestivalApp.Pages

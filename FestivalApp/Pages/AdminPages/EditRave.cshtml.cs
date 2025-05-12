@@ -1,16 +1,17 @@
-using FestivalApp.Managers;
-using FestivalApp.Models;
+using Logic.Managers;
+using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
+using FestivalApp.Pages.Shared;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FestivalApp.Pages.AdminPages
 {
-    public class EditRaveModel : PageModel
+    public class EditRaveModel : AdminPageModel
     {
 
         private readonly RaveManager _raveManager;
 
-        public EditRaveModel(RaveManager raveManager)
+        public EditRaveModel(UserManager userManager, RaveManager raveManager) : base(userManager)
         {
             _raveManager = raveManager;
         }

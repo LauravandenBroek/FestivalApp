@@ -1,0 +1,51 @@
+﻿@page "{id:int}"
+@model FestivalApp.Pages.AdminPages.AdminLineUpModel
+
+    <h2>Line-up for @Model.Rave.Name</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Artist</th>
+                <th>Starttijd</th>
+                <th>Eindtijd</th>
+                <th>Stage</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lineUp in Model.LineUpItems)
+            {
+                <tr>
+                    <td>@lineUp.Artist.Name</td>
+                    <td>@lineUp.StartTime.ToString("HH:mm")</td>
+                    <td>@lineUp.EndTime.ToString("HH:mm")</td>
+                    <td>@lineUp.Stage</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h2>Nieuw item toevoegen aan deze line-up</h2>
+    <form method="post">
+        <input type="hidden" asp-for="Rave.Id" />
+
+        <div>
+            <label>Artiest:</label>
+            <select asp-for="NewLineUpItem.Artist.Id" asp-items="@(new SelectList(Model.AllArtists, "Id", "Name"))"></select>
+        </div>
+        <div>
+            <label>Starttijd:</label>
+            <input asp-for="NewLineUpItem.StartTime" type="datetime-local" />
+        </div>
+        <div>
+            <label>Eindtijd:</label>
+            <input asp-for="NewLineUpItem.EndTime" type="datetime-local" />
+        </div>
+        <div>
+            <label>Stage:</label>
+            <input asp-for="NewLineUpItem.Stage" />
+        </div>
+        <button type="submit">Toevoegen</button>
+    </form>
+
+

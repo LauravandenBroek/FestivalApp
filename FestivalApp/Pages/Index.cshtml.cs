@@ -1,26 +1,30 @@
-using FestivalApp.Data;
-using FestivalApp.Models;
+using Data;
+using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using FestivalApp.Pages.Shared;
+using Logic.Managers;
+
+
 
 namespace FestivalApp.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : BasePageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        //public List<Rave> LatestRaves { get; private set; } = new();
+        private readonly RaveManager _raveManager;
+        public List<Rave> LatestRaves { get; set; } 
 
 
-        public bool IsConnected { get; private set; }
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(RaveManager raveManager)
         {
-            _logger = logger;
+            _raveManager = raveManager;
         }
 
         public void OnGet()
-        { 
-
+        {
+            LatestRaves= _raveManager.GetUpcomingRaves(5);
         }
     }
 }

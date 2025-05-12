@@ -1,18 +1,19 @@
-using FestivalApp.Managers;
-using FestivalApp.Models;
+using Logic.Managers;
+using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IO;
+using FestivalApp.Pages.Shared;
 
 namespace FestivalApp.Pages.AdminPages
 {
 
-    public class EditArtistModel : PageModel
+    public class EditArtistModel : AdminPageModel
     {
 
         private readonly ArtistManager _artistManager;
 
-        public EditArtistModel(ArtistManager artistManager)
+        public EditArtistModel(UserManager userManager, ArtistManager artistManager) : base(userManager)
         {
             _artistManager = artistManager;
         }
@@ -32,7 +33,7 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         public async Task<IActionResult> OnPostAsync(int id, IFormFile UploadedImage)
-        {
+        { 
 
 
             if (Artist == null)

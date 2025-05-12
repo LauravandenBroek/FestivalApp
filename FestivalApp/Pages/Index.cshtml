@@ -1,12 +1,63 @@
 ﻿@page
 @model IndexModel
-@{
-    ViewData["Title"] = "Home page";
-    Layout = "_LayoutIndex";
-}
 
+<h2>Upcoming Raves</h2>
 
-<div class="text-left">
-    <h5>Upcoming raves</h5>
-    
+<div class="rave-grid">
+    @foreach (var rave in Model.LatestRaves)
+    {
+        <div class="rave-card">
+            @if (rave.Image != null)
+            {
+                var base64Image = Convert.ToBase64String(rave.Image);
+                <img src="data:image/jpeg;base64,@base64Image" alt="@rave.Name" class="rave-image" />
+            }
+            else
+            {
+                <div class="no-image">No Image</div>
+            }
+
+            <h3>@rave.Name</h3>
+            <p>@rave.Date.ToString("dd MMM yyyy")</p>
+            <p>@rave.Location</p>
+        </div>
+    }
 </div>
+
+<style>
+    .rave-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .rave-card {
+        background-color: #f0f0f0;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .rave-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+    }
+
+    .no-image {
+        width: 100%;
+        height: 200px;
+        background-color: #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        font-style: italic;
+        color: #666;
+    }
+</style>
