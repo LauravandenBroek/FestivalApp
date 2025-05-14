@@ -17,12 +17,16 @@ builder.Services.AddScoped<IArtistRepository>(provider => new ArtistRepository(c
 builder.Services.AddScoped<IRaveRepository>(provider => new RaveRepository(connectionString));
 builder.Services.AddScoped<IUserRepository>(provider => new UserRepository(connectionString));
 builder.Services.AddScoped<ILineUpRepository>(provider => new LineUpRepository(connectionString));
+builder.Services.AddScoped<IRecapRepository>(provider => new RecapRepository(connectionString));
+builder.Services.AddScoped<ITicketRepository>(provider => new TicketRepository(connectionString));
 
 //Managers
 builder.Services.AddScoped<UserManager>();
 builder.Services.AddScoped<ArtistManager>();
 builder.Services.AddScoped<RaveManager>();
 builder.Services.AddScoped<LineUpManager>();
+builder.Services.AddScoped<RecapManager>();
+builder.Services.AddScoped<TicketManager>();
 
 
 

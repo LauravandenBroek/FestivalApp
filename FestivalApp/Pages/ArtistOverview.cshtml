@@ -1,0 +1,27 @@
+﻿@page
+@model FestivalApp.Pages.ArtistOverviewModel
+@{
+    ViewData["Title"] = "Artist overview";
+}
+
+
+<div class="artist-grid">
+    @foreach (var artist in Model.artists)
+    {
+        <div class="artist-card">
+            @if (artist.Image != null)
+            {
+                var base64Image = Convert.ToBase64String(artist.Image);
+                <img src="data:image/jpeg;base64,@base64Image" alt="@artist.Name" class="artist-image" />
+            }
+            else
+            {
+                <div class="no-image">No Image</div>
+            }
+
+            <h3>@artist.Name</h3>
+            <p>@artist.Nationality</p>
+            <p>@artist.Genre</p>
+        </div>
+    }
+</div>

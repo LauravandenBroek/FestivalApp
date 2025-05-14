@@ -1,5 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Http
-
+@{
+var role = Context.Session.GetString("UserRole");
+var username = Context.Session.GetString("Username");
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,15 +30,31 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/RaveOverview">Raves</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/ArtistOverview">Artists</a>
+                        </li>
+                        @if (role == "Admin")
+                        {                 
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/AdminPages/AdminRave">Rave admin</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/AdminPages/AdminArtist">Artist admin</a>
+                            </li>
+                        }
                     </ul>
+
                     <ul class="navbar-nav ms-auto">
                         @if ((bool?)ViewData["IsLoggedIn"] == true)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Log uit</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/PersonalPage">@username</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Log uit</a>
+                            </li>                           
                         }
                         else
                         {
@@ -48,18 +67,24 @@
                 </div>
             </div>
         </nav>
-
-        <div class="banner mb-3">
-            <div class="banner-content">
-                <h1>@ViewData["Title"]</h1>
+        @if (IsSectionDefined("Banner"))
+        {
+            @RenderSection("Banner", required: false)
+        }
+        else
+        {   
+            <div class="banner mb-3">
+                <div class="banner-content">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
             </div>
-        </div>
+        }
     </header>
 
 
     
     <div class="container-fluid">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3 m-5">
             @RenderBody()
         </main>
     </div>

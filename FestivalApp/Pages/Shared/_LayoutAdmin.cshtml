@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var role = Context.Session.GetString("UserRole");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,9 +28,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
+                        
+                        
+                        
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
@@ -42,17 +47,26 @@
                             </li>
                         }
                     </ul>
+
                 </div>
             </div>
         </nav>
-        <div class="indexbanner banner">
-            <div class="banner-content">
-                <h1>Voidance</h1>
-                <p>Your gateway to the underground  &#x1F680;</p>
+        @if (IsSectionDefined("Banner"))
+        {
+            @RenderSection("Banner", required: false)
+        }
+        else
+        {
+            <div class="banner mb-3">
+                <div class="banner-content">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
             </div>
-        </div>
+        }
     </header>
-    
+
+
+
     <div class="container-fluid">
         <main role="main" class="pb-3 m-5">
             @RenderBody()

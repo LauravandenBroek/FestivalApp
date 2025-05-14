@@ -1,9 +1,21 @@
 ﻿@page
 @model IndexModel
+@{
+    Layout = "_Layout";
+}
 
-<h2>Upcoming Raves</h2>
+@section Banner {
+    <div class="indexbanner banner">
+        <div class="banner-content">
+            <h1>Voidance</h1>
+            <p>Your gateway to the underground  &#x1F680;</p>
+        </div>
+    </div>
+}
 
-<div class="rave-grid">
+<h2 class="m-3">Upcoming Raves</h2>
+
+<div class="rave-grid m-3">
     @foreach (var rave in Model.LatestRaves)
     {
         <div class="rave-card">
@@ -25,39 +37,5 @@
 </div>
 
 <style>
-    .rave-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-        margin-top: 2rem;
-    }
-
-    .rave-card {
-        background-color: #f0f0f0;
-        padding: 1rem;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .rave-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 6px;
-        margin-bottom: 1rem;
-    }
-
-    .no-image {
-        width: 100%;
-        height: 200px;
-        background-color: #ccc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        margin-bottom: 1rem;
-        font-style: italic;
-        color: #666;
-    }
+   
 </style>

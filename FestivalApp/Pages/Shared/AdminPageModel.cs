@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Logic.Managers;
+using Interfaces.Models;
 
 
 namespace FestivalApp.Pages.Shared
@@ -22,8 +23,10 @@ namespace FestivalApp.Pages.Shared
 
             if (string.IsNullOrEmpty(email) || !_userManager.IsAdmin(email))
             {
-                context.Result = new RedirectToPageResult("/Index"); 
+                context.Result = new RedirectToPageResult("/Index");
             }
+
+            
 
             base.OnPageHandlerExecuting(context);
         }

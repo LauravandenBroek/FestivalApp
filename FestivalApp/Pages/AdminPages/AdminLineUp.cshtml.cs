@@ -39,17 +39,17 @@ namespace FestivalApp.Pages.AdminPages
         public IActionResult OnPost(int id)
         {
 
-            if (!ModelState.IsValid)
-            {
+           // if (!ModelState.IsValid)
+            //{
                 // Laad bestaande LineUps en Rave opnieuw in
-                LineUpItems = _lineUpManager.GetLineUpByRaveId(id);
-                Rave = _raveManager.GetRaveById(id);
-                AllArtists = _artistManager.GetArtists();
-                return Page();
-            }
+               // LineUpItems = _lineUpManager.GetLineUpByRaveId(id);
+               /// Rave = _raveManager.GetRaveById(id);
+               // AllArtists = _artistManager.GetArtists();
+              //  return Page();
+           // }
 
             // Koppel de juiste Rave aan de nieuwe LineUp
-            //NewLineUpItem.Rave = _raveManager.GetRaveById(id);
+            NewLineUpItem.Rave = _raveManager.GetRaveById(id);
 
             _lineUpManager.AddLineUp(NewLineUpItem);
 

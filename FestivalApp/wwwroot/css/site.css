@@ -38,3 +38,105 @@ body {
 .indexbanner {
     height: 400px;
 }
+
+.rave-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.rave-card {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.rave-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.no-image {
+    width: 100%;
+    height: 200px;
+    background-color: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-style: italic;
+    color: #666;
+}
+
+.artist-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.artist-card {
+    background-color: #f0f0f0;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.artist-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+.rave-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: grid;
+}
+
+.rave-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rave-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    color: black;
+}
+
+
+@media (max-width: 1200px) {
+        .rave-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .artist-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .rave-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .artist-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .rave-grid {
+        grid-template-columns: 1fr;
+    }
+    .artist-grid {
+        grid-template-columns: 1fr;
+    }
+}
