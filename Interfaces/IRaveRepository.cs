@@ -15,6 +15,7 @@ namespace Interfaces
         public void UpdateRave(Rave rave);
         public void DeleteRave(int id);
         public List<Rave> GetUpcomingRaves(int count);
+        public List<Rave> GetRavesPaged(int page, int pageSize);
        
     }
 }

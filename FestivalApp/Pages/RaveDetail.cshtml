@@ -5,8 +5,12 @@
     var rave = Model.Rave;
 }
 
-@* <div class="rave-detail-container">
-    <div class="rave-header">
+<div class="rave-detail-container">
+    <div class="rave-detail-info d-flex gap-3">
+        <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
+            <button class="btn btn-outline-danger">❤ Wishlist</button>
+            <button class="btn btn-outline-success">✔ Attending</button>
+        </div>
         @if (rave.Image != null)
         {
             var base64Image = Convert.ToBase64String(rave.Image);
@@ -18,27 +22,9 @@
         }
 
         <div class="rave-detail-info">
-            <h1>@rave.Name</h1>
             <p><strong>Date:</strong> @rave.Date.ToString("dddd dd MMMM yyyy")</p>
             <p><strong>Location:</strong> @rave.Location</p>
             <p><strong>Description:</strong> @rave.Description</p>
         </div>
     </div>
-
-    <div class="lineup-section">
-        <h2>Line-up</h2>
-        @if (rave.LineUp != null && rave.LineUp.Any())
-        {
-            <ul class="lineup-list">
-                @foreach (var artist in rave.LineUp)
-                {
-                    <li>@artist</li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p>No artists listed yet.</p>
-        }
-    </div>
-</div> *@
+</div> 

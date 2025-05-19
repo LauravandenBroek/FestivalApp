@@ -41,5 +41,16 @@ namespace Logic.Managers
         {
             return _raveRepository.GetUpcomingRaves(count);
         }
+
+        public List<Rave> GetRavesPaged(int page, int pageSize)
+        {
+
+            return _raveRepository.GetRavesPaged(page, pageSize);
+        }
+
+        public int GetTotalRaveCount()
+        {
+            return GetRaves().Count();
+        }
     }
 }

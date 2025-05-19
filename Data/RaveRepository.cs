@@ -218,5 +218,58 @@ namespace Data
                 throw new Exception("Error while getting upcoming raves", ex);
             }
         }
+
+
+        public List<Rave> GetRavesPaged(int page, int pageSize)
+        {
+            try
+            {
+                List<Rave> raves = new List<Rave>();
+
+                using (SqlConnection connection = GetConnection())
+                {
+                    connection.Open();
+                    string sql = @"
+                SELECT ID, Name, Location, Date, Website, Min_age, Ticket_link, Description, Time, Image
+                FROM Rave
+                ORDER BY Date
+                OFFSET @Offset ROWS
+                FETCH NEXT @PageSize ROWS ONLY";
+
+                    using var command = new SqlCommand(sql, connection);
+                    command.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+                    command.Parameters.AddWithValue("@PageSize", pageSize);
+
+                    using var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        byte[] image = reader.IsDBNull(reader.GetOrdinal("Image"))
+                            ? null
+                            : (byte[])reader["Image"];
+
+                        raves.Add(new Rave(
+                            reader.GetInt32(0),
+                            reader.GetString(1),
+                            reader.GetString(2),
+                            DateOnly.FromDateTime(reader.GetDateTime(3)),
+                            reader.GetString(4),
+                            reader.GetInt32(5),
+                            reader.GetString(6),
+                            reader.GetString(7),
+                            reader.GetString(8),
+                            image
+                        ));
+                    }
+                }
+
+                return raves;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while retrieving paged raves.", ex);
+            }
+        }
+
+
     }
 }

@@ -27,3 +27,32 @@
         </a>
     }
 </div>
+
+<nav aria-label="Rave pagination" class="mt-4">
+    <ul class="pagination justify-content-center">
+
+        @if (Model.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page="/RaveOverview" asp-route-ravePage="@(Model.CurrentPage - 1)">Previous</a>
+            </li>
+        }
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a class="page-link" asp-page="/RaveOverview" asp-route-ravePage="@i">@i</a>
+            </li>
+        }
+
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page="/RaveOverview" asp-route-ravePage="@(Model.CurrentPage + 1)">Next</a>
+            </li>
+        }
+
+    </ul>
+</nav>
+
+
