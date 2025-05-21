@@ -1,6 +1,8 @@
 ﻿using Interfaces.Models;
 using Microsoft.Data.SqlClient;
 using Interfaces;
+using System.Text.RegularExpressions;
+using Azure;
 
 namespace Data
 {
@@ -128,6 +130,41 @@ namespace Data
             command.Parameters.AddWithValue("@Id", id);
             command.ExecuteNonQuery();
 
+        }
+
+        public List<Artist> GetArtistsPaged(int page, int pageSize)
+        {
+            List<Artist> artists = new List<Artist>();
+
+            using (SqlConnection connection = GetConnection())
+            {
+                connection.Open();
+                string sql = "SELECT Id, Name, Nationality, Genre, Description, Image FROM Artist ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+
+                using var command = new SqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@Offset", (page - 1) * pageSize);
+                command.Parameters.AddWithValue("@PageSize", pageSize);
+                using var reader = command.ExecuteReader();
+                {
+                    while (reader.Read())
+                    {
+
+                        byte[] image = reader.IsDBNull(reader.GetOrdinal("Image"))
+                        ? null
+                        : (byte[])reader["Image"];
+
+                        artists.Add(new Artist(
+                            reader.GetInt32(0), // Id
+                            reader.GetString(1), // Name
+                            reader.GetString(2), // Nationality
+                            reader.GetString(3), // Genre
+                            reader.GetString(4), // Description
+                            image
+                        ));
+                    }
+                }
+            }
+            return artists;
         }
     }
 

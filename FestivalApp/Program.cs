@@ -19,6 +19,9 @@ builder.Services.AddScoped<IUserRepository>(provider => new UserRepository(conne
 builder.Services.AddScoped<ILineUpRepository>(provider => new LineUpRepository(connectionString));
 builder.Services.AddScoped<IRecapRepository>(provider => new RecapRepository(connectionString));
 builder.Services.AddScoped<ITicketRepository>(provider => new TicketRepository(connectionString));
+builder.Services.AddScoped<IAttendingRaveRepository>(provider => new AttendingRaveRepository(connectionString));
+builder.Services.AddScoped<IRaveWishlistRepository>(provider => new RaveWishlistRepository(connectionString));
+
 
 //Managers
 builder.Services.AddScoped<UserManager>();
@@ -27,7 +30,11 @@ builder.Services.AddScoped<RaveManager>();
 builder.Services.AddScoped<LineUpManager>();
 builder.Services.AddScoped<RecapManager>();
 builder.Services.AddScoped<TicketManager>();
+builder.Services.AddScoped<AttendingRaveManager>();
+builder.Services.AddScoped<RaveWishlistManager>();
 
+
+builder.Services.AddHttpContextAccessor();
 
 
 

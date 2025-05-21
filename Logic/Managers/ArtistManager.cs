@@ -37,5 +37,15 @@ namespace Logic.Managers
             _artistRepository.DeleteArtist(id);
         }
 
+        public List<Artist> GetArtistsPaged(int page, int pageSize)
+        {
+            return _artistRepository.GetArtistsPaged(page, pageSize);
+        }
+
+        public int GetTotalArtistCount()
+        {
+            return GetArtists().Count();
+        }
+
     }
 }

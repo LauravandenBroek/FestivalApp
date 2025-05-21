@@ -1,0 +1,29 @@
+﻿@page "{id:int}"
+@model FestivalApp.Pages.ArtistDetailModel
+@{
+     ViewData["Title"] = Model.Artist.Name;
+    var artist = Model.Artist;
+}
+
+<div class="artist-detail-container">
+    <div class="artist-detail-info d-flex gap-3">
+        <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
+            <button class="btn btn-outline-danger">❤ Favorite</button>
+        </div>
+        @if (artist.Image != null)
+        {
+            var base64Image = Convert.ToBase64String(artist.Image);
+            <img src="data:image/jpeg;base64,@base64Image" alt="@artist.Name" class="artist-detail-image" />
+        }
+        else
+        {
+            <div class="artist-detail-placeholder">No Image Available</div>
+        }
+
+        <div class="artist-detail-info">
+            <p><strong>Nationality:</strong> @artist.Nationality</p>
+            <p><strong>Genre:</strong> @artist.Genre</p>
+            <p><strong>Description:</strong> @artist.Description</p>
+        </div>
+    </div>
+</div> 

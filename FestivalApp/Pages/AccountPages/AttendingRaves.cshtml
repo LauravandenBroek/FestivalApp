@@ -1,4 +1,29 @@
 ﻿@page
 @model FestivalApp.Pages.AccountPages.AttendingRavesModel
 @{
+    ViewData["Title"] = "Your upcoming raves";
 }
+
+<p>Brace yourself – these are the raves you’re about to survive (or not). Lineup locked, tickets booked, chaos incoming.🔥</p>
+<div class="rave-grid">
+    @foreach (var rave in Model.AttendingRaves)
+    {
+        <a asp-page="/RaveDetail" asp-route-id="@rave.Id" class="rave-card-link">
+            <div class="rave-card">
+                @if (rave.Image != null)
+                {
+                    var base64Image = Convert.ToBase64String(rave.Image);
+                    <img src="data:image/jpeg;base64,@base64Image" alt="@rave.Name" class="rave-image" />
+                }
+                else
+                {
+                    <div class="no-image">No Image</div>
+                }
+
+                <h3>@rave.Name</h3>
+                <p>@rave.Date.ToString("dd MMM yyyy")</p>
+                <p>@rave.Location</p>
+            </div>
+        </a>
+    }
+</div>

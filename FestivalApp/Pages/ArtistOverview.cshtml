@@ -6,8 +6,10 @@
 
 
 <div class="artist-grid">
+    
     @foreach (var artist in Model.artists)
     {
+        <a asp-page="/ArtistDetail" asp-route-id="@artist.Id" class="artist-card-link">
         <div class="artist-card">
             @if (artist.Image != null)
             {
@@ -23,5 +25,34 @@
             <p>@artist.Nationality</p>
             <p>@artist.Genre</p>
         </div>
+        </a>
     }
+    
 </div>
+
+<nav aria-label="Artist pagination" class="mt-4">
+    <ul class="pagination justify-content-center">
+
+        @if (Model.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page="/ArtistOverview" asp-route-artistPage="@(Model.CurrentPage - 1)">Previous</a>
+            </li>
+        }
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a class="page-link" asp-page="/ArtistOverview" asp-route-artistPage="@i">@i</a>
+            </li>
+        }
+
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-page="/ArtistOverview" asp-route-artistPage="@(Model.CurrentPage + 1)">Next</a>
+            </li>
+        }
+
+    </ul>
+</nav>

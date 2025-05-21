@@ -52,5 +52,6 @@ namespace Logic.Managers
         {
             return GetRaves().Count();
         }
+
     }
 }

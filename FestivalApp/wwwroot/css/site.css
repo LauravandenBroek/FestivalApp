@@ -97,34 +97,35 @@ body {
     border-radius: 6px;
     margin-bottom: 1rem;
 }
-.rave-card-link {
+
+.rave-card-link, .artist-card-link {
     text-decoration: none;
     color: inherit;
     display: grid;
 }
 
-.rave-card {
+.rave-card, .artist-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.rave-card:hover {
+.rave-card:hover, .artist-card:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     color: black;
 }
 
-.rave-detail-image {
+.rave-detail-image, .artist-detail-image {
     width: 400px;
     border-radius: 6px;
 }
 
-.rave-detail-container {
+.rave-detail-container, .artist-detail-container {
     background-color: #f0f0f0;
     padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.rave-detail-info {
+.rave-detail-info, .artist-detail-info {
     position: relative;
 }
 

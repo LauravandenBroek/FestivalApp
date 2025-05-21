@@ -1,4 +1,79 @@
 ﻿@page
 @model FestivalApp.Pages.AccountPages.UserIndexModel
+
+
+
 @{
+ 
+    ViewData["Title"] = @Model.Username+ "'s rave page";
+}
+
+@if (!Model.AttendingRaves.Any())
+{
+    <div class="empty-state text-center my-5">
+        <i class="bi bi-calendar-x fs-1 text-muted"></i>
+        <p class="text-muted">You haven't added any raves to your attending list yet.</p>
+        <a class="btn btn-primary" asp-page="/RaveOverview">Browse raves</a>
+    </div>
+}
+else
+{
+    <h3>The raves you're attending</h3>
+    <div class="rave-grid">
+        @foreach (var rave in Model.AttendingRaves)
+        {
+            <a asp-page="/RaveDetail" asp-route-id="@rave.Id" class="rave-card-link">
+                <div class="rave-card">
+                    @if (rave.Image != null)
+                    {
+                        var base64Image = Convert.ToBase64String(rave.Image);
+                        <img src="data:image/jpeg;base64,@base64Image" alt="@rave.Name" class="rave-image" />
+                    }
+                    else
+                    {
+                        <div class="no-image">No Image</div>
+                    }
+
+                    <h3>@rave.Name</h3>
+                    <p>@rave.Date.ToString("dd MMM yyyy")</p>
+                    <p>@rave.Location</p>
+                </div>
+            </a>
+        }
+</div>
+}
+
+@if (!Model.Wishlist.Any())
+{
+    <div class="empty-state text-center my-5">
+        <i class="bi bi-heart fs-1 text-muted"></i>
+        <p class="text-muted">Your wishlist is still empty.</p>
+        <a class="btn btn-outline-danger" asp-page="/RaveOverview">Find your favorites</a>
+    </div>
+}
+else
+{
+    <h3 class="mt-4">Your rave wishlist</h3>
+    <div class="rave-grid">
+        @foreach (var rave in Model.Wishlist)
+        {
+            <a asp-page="/RaveDetail" asp-route-id="@rave.Id" class="rave-card-link">
+                <div class="rave-card">
+                    @if (rave.Image != null)
+                    {
+                        var base64Image = Convert.ToBase64String(rave.Image);
+                        <img src="data:image/jpeg;base64,@base64Image" alt="@rave.Name" class="rave-image" />
+                    }
+                    else
+                    {
+                        <div class="no-image">No Image</div>
+                    }
+
+                    <h3>@rave.Name</h3>
+                    <p>@rave.Date.ToString("dd MMM yyyy")</p>
+                    <p>@rave.Location</p>
+                </div>
+            </a>
+        }
+    </div>
 }

@@ -50,7 +50,7 @@ var username = Context.Session.GetString("Username");
                         @if ((bool?)ViewData["IsLoggedIn"] == true)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/PersonalPage">@username</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/AccountPages/UserIndex">@username's page</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Log uit</a>

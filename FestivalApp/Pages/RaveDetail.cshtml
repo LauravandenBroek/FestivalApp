@@ -6,11 +6,21 @@
 }
 
 <div class="rave-detail-container">
+    <div class="d-flex justify-content-end gap-2">
+        <form method="post" asp-page-handler="ToggleAttending" asp-route-id="@Model.Rave.Id">
+            <input type="hidden" name="id" value="@Model.Rave.Id" />
+            <button type="submit" class="btn btn-outline-success"> ✔ @Model.IsAttendingText </button>
+        </form>
+        <form method="post" asp-page-handler="ToggleWishlist" asp-route-id="@Model.Rave.Id">
+            <input type="hidden" name="id" value="@Model.Rave.Id" />
+            <button type="submit" class="btn btn-outline-danger"> ❤ @Model.IsOnWishlistText </button>
+        </form>
+    </div>
     <div class="rave-detail-info d-flex gap-3">
-        <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
+        @* <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
             <button class="btn btn-outline-danger">❤ Wishlist</button>
-            <button class="btn btn-outline-success">✔ Attending</button>
-        </div>
+            
+        </div> *@
         @if (rave.Image != null)
         {
             var base64Image = Convert.ToBase64String(rave.Image);
@@ -25,6 +35,36 @@
             <p><strong>Date:</strong> @rave.Date.ToString("dddd dd MMMM yyyy")</p>
             <p><strong>Location:</strong> @rave.Location</p>
             <p><strong>Description:</strong> @rave.Description</p>
+            <p><strong>Line-up</strong></p>
+            @if (Model.LineUp == null || !Model.LineUp.Any())
+            {
+                <p>The line up is not released yet</p>
+            }
+            else {
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Stage</th>
+                        <th>Starttijd</th>
+                        <th>Eindtijd</th>
+                        <th>Artiest</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var lineUp in Model.LineUp)
+                    {
+                        <tr>
+                            <td>@lineUp.Stage</td>
+                            <td>@lineUp.StartTime.ToString("HH:mm")</td>
+                            <td>@lineUp.EndTime.ToString("HH:mm")</td>
+                            <td>@lineUp.Artist.Name</td>
+                        </tr>
+                    }
+                    
+                </tbody>
+            </table>
+            }
         </div>
+        
     </div>
 </div> 
