@@ -21,6 +21,7 @@ builder.Services.AddScoped<IRecapRepository>(provider => new RecapRepository(con
 builder.Services.AddScoped<ITicketRepository>(provider => new TicketRepository(connectionString));
 builder.Services.AddScoped<IAttendingRaveRepository>(provider => new AttendingRaveRepository(connectionString));
 builder.Services.AddScoped<IRaveWishlistRepository>(provider => new RaveWishlistRepository(connectionString));
+builder.Services.AddScoped<IFavoriteArtistRepository>(provider => new FavoriteArtistRepository(connectionString));
 
 
 //Managers
@@ -32,6 +33,7 @@ builder.Services.AddScoped<RecapManager>();
 builder.Services.AddScoped<TicketManager>();
 builder.Services.AddScoped<AttendingRaveManager>();
 builder.Services.AddScoped<RaveWishlistManager>();
+builder.Services.AddScoped<FavoriteArtistManager>();
 
 
 builder.Services.AddHttpContextAccessor();

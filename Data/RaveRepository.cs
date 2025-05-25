@@ -134,7 +134,7 @@ namespace Data
                 using var connection = GetConnection();
                 connection.Open();
 
-
+                 
                 string sql = @"UPDATE Rave SET Name = @Name, Location = @Location, Date = @Date, Website = @Website, Min_age = @Min_age, Ticket_link = @Ticket_link, Description = @Description, Time = @Time, Image = @Image WHERE Id = @ID";
 
                 using var command = new SqlCommand(sql, connection);

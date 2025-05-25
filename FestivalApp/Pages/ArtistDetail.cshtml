@@ -1,15 +1,16 @@
 ﻿@page "{id:int}"
 @model FestivalApp.Pages.ArtistDetailModel
 @{
-     ViewData["Title"] = Model.Artist.Name;
+    ViewData["Title"] = Model.Artist.Name;
     var artist = Model.Artist;
 }
 
 <div class="artist-detail-container">
+    <form method="post" asp-page-handler="ToggleFavorite" asp-route-id="@Model.Artist.Id">
+        <input type="hidden" name="id" value="@Model.Artist.Id" />
+        <button type="submit" class="btn btn-outline-danger"> ❤ @Model.IsFavoriteText </button>
+    </form>
     <div class="artist-detail-info d-flex gap-3">
-        <div class="position-absolute top-0 end-0 m-2 d-flex gap-2">
-            <button class="btn btn-outline-danger">❤ Favorite</button>
-        </div>
         @if (artist.Image != null)
         {
             var base64Image = Convert.ToBase64String(artist.Image);

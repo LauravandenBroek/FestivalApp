@@ -2,3 +2,26 @@
 @model FestivalApp.Pages.AccountPages.WishlistModel
 @{
 }
+<p>The lineup isn’t out yet. The squad’s not convinced. Your bank account says no. But your soul? It already booked the weekend. Welcome to your rave wishlist — future chaos in the making.</p>
+<div class="rave-grid">
+    @foreach (var rave in Model.Wishlist)
+    {
+        <a asp-page="/RaveDetail" asp-route-id="@rave.Id" class="rave-card-link">
+            <div class="rave-card">
+                @if (rave.Image != null)
+                {
+                    var base64Image = Convert.ToBase64String(rave.Image);
+                    <img src="data:image/jpeg;base64,@base64Image" alt="@rave.Name" class="rave-image" />
+                }
+                else
+                {
+                    <div class="no-image">No Image</div>
+                }
+
+                <h3>@rave.Name</h3>
+                <p>@rave.Date.ToString("dd MMM yyyy")</p>
+                <p>@rave.Location</p>
+            </div>
+        </a>
+    }
+</div>

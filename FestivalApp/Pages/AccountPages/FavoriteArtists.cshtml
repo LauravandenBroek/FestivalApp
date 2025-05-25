@@ -1,4 +1,39 @@
 ﻿@page
 @model FestivalApp.Pages.AccountPages.FavoriteArtistsModel
 @{
+    ViewData["Title"] = @Model.Username + "'s Favorite artists";
+}
+@if (!Model.FavoriteArtists.Any())
+{
+    <div class="empty-state text-center my-5">
+        <i class="bi bi-calendar-x fs-1 text-muted"></i>
+        <p class="text-muted">You haven't added any artists to your favorites yet.</p>
+        <a class="btn btn-primary" asp-page="/ArtistOverview">Browse artists</a>
+    </div>
+}
+else
+{
+    <h3>Your favorite artists</h3>
+    <div class="artist-grid">
+        @foreach (var artist in Model.FavoriteArtists)
+        {
+            <a asp-page="/ArtistDetail" asp-route-id="@artist.Id" class="artist-card-link">
+                <div class="artist-card">
+                    @if (artist.Image != null)
+                    {
+                        var base64Image = Convert.ToBase64String(artist.Image);
+                        <img src="data:image/jpeg;base64,@base64Image" alt="@artist.Name" class="artist-image" />
+                    }
+                    else
+                    {
+                        <div class="no-image">No Image</div>
+                    }
+
+                    <h3>@artist.Name</h3>
+                    <p>@artist.Nationality</p>
+                    <p>@artist.Genre</p>
+                </div>
+            </a>
+        }
+    </div>
 }
