@@ -129,6 +129,12 @@ body {
     position: relative;
 }
 
+.page-text {
+    font-family: monospace;
+    font-weight: bold;
+    color: #712F89;
+}
+
 @media (max-width: 1200px) {
     .rave-grid {
         grid-template-columns: repeat(4, 1fr);

@@ -3,24 +3,24 @@
     public class Recap
     {
         private int _Id;
-        private string _Name;
         private string _Description;
-        private User _User;
-        private Rave _Rave;
+        private string _Rave;
+        //private User _User;
+        private List<byte[]> _Album;
 
-        public int Id { get { return _Id; } } 
-        public string Name { get { return _Name; } }
-        public string Description { get { return _Description; } }
-        public User User { get { return _User; } }
-        public Rave Rave { get { return _Rave; } }
 
-        public Recap (int id, string name, string description, User user, Rave rave)
+        public int Id { get { return _Id; } set { _Id = value; } }
+        public string Description { get { return _Description;  } set { _Description = value; } }
+        public string Rave { get { return _Rave; } set { _Rave = value; } }
+        public List<byte[]> Album { get { return _Album; } set { _Album = value; } }
+        public Recap() { }
+        
+        public Recap (int id, string description, string rave, List<byte[]> album)
         {
             _Id = id;
-            _Name = name;
             _Description = description;
-            _User = user;
             _Rave = rave;
+            _Album = album;
         }       
     }
 }

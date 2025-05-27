@@ -10,8 +10,8 @@
 
         public RecapPhoto(int id, byte[] photo)
         {
-            int _Id = id;
-            byte[] _Photo = photo;
+            _Id = id;
+            _Photo = photo;
         }
     }
 }

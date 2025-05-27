@@ -19,8 +19,14 @@ namespace FestivalApp.Pages
         {
             _userManager = userManager;
         }
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (HttpContext.Session.GetInt32("UserId") != null)
+            {
+                return RedirectToPage("/Index");
+            }
+
+            return Page();
         }
 
         public IActionResult OnPost()

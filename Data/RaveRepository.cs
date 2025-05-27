@@ -81,7 +81,7 @@ namespace Data
 
                 return raves;
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 throw new Exception("Error while retrieving raves.", ex);
             }
@@ -152,7 +152,7 @@ namespace Data
                 command.ExecuteNonQuery();
             }
 
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 throw new Exception("Error while updating rave", ex);
             }
@@ -214,7 +214,7 @@ namespace Data
                 }
                 return raves;
             }
-            catch (Exception ex) {
+            catch (SqlException ex) {
                 throw new Exception("Error while getting upcoming raves", ex);
             }
         }
@@ -264,7 +264,7 @@ namespace Data
 
                 return raves;
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 throw new Exception("Error while retrieving paged raves.", ex);
             }

@@ -9,8 +9,8 @@ namespace Interfaces
 {
     public interface IRecapRepository
     {
-        public void AddRecap(Recap recap);
-        public List<Recap> GetRecaps();
+        public void AddRecap(Recap recap, int UserId);
+        public List<Recap> GetRecapsByUserId(int UserId);
         public Recap? GetRecapById(int id);
         public void UpdateRecap(Recap recap);
         public void DeleteRecap(int id);

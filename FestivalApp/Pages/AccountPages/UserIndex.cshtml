@@ -5,6 +5,9 @@
     ViewData["Title"] = @Model.Username+ "'s rave page";
 }
 
+<a class="btn btn-primary" asp-page="/AccountPages/AddRecap">Add Recap</a>
+
+<p class="page-text">Welcome to your ultimate rave dashboard – all your beats, vibes, and memories in one place!</p> 
 @if (!Model.AttendingRaves.Any())
 {
     <div class="empty-state text-center my-5">
@@ -42,11 +45,11 @@ else
 
 @if (Model.AttendingRaves.Count >= 5)
 {
-    <a asp-page="/AccountPages/AttendingRaves">View more</a>
+    <a asp-page="/AccountPages/AttendingRaves" style="float: right;">View more</a>
 }
 else
 {
-    <a asp-page="/RaveOverview">Add more</a>
+    <a asp-page="/RaveOverview" style="float: right;">Add more</a>
 }
 
 @if (!Model.Wishlist.Any())
@@ -86,11 +89,11 @@ else
 
 @if (Model.Wishlist.Count >= 5)
 {
-    <a asp-page="/AccountPages/Wishlist">View more</a>
+    <a asp-page="/AccountPages/Wishlist" style="float: right;">View more</a>
 }
 else
 {
-    <a asp-page="/RaveOverview">Add more</a>
+    <a asp-page="/RaveOverview" style="float: right;">Add more</a>
 }
 
 
@@ -105,7 +108,7 @@ else
 else
 {
     <h3>Your favorite artists</h3>
-    <div class="artist-grid">
+    <div class="artist-grid mb-3">
         @foreach (var artist in Model.FavoriteArtists)
         {
             <a asp-page="/ArtistDetail" asp-route-id="@artist.Id" class="artist-card-link">
@@ -129,8 +132,10 @@ else
     </div>
 }
 @if (Model.FavoriteArtists.Count >= 6){
-    <a asp-page="/AccountPages/FavoriteArtists">View more</a>
+    <a asp-page="/AccountPages/FavoriteArtists" style="float: right;">View more</a>
 }
 else {
-    <a asp-page="/ArtistOverview">Add more</a>
+    <a asp-page="/ArtistOverview" style="float: right;">Add more</a>
 }
+
+                    
