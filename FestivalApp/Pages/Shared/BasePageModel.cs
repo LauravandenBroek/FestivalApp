@@ -11,16 +11,7 @@ namespace FestivalApp.Pages.Shared
         {
             return HttpContext.Session.GetInt32("UserId") != null;
         }
-        //protected IActionResult RequireLogin()
-        //{
-        //    if (!IsLoggedIn())
-        //    {
-        //        return RedirectToPage("/Login");
-        //    }
-
-        //    return null; 
-        //}
-
+      
         protected int? GetLoggedInUserId()
         {
             return HttpContext.Session.GetInt32("UserId");

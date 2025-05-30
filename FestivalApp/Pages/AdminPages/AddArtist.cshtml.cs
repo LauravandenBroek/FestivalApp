@@ -1,4 +1,5 @@
 using Logic.Managers;
+using Logic.ViewModels;
 using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,18 +21,18 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty]
-        public Artist Artist { get; set; }
+
+        public AddArtistViewModel Input { get; set; }
         public void OnGet()
         {
         }
         public async Task<IActionResult> OnPostAsync(IFormFile UploadedImage)
-        { 
-                using var memoryStream = new MemoryStream();
-                await UploadedImage.CopyToAsync(memoryStream);
-                Artist.Image = memoryStream.ToArray();
-            
+        {
+            using var memoryStream = new MemoryStream();
+            await UploadedImage.CopyToAsync(memoryStream);
+            Input.Image = memoryStream.ToArray();
 
-            _artistManager.AddArtist(Artist);
+            _artistManager.AddArtist(Input);
 
             return RedirectToPage("AdminArtist");
         }

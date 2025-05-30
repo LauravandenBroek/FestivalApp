@@ -22,11 +22,15 @@
                     <form method="post">
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="Email" required>
+                            @* <input type="email" class="form-control" id="email" name="Email" required> *@
+                            <input asp-for="Input.Email" type="email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="Password" required>
+                            <input asp-for="Input.Password" type="password" class="form-control" />
+                            @* <input type="password" class="form-control" id="password" name="Password" required> *@
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
                         </div>
                         <button type="submit" class="btn w-100" style="background-color: #712F89; color: white;">Login</button>
                     </form>

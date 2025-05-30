@@ -1,6 +1,7 @@
 ﻿using Interfaces;
 using Interfaces.Models;
 using BCrypt.Net;
+using Logic.ViewModels;
 
 
 namespace Logic.Managers
@@ -20,12 +21,30 @@ namespace Logic.Managers
             return existingUser != null;
         }
 
-        public void RegisterUser(User user)
+        public void RegisterUser(RegisterViewModel Input)
         {
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
-            user.PasswordHash = hashedPassword;
+            var newUser = new User
+            {
+                Name = Input.Name,
+                Email = Input.Email,
+                PasswordHash = Input.Password,
+                Birthdate = Input.Birthdate,
+                Role = "User"
+            };
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newUser.PasswordHash);
+            newUser.PasswordHash = hashedPassword;
 
-            _userRepository.AddUser(user);
+            _userRepository.AddUser(newUser);
+        }
+
+
+        public User ValidateUser(string email, string password)
+        {
+            var user = _userRepository.GetUserByEmail(email);
+            if (user == null) return null;
+
+            var isValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+            return isValid ? user : null;
         }
 
         public User? GetUserByEmail(string email)

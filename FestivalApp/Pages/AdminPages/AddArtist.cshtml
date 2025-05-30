@@ -4,24 +4,31 @@
     <h2>Add Artist</h2>
 
     <form method="post" enctype="multipart/form-data">
-        <input type="hidden" asp-for="Artist.Id" />
 
         <label>Name:</label>
-        <input asp-for="Artist.Name" class="form-control" />
+        <input asp-for="Input.Name" class="form-control" />
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
 
         <label>Nationality:</label>
-        <input asp-for="Artist.Nationality" class="form-control" />
+        <input asp-for="Input.Nationality" class="form-control" />
+        <span asp-validation-for="Input.Nationality" class="text-danger"></span>
 
         <label>Genre:</label>
-        <input asp-for="Artist.Genre" class="form-control" />
+        <input asp-for="Input.Genre" class="form-control" />
+        <span asp-validation-for="Input.Genre" class="text-danger"></span>
 
         <label>Description:</label>
-        <textarea asp-for="Artist.Description" class="form-control"></textarea>
+        <textarea asp-for="Input.Description" class="form-control"></textarea>
+        <span asp-validation-for="Input.Description" class="text-danger"></span>
 
         <label>Upload Image:</label>
         <input type="file" name="uploadedImage" class="form-control" />
+        <span asp-validation-for="Input.Image" class="text-danger"></span>
 
         <button type="submit">Save</button>
     </form>
 
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

@@ -42,16 +42,7 @@ namespace FestivalApp.Pages
                 return Page();
             }
 
-            var newUser = new User
-            {
-                Name = Input.Name,
-                Email = Input.Email,
-                PasswordHash = Input.Password,
-                Birthdate = Input.Birthdate,
-                Role = "User"
-            };
-
-            _userManager.RegisterUser(newUser);
+            _userManager.RegisterUser(Input);
             return RedirectToPage("Login");
         }
     }

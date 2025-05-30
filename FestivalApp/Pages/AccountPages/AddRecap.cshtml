@@ -1,28 +1,28 @@
 ﻿@page
 @model FestivalApp.Pages.AccountPages.AddRecapModel
 @{
+    <div class="recap-container">
+        <h2>Add Recap</h2>
 
-    <h2>Add Recap</h2>
+        <form method="post" enctype="multipart/form-data">
 
-    <form method="post" enctype="multipart/form-data">
+            <label>Rave:</label>
+            <input asp-for="Recap.Rave" class="form-control" list="rave-suggestions" />
 
-        <label>Rave:</label>
-        <input asp-for="Recap.Rave" class="form-control" list="rave-suggestions" />
+            <datalist id="rave-suggestions">
+                @foreach (var rave in Model.AttendingRaves)
+                {
+                    <option value="@rave.Name" />
+                }
+            </datalist>
 
-        <datalist id="rave-suggestions">
-            @foreach (var rave in Model.AttendingRaves)
-            {
-                <option value="@rave.Name" />
-            }
-        </datalist>
-
-        <label>Description:*</label>
-        <input asp-for="Recap.Description" class="form-control" />
+            <label>Description:*</label>
+            <input asp-for="Recap.Description" class="form-control" />
 
 
-        <label>Upload Images (max 5):</label>
-        <input type="file" name="Photos" multiple class="form-control" />
-        <button type="submit">Save</button>
-    </form>
-
+            <label>Upload Images (max 5):</label>
+            <input type="file" name="Photos" multiple class="form-control" />
+            <button type="submit" class="btn w-100 mt-2" style="background-color: #712F89; color: white">Add recap!</button>
+        </form>
+    </div>
 }

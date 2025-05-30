@@ -1,7 +1,9 @@
 ﻿
 using Interfaces;
 using Interfaces.Models;
+using Logic.ViewModels;
 namespace Logic.Managers
+
 {
     public class ArtistManager
 
@@ -12,9 +14,19 @@ namespace Logic.Managers
             _artistRepository = artistRepository;
         }
 
-        public void AddArtist(Artist artist)
+        public void AddArtist(AddArtistViewModel input)
         {
-            _artistRepository.AddArtist(artist);
+
+            var newArtist = new Artist
+            {
+                Name = input.Name,
+                Nationality = input.Nationality,
+                Genre = input.Genre,
+                Description = input.Description,
+                Image = input.Image,
+            };
+
+            _artistRepository.AddArtist(newArtist);
         }
 
         public List<Artist> GetArtists()

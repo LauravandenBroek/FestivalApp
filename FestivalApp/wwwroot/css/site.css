@@ -12,6 +12,7 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+
 html {
   position: relative;
   min-height: 100%;
@@ -119,7 +120,7 @@ body {
     border-radius: 6px;
 }
 
-.rave-detail-container, .artist-detail-container {
+.rave-detail-container, .artist-detail-container, .recap-container {
     background-color: #f0f0f0;
     padding: 1rem;
     border-radius: 8px;

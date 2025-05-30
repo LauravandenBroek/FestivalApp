@@ -3,6 +3,7 @@ using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FestivalApp.Pages.Shared;
+using Logic.ViewModels;
 
 
 namespace FestivalApp.Pages.AdminPages
@@ -18,7 +19,8 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty]
-        public Rave Rave { get; set; }
+        public AddRaveViewModel Input { get; set; }
+       
         public void OnGet()
         {
         }
@@ -27,10 +29,11 @@ namespace FestivalApp.Pages.AdminPages
         {
             using var memoryStream = new MemoryStream();
             await UploadedImage.CopyToAsync(memoryStream);
-            Rave.Image = memoryStream.ToArray();
+            
+            Input.Image = memoryStream.ToArray();
             
             
-            _raveManager.AddRave(Rave);
+            _raveManager.AddRave(Input);
 
             return RedirectToPage("AdminRave");
         }

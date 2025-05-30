@@ -32,13 +32,14 @@ namespace FestivalApp.Pages
         {
             if (!ModelState.IsValid)
                 return Page();
-            var user = _userManager.GetUserByEmail(Input.Email);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(Input.Password, user.PasswordHash))
-            {
 
-                ModelState.AddModelError(string.Empty, "Invalid email or password");
+            var user = _userManager.ValidateUser(Input.Email, Input.Password);
+            if (user == null)
+            {
+                ModelState.AddModelError(Input.Password, "Invalid email or password");
                 return Page();
             }
+
 
             HttpContext.Session.SetString("Username", user.Name);
             HttpContext.Session.SetInt32("UserId", user.Id);

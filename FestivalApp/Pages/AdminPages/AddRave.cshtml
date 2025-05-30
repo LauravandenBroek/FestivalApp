@@ -5,31 +5,38 @@
     <h2>Add Rave</h2>
 
     <form method="post" enctype="multipart/form-data">
-        <input type="hidden" asp-for="Rave.Id" />
-
+        
         <label>Name:*</label>
-        <input asp-for="Rave.Name" class="form-control" />
+        <input asp-for="Input.Name" class="form-control" />
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
 
         <label>Location:*</label>
-        <input asp-for="Rave.Location" class="form-control" />
+        <input asp-for="Input.Location" class="form-control" />
+        <span asp-validation-for="Input.Location" class="text-danger"></span>
 
         <label>Date:*</label>
-        <input asp-for="Rave.Date" type="date" class="form-control" />
+        <input asp-for="Input.Date" type="date" class="form-control" />
+        <span asp-validation-for="Input.Date" class="text-danger"></span>
 
         <label>Website:</label>
-        <input asp-for="Rave.Website" type="url" placeholder="https://" class=" form-control" />
+        <input asp-for="Input.Website" type="url" placeholder="https://" class=" form-control" />
+        <span asp-validation-for="Input.Website" class="text-danger"></span>
 
         <label>Minimum age:</label>
-        <input asp-for="Rave.Minimum_age" type="number" class="form-control"/>
+        <input asp-for="Input.Minimum_age" type="number" class="form-control"/>
+        <span asp-validation-for="Input.Minimum_age" class="text-danger"></span>
 
         <label>Ticket link:</label>
-        <input asp-for="Rave.Ticket_link" placeholder="https://" type="url" class="form-control" />
+        <input asp-for="Input.Ticket_link" placeholder="https://" type="url" class="form-control" />
+        <span asp-validation-for="Input.Ticket_link" class="text-danger"></span>
 
         <label>Description:</label>
-        <textarea asp-for="Rave.Description" class="form-control" rows="3"></textarea>
+        <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Input.Description" class="text-danger"></span>
 
         <label>Time:</label>
-        <input asp-for="Rave.Time" class="form-control" />
+        <input asp-for="Input.Time" class="form-control" />
+        <span asp-validation-for="Input.Time" class="text-danger"></span>
 
         <label>Image:*</label>
         <input type="file" name="uploadedImage" class="form-control" />

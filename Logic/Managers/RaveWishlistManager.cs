@@ -27,6 +27,7 @@ namespace Logic.Managers
             return _raveWishlistRepository.GetRaveWishlistByUserId(UserId);
         }
 
+        //DEZE FUNCTIE MOET NOG WEG EN DE BOVENSTE VERANDEREN, ZOALS BIJ FAVORITE ARTISTS EN OOK BIJ ATTENDINGRAVES!!
         public List<Rave> Get5WishlistRavesByUserId(int userId)
         {
             return _raveWishlistRepository.GetRaveWishlistByUserId(userId, 5);

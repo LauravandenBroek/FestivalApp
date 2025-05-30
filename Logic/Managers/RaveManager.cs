@@ -1,5 +1,6 @@
 ﻿using Interfaces;
 using Interfaces.Models;
+using Logic.ViewModels;
 using System.Xml.Serialization;
 
 namespace Logic.Managers
@@ -12,9 +13,23 @@ namespace Logic.Managers
         {
             _raveRepository = raveRepository;
         }
-        public void AddRave(Rave rave)
+        public void AddRave(AddRaveViewModel input)
         {
-            _raveRepository.AddRave(rave);
+            var newRave = new Rave
+            {
+                Name = input.Name,
+                Location = input.Location,
+                Date = input.Date,
+                Website = input.Website,
+                Minimum_age = input.Minimum_age,
+                Ticket_link = input.Ticket_link,
+                Description = input.Description,
+                Time = input.Time,
+                Image = input.Image
+
+            };
+
+            _raveRepository.AddRave(newRave);
         }
 
         public List<Rave> GetRaves()
