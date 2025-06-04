@@ -1,10 +1,8 @@
 ﻿using Interfaces.Models;
 using Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace Logic.Managers
 {
@@ -17,20 +15,23 @@ namespace Logic.Managers
             _raveWishlistRepository = RaveWishlistRepository;
         }
 
-        public async Task AddRaveToWishList(int UserId, int RaveId)
-        {
+        public async Task AddRaveToWishList(int UserId, int RaveId) { 
+
+             if (UserId <= 0 || RaveId <= 0)
+             {
+                throw new ValidationException("Invalid user or rave ID.");
+             }
+             if (IsRaveOnUserWishlist(UserId, RaveId))
+             {
+                throw new ValidationException("User is already attending this rave.");
+             }
+                
             _raveWishlistRepository.AddRaveToWishlist(UserId, RaveId);
         }
 
-        public List<Rave> GetRaveWishlistByUserId(int UserId)
+        public List<Rave> GetRaveWishlistByUserId(int UserId, int limit = 0)
         {
-            return _raveWishlistRepository.GetRaveWishlistByUserId(UserId);
-        }
-
-        //DEZE FUNCTIE MOET NOG WEG EN DE BOVENSTE VERANDEREN, ZOALS BIJ FAVORITE ARTISTS EN OOK BIJ ATTENDINGRAVES!!
-        public List<Rave> Get5WishlistRavesByUserId(int userId)
-        {
-            return _raveWishlistRepository.GetRaveWishlistByUserId(userId, 5);
+            return _raveWishlistRepository.GetRaveWishlistByUserId(UserId, limit);
         }
 
         public bool IsRaveOnUserWishlist(int UserId, int RaveId)
@@ -41,6 +42,14 @@ namespace Logic.Managers
 
         public async Task RemoveRaveFromWishlist(int UserId, int RaveId)
         {
+            if (UserId <= 0 || RaveId <= 0)
+            {
+                throw new ValidationException("Invalid user or rave ID.");
+            }
+            if (!IsRaveOnUserWishlist(UserId, RaveId))
+            {
+                throw new ValidationException("User is already attending this rave.");
+            }
             _raveWishlistRepository.RemoveRaveFromWishlist(UserId, RaveId);
         }
     }

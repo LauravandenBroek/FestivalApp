@@ -15,7 +15,11 @@ builder.Services.AddSession();
 //repo's
 builder.Services.AddScoped<IArtistRepository>(provider => new ArtistRepository(connectionString));
 builder.Services.AddScoped<IRaveRepository>(provider => new RaveRepository(connectionString));
-builder.Services.AddScoped<IUserRepository>(provider => new UserRepository(connectionString));
+builder.Services.AddScoped<IUserRepository>(provider =>
+{
+    var logger = provider.GetRequiredService<ILogger<UserRepository>>();
+    return new UserRepository(logger, connectionString);
+});
 builder.Services.AddScoped<ILineUpRepository>(provider => new LineUpRepository(connectionString));
 builder.Services.AddScoped<IRecapRepository>(provider => new RecapRepository(connectionString));
 builder.Services.AddScoped<ITicketRepository>(provider => new TicketRepository(connectionString));

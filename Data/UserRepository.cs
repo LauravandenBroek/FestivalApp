@@ -2,34 +2,66 @@
 using Interfaces.Models;
 using Microsoft.Data.SqlClient;
 using Interfaces;
+using Logic.Exceptions;
+using Microsoft.Extensions.Logging;
+
 
 namespace Data
 {
     public class UserRepository : DatabaseConnection, IUserRepository
     {
-        public UserRepository(string connectionString) : base(connectionString)
+        private readonly ILogger<UserRepository> _logger;
+        public UserRepository(ILogger<UserRepository> logger, string connectionString) : base(connectionString)
         {
+            _logger = logger;
         }
 
         public void AddUser(User user)
         {
-            using (SqlConnection connection = GetConnection())
-            {
-                connection.Open();
-                string sql = @"INSERT INTO [User] (Name, Email, Password, Birthdate, Role) 
-                            VALUES(@Name, @Email, @Password, @Birthdate, @Role)";
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                {
-                    command.Parameters.AddWithValue("@Name", user.Name);
-                    command.Parameters.AddWithValue("Email", user.Email);
-                    command.Parameters.AddWithValue("Password", user.PasswordHash);
-                    command.Parameters.AddWithValue("Birthdate", user.Birthdate);
-                    command.Parameters.AddWithValue("Role", user.Role);
+            SqlConnection connection = null;
 
-                    command.ExecuteNonQuery();
+            try
+            {
+                connection = GetConnection();
+
+                try
+                {
+                    connection.Open();
+                }
+                catch (SqlException ex)
+                {
+                    _logger.LogError(ex, "No database connection");
+                    throw new TemporaryDatabaseException();
+                }
+
+                try
+                {
+                    string sql = @"INSERT INTO [User] (Name, Email, Password, Birthdate, Role) 
+                           VALUES (@Name, @Email, @Password, @Birthdate, @Role)";
+
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@Name", user.Name);
+                        command.Parameters.AddWithValue("@Email", user.Email);  // @ toegevoegd
+                        command.Parameters.AddWithValue("@Password", user.PasswordHash);
+                        command.Parameters.AddWithValue("@Birthdate", user.Birthdate);
+                        command.Parameters.AddWithValue("@Role", user.Role);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    _logger.LogError(ex, "Failed to insert user data into the database.");
+                    throw new PersistentDatabaseException();
                 }
             }
+            finally
+            {
+                connection?.Close();
+            }
         }
+
 
         public User? GetUserByEmail(string email)
         {

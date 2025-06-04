@@ -3,6 +3,7 @@ using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
 using FestivalApp.Pages.Shared;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Logic.ViewModels;
 
 namespace FestivalApp.Pages.AdminPages
 {
@@ -17,6 +18,8 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty]
+        public EditRaveViewModel Input { get; set; }
+        
         public Rave Rave { get; set; }
 
 
@@ -28,30 +31,41 @@ namespace FestivalApp.Pages.AdminPages
             {
                 return NotFound();
             }
+
+            Input = new EditRaveViewModel
+            {
+                Id = id,
+                Name = Rave.Name, 
+                Location = Rave.Location,
+                Date = Rave.Date,
+                Website = Rave.Website,
+                Minimum_age = Rave.Minimum_age,
+                Ticket_link = Rave.Ticket_link,
+                Description = Rave.Description,
+                Time = Rave.Time,
+                Image = Rave.Image
+            };
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int id, IFormFile UploadedImage)
         {
-            if (Rave == null)
-            {
-                return NotFound();
-            }
+           
 
             if (UploadedImage != null)
             {
                 using var memoryStream = new MemoryStream();
                 await UploadedImage.CopyToAsync(memoryStream);
-                Rave.Image = memoryStream.ToArray();
+                Input.Image = memoryStream.ToArray();
             }
 
             else 
             {
                 var existingRave = _raveManager.GetRaveById(id);
-                Rave.Image = existingRave.Image;
+                Input.Image = existingRave.Image;
             }
 
-            _raveManager.UpdateRave(Rave);
+            _raveManager.UpdateRave(Input);
 
             return RedirectToPage("AdminRave");
         }

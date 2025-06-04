@@ -1,11 +1,7 @@
 ﻿using Interfaces;
 using Interfaces.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Logic.Managers
 {
@@ -20,6 +16,14 @@ namespace Logic.Managers
 
         public async Task AddArtistToFavorites(int UserId, int ArtistId)
         {
+            if (UserId <= 0 || ArtistId <= 0)
+            {
+                throw new ValidationException("Invalid user or artist ID.");
+            }
+            if (IsArtistOnFavorites(UserId, ArtistId))
+            {
+                throw new ValidationException("Artist is already on favorite list");
+            }
             _favoriteArtistRepository.AddArtistToFavorites(UserId, ArtistId);
         }
 
@@ -37,6 +41,14 @@ namespace Logic.Managers
 
         public async Task RemoveArtistFromFavorites(int UserId, int ArtistId)
         {
+            if (UserId <= 0 || ArtistId <= 0)
+            {
+                throw new ValidationException("Invalid user or artist ID.");
+            }
+            if (!IsArtistOnFavorites(UserId, ArtistId))
+            {
+                throw new ValidationException("Artist is not on favorite list");
+            }
             _favoriteArtistRepository.RemoveArtistFromFavorites(UserId, ArtistId);
         }
     }

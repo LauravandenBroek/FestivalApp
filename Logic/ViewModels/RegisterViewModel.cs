@@ -5,7 +5,7 @@ namespace Logic.ViewModels
     public class RegisterViewModel
     {
         [Required(ErrorMessage ="Name is required")]
-        [StringLength(30, ErrorMessage = "Name can be max 30 characters")]
+        [StringLength(50, ErrorMessage = "Name can be max 50 characters")]
         public string Name { get; set; }
 
 

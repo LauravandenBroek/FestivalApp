@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FestivalApp.Pages.Shared;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Logic.ViewModels;
 
 namespace FestivalApp.Pages.AccountPages
 {
@@ -19,7 +20,7 @@ namespace FestivalApp.Pages.AccountPages
         }
 
         [BindProperty]
-        public Recap Recap { get; set; }
+        public AddRecapViewModel Input { get; set; }
         public List<IFormFile> Photos { get; set; }
         public List<Rave> AttendingRaves { get; set; }
         
@@ -35,18 +36,18 @@ namespace FestivalApp.Pages.AccountPages
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null) return RedirectToPage("Login");
 
-            Recap.Album = new List<byte[]>();
+            Input.Album = new List<byte[]>();
             if (Photos != null)
             {
                 foreach (var file in Photos.Where(f => f != null && f.Length > 0).Take(5))
                 {
                     using var memoryStream = new MemoryStream();
                     await file.CopyToAsync(memoryStream);
-                    Recap.Album.Add(memoryStream.ToArray());
+                    Input.Album.Add(memoryStream.ToArray());
                 }
             }
             
-            _recapManager.AddRecap(Recap, userId.Value);
+            _recapManager.AddRecap(Input, userId.Value);
             return RedirectToPage("UserIndex");
         }
     }

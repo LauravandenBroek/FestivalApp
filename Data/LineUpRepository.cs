@@ -45,7 +45,8 @@ namespace Data
                        FROM Line_up l
                        JOIN Artist a ON l.Artist_ID = a.Id
                        JOIN Rave r ON l.Rave_ID = r.Id
-                       WHERE l.Rave_ID = @Rave_ID";
+                       WHERE l.Rave_ID = @Rave_ID
+                       ORDER BY l.Start_time ASC";
 
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {

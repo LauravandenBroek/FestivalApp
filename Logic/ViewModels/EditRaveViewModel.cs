@@ -9,22 +9,24 @@ namespace Logic.ViewModels
 {
     public class EditRaveViewModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Name is required")]
-        [StringLength(30, ErrorMessage = "Name can be max 30 characters")]
+        [StringLength(50, ErrorMessage = "Name can be max 50 characters")]
         public string Name { get; set; }
 
 
         [Required(ErrorMessage = "Location is required")]
-        [StringLength(30, ErrorMessage = "Location can be max 30 characters")]
+        [StringLength(30, ErrorMessage = "Location can be max 50 characters")]
         public string Location { get; set; }
 
 
         [Required(ErrorMessage = "Date is required")]
         [DataType(DataType.Date)]
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
 
 
-        [StringLength(30, ErrorMessage = "Website can be max 30 characters")]
+        [StringLength(30, ErrorMessage = "Website can be max 50 characters")]
         [Required(ErrorMessage = "Website is required")]
         public string Website { get; set; }
 
@@ -34,7 +36,7 @@ namespace Logic.ViewModels
         public int Minimum_age { get; set; }
 
 
-        [StringLength(30, ErrorMessage = "Ticket link can be max 30 characters")]
+        [StringLength(30, ErrorMessage = "Ticket link can be max 50 characters")]
         [Required(ErrorMessage = "Ticket link is required")]
         public string Ticket_link { get; set; }
 

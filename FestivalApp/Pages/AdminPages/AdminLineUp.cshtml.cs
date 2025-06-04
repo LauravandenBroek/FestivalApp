@@ -3,6 +3,7 @@ using Logic.Managers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FestivalApp.Pages.Shared;
+using Logic.ViewModels;
 
 namespace FestivalApp.Pages.AdminPages
 {
@@ -29,29 +30,28 @@ namespace FestivalApp.Pages.AdminPages
             LineUpItems = _lineUpManager.GetLineUpByRaveId(id);
             Rave = _raveManager.GetRaveById(id);
             AllArtists = _artistManager.GetArtists();
-           
+
+            var startTime = Rave.Date.ToDateTime(new TimeOnly(13, 0)); // 13:00
+            var endTime = Rave.Date.ToDateTime(new TimeOnly(14, 0));   // 14:00
+
+            Input = new AddLineUpViewModel
+            {
+                StartTime = startTime,
+                EndTime = endTime
+            };
+
             return Page();
         }
 
         [BindProperty] 
-        public LineUp NewLineUpItem { get; set; }
+        public AddLineUpViewModel Input { get; set; }
 
         public IActionResult OnPost(int id)
         {
+            var rave = _raveManager.GetRaveById(id);
+            var artist = _artistManager.GetArtistById(Input.ArtistId);
 
-           // if (!ModelState.IsValid)
-            //{
-                // Laad bestaande LineUps en Rave opnieuw in
-               // LineUpItems = _lineUpManager.GetLineUpByRaveId(id);
-               /// Rave = _raveManager.GetRaveById(id);
-               // AllArtists = _artistManager.GetArtists();
-              //  return Page();
-           // }
-
-            // Koppel de juiste Rave aan de nieuwe LineUp
-            NewLineUpItem.Rave = _raveManager.GetRaveById(id);
-
-            _lineUpManager.AddLineUp(NewLineUpItem);
+            _lineUpManager.AddLineUp(Input, rave, artist);
 
             return RedirectToPage("/AdminPages/AdminLineUp", new { id = id });
         }

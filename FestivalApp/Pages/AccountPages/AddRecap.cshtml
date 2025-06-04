@@ -7,7 +7,7 @@
         <form method="post" enctype="multipart/form-data">
 
             <label>Rave:</label>
-            <input asp-for="Recap.Rave" class="form-control" list="rave-suggestions" />
+            <input asp-for="Input.Rave" class="form-control" list="rave-suggestions" />
 
             <datalist id="rave-suggestions">
                 @foreach (var rave in Model.AttendingRaves)
@@ -17,7 +17,7 @@
             </datalist>
 
             <label>Description:*</label>
-            <input asp-for="Recap.Description" class="form-control" />
+            <input asp-for="Input.Description" class="form-control" />
 
 
             <label>Upload Images (max 5):</label>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Interfaces.Models;
 using Logic.ViewModels;
 using Logic.Managers;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace FestivalApp.Pages
@@ -36,14 +37,17 @@ namespace FestivalApp.Pages
                 return Page();
             }
 
-            if (_userManager.EmailExists(Input.Email))
+            try
             {
-                ModelState.AddModelError("Input.Email", "Email is already registered. Already have an account? Login page");
-                return Page();
+                _userManager.RegisterUser(Input);
+                return RedirectToPage("Login");
             }
 
-            _userManager.RegisterUser(Input);
-            return RedirectToPage("Login");
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError("Input.Birthdate", ex.Message);
+                return Page();
+            }
         }
     }
 }

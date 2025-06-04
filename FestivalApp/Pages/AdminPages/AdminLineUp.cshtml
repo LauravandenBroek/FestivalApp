@@ -28,23 +28,23 @@
 
     <h2>Nieuw item toevoegen aan deze line-up</h2>
     <form method="post">
-        <input type="hidden" asp-for="Rave.Id" />
+       
 
         <div>
             <label>Artiest:</label>
-            <select asp-for="NewLineUpItem.Artist.Id" asp-items="@(new SelectList(Model.AllArtists, "Id", "Name"))"></select>
+            <select asp-for="Input.ArtistId" asp-items="@(new SelectList(Model.AllArtists, "Id", "Name"))"></select>
         </div>
         <div>
             <label>Starttijd:</label>
-            <input asp-for="NewLineUpItem.StartTime" type="datetime-local" />
+            <input asp-for="Input.StartTime" type="datetime-local" />
         </div>
         <div>
             <label>Eindtijd:</label>
-            <input asp-for="NewLineUpItem.EndTime" type="datetime-local" />
+            <input asp-for="Input.EndTime" type="datetime-local" />
         </div>
         <div>
             <label>Stage:</label>
-            <input asp-for="NewLineUpItem.Stage" />
+            <input asp-for="Input.Stage" />
         </div>
         <button type="submit">Toevoegen</button>
     </form>

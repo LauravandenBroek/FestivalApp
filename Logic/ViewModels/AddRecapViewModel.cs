@@ -6,7 +6,7 @@ namespace Logic.ViewModels
     public class AddRecapViewModel
     {
         [Required(ErrorMessage = "Rave is required")]
-        [StringLength(30, ErrorMessage = "Rave can be max 30 characters")]
+        [StringLength(50, ErrorMessage = "Rave can be max 50 characters")]
         public string Rave {  get; set; }
 
 

@@ -5,7 +5,6 @@
         private int _Id;
         private string _Description;
         private string _Rave;
-        //private User _User;
         private List<byte[]> _Album;
 
 

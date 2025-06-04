@@ -2,6 +2,8 @@
 using Interfaces;
 using Interfaces.Models;
 using Logic.ViewModels;
+using System.ComponentModel.DataAnnotations;
+
 namespace Logic.Managers
 
 {
@@ -16,9 +18,15 @@ namespace Logic.Managers
 
         public void AddArtist(AddArtistViewModel input)
         {
+            if (string.IsNullOrWhiteSpace(input.Name) ||string.IsNullOrWhiteSpace(input.Nationality) || string.IsNullOrWhiteSpace(input.Genre) || string.IsNullOrWhiteSpace(input.Description) || input.Image == null || input.Image.Length == 0)
+                    
+            {
+                throw new ValidationException("Please fill in all the fields.");
+            }
 
             var newArtist = new Artist
             {
+               
                 Name = input.Name,
                 Nationality = input.Nationality,
                 Genre = input.Genre,
@@ -39,9 +47,24 @@ namespace Logic.Managers
             return _artistRepository.GetArtistById(id);
         }
 
-        public void UpdateArtist(Artist artist)
+        public void UpdateArtist(EditArtistViewModel input)
         {
-            _artistRepository.UpdateArtist(artist);
+            if (string.IsNullOrWhiteSpace(input.Name) ||string.IsNullOrWhiteSpace(input.Nationality) || string.IsNullOrWhiteSpace(input.Genre) || string.IsNullOrWhiteSpace(input.Description) || input.Image == null || input.Image.Length == 0)
+            {
+                throw new ValidationException("Please fill in all the fields.");
+            }
+
+            var updatedArtist = new Artist
+            {
+                Id = input.Id,
+                Name = input.Name,
+                Nationality = input.Nationality,
+                Genre = input.Genre,
+                Description = input.Description,
+                Image = input.Image
+            };
+
+            _artistRepository.UpdateArtist(updatedArtist);
         }
 
         public void DeleteArtist(int id)

@@ -1,5 +1,8 @@
 ﻿using Interfaces;
 using Interfaces.Models;
+using Logic.ViewModels;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace Logic.Managers
 {
@@ -12,9 +15,20 @@ namespace Logic.Managers
             _recapRepository = recapRepository;
         }
 
-        public void AddRecap(Recap recap, int UserId)
+        public void AddRecap(AddRecapViewModel input, int UserId)
         {
-            _recapRepository.AddRecap(recap, UserId);
+            if (string.IsNullOrWhiteSpace(input.Rave) || string.IsNullOrWhiteSpace(input.Description))
+            { 
+                throw new ValidationException("Please fill in all the fields.");
+            }
+            var newRecap = new Recap
+            {
+                Rave = input.Rave,
+                Description = input.Description,
+                Album = input.Album
+            };
+
+            _recapRepository.AddRecap(newRecap, UserId);
         }
     }
 }

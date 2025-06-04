@@ -17,7 +17,7 @@ namespace Logic.ViewModels
 
 
         [Required(ErrorMessage = "Stage is required")]
-        [StringLength(20, ErrorMessage = "Stage can be max 20 characters")]
+        [StringLength(40, ErrorMessage = "Stage can be max 40 characters")]
         public string Stage {  get; set; } 
         
     }

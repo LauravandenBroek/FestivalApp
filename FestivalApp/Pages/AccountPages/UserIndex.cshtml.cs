@@ -33,8 +33,8 @@ namespace FestivalApp.Pages.AccountPages
                 return RedirectToPage("/Login");
             }
 
-            AttendingRaves = _attendingRaveManager.Get5AttendingRavesByUserId(userId.Value);
-            Wishlist = _raveWishlistManager.Get5WishlistRavesByUserId(userId.Value);
+            AttendingRaves = _attendingRaveManager.GetAttendingRavesByUserId(userId.Value, 5);
+            Wishlist = _raveWishlistManager.GetRaveWishlistByUserId(userId.Value, 5);
             FavoriteArtists = _favoriteArtistManager.GetFavoriteArtistsByUserId(userId.Value, 6);
             return Page();
         }

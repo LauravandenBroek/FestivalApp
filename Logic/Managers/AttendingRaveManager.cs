@@ -1,10 +1,12 @@
 ﻿using Interfaces;
 using Interfaces.Models;
+using System.ComponentModel.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 namespace Logic.Managers
 {
@@ -19,17 +21,21 @@ namespace Logic.Managers
 
         public async Task AddRaveToAttendingList(int UserId, int RaveId)
         {
+            if (UserId <= 0 || RaveId <= 0)
+            {
+                throw new ValidationException("Invalid user or rave ID.");
+            }
+            if (IsUserAttendingRave(UserId, RaveId))
+            {
+                throw new ValidationException("User is already attending this rave.");
+            }
+
             _attendingRaveRepository.AddRaveToAttendingList(UserId, RaveId);
         }
 
-        public List<Rave> GetAttendingRavesByUserId(int UserId)
+        public List<Rave> GetAttendingRavesByUserId(int UserId, int limit = 0)
         { 
-            return _attendingRaveRepository.GetAttendingRavesByUserId(UserId);
-        }
-
-        public List<Rave> Get5AttendingRavesByUserId(int userId)
-        {
-            return _attendingRaveRepository.GetAttendingRavesByUserId(userId, 5);
+            return _attendingRaveRepository.GetAttendingRavesByUserId(UserId, limit);
         }
 
         public bool IsUserAttendingRave(int UserId, int RaveId)
@@ -40,7 +46,15 @@ namespace Logic.Managers
 
         public async Task RemoveRaveFromAttendingList (int UserId, int RaveId)
         {
-           _attendingRaveRepository.RemoveRaveFromAttendingList(UserId, RaveId);
+            if (UserId <= 0 || RaveId <= 0)
+            {
+                throw new ValidationException("Invalid user or rave ID.");
+            }
+            if (!IsUserAttendingRave(UserId, RaveId))
+            {
+                throw new ValidationException("User is not attending this rave.");
+            }
+            _attendingRaveRepository.RemoveRaveFromAttendingList(UserId, RaveId);
         }
     }
 }
