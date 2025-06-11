@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Logic.ViewModels
 {
-    public class EditRaveViewModel
+    public class RaveViewModel
     {
         public int Id { get; set; }
 

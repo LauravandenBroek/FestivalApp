@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IO;
 using FestivalApp.Pages.Shared;
 using Logic.ViewModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace FestivalApp.Pages.AdminPages
 {
@@ -20,7 +21,7 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty]
-        public EditArtistViewModel Input { get; set; }
+        public ArtistViewModel Input { get; set; }
 
         public Artist Artist { get; set; }
 
@@ -33,7 +34,7 @@ namespace FestivalApp.Pages.AdminPages
                 return NotFound();
             }
 
-            Input = new EditArtistViewModel
+            Input = new ArtistViewModel
             {
                 Id = id,
                 Name = Artist.Name,
@@ -62,9 +63,22 @@ namespace FestivalApp.Pages.AdminPages
                 Input.Image = existingArtist.Image; 
             }
 
-            _artistManager.UpdateArtist(Input);
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
-            return RedirectToPage("AdminArtist");
+            try
+            {
+                _artistManager.UpdateArtist(Input);
+                return RedirectToPage("AdminArtist");
+            }
+
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError("Input.Description", ex.Message);
+                return Page();
+            }  
         }
     }
 }

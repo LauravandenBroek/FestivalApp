@@ -7,23 +7,25 @@
 
         <label>Name:</label>
         <input asp-for="Input.Name" class="form-control" />
-        <span asp-validation-for="Input.Name" class="text-danger"></span>
+        <p><span asp-validation-for="Input.Name" class="text-danger"></span></p>
 
         <label>Nationality:</label>
         <input asp-for="Input.Nationality" class="form-control" />
-        <span asp-validation-for="Input.Nationality" class="text-danger"></span>
+        <p><span asp-validation-for="Input.Nationality" class="text-danger"></span></p>
 
         <label>Genre:</label>
         <input asp-for="Input.Genre" class="form-control" />
-        <span asp-validation-for="Input.Genre" class="text-danger"></span>
+        <p>
+            <span asp-validation-for="Input.Genre" class="text-danger"></span>
+        </p>
 
         <label>Description:</label>
         <textarea asp-for="Input.Description" class="form-control"></textarea>
-        <span asp-validation-for="Input.Description" class="text-danger"></span>
+        <p> <span asp-validation-for="Input.Description" class="text-danger"></span></p>
 
         <label>Upload Image:</label>
         <input type="file" name="uploadedImage" class="form-control" />
-        <span asp-validation-for="Input.Image" class="text-danger"></span>
+        <p> <span asp-validation-for="Input.Image" class="text-danger"></span> </p>
 
         <button type="submit">Save</button>
     </form>

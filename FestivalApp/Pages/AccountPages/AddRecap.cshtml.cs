@@ -20,7 +20,7 @@ namespace FestivalApp.Pages.AccountPages
         }
 
         [BindProperty]
-        public AddRecapViewModel Input { get; set; }
+        public RecapViewModel Input { get; set; }
         public List<IFormFile> Photos { get; set; }
         public List<Rave> AttendingRaves { get; set; }
         

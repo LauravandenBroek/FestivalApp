@@ -7,15 +7,26 @@
 
     <label>Name:</label>
     <input asp-for="Input.Name" class="form-control" />
+    <p>
+        <span asp-validation-for="Input.Name" class="text-danger"></span>
+    </p>
 
     <label>Nationality:</label>
     <input asp-for="Input.Nationality" class="form-control" />
+    <p>
+        <span asp-validation-for="Input.Nationality" class="text-danger"></span>
+    </p>
 
     <label>Genre:</label>
     <input asp-for="Input.Genre" class="form-control" />
-
+    <p>
+        <span asp-validation-for="Input.Genre" class="text-danger"></span>
+    </p>
     <label>Description:</label>
     <textarea asp-for="Input.Description" class="form-control"></textarea>
+    <p>
+        <span asp-validation-for="Input.Description" class="text-danger"></span>
+    </p>
 
 
     @if (Model.Input.Image != null)
@@ -34,4 +45,7 @@
 
     <button type="submit">Save</button>
 </form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
 

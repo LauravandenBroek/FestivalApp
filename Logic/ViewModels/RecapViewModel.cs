@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Logic.ViewModels
 {
-    public class AddRecapViewModel
+    public class RecapViewModel
     {
         [Required(ErrorMessage = "Rave is required")]
         [StringLength(50, ErrorMessage = "Rave can be max 50 characters")]

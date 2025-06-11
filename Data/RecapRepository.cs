@@ -1,47 +1,56 @@
 ﻿using Interfaces;
 using Interfaces.Models;
+using Logic.Exceptions;
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Data
 {
     public class RecapRepository : DatabaseConnection, IRecapRepository
     {
-        public RecapRepository(string connectionString) : base(connectionString)
+        private readonly ILogger<RecapRepository> _logger;
+        public RecapRepository(ILogger<RecapRepository> logger, string connectionString) : base(connectionString)
         {
-
+            _logger = logger;
         }
-        public void AddRecap(Recap recap, int UserId)
+        public void AddRecap(Recap recap, int userId)
         {
+            SqlConnection connection = null;
+
             try
             {
-                using (SqlConnection connection = GetConnection())
+                connection = GetConnection();
+
+                try
                 {
                     connection.Open();
-                    string RecapSql = @"INSERT INTO UserRecap (User_ID, Rave, Description) 
-                               VALUES (@User_ID, @Rave, @Description); SELECT SCOPE_IDENTITY();";
+                }
+                catch (SqlException ex)
+                {
+                    _logger.LogError(ex, "No database connection");
+                    throw new TemporaryDatabaseException();
+                }
+
+                try
+                {
+                    string recapSql = @"INSERT INTO UserRecap (User_ID, Rave, Description) 
+                                VALUES (@User_ID, @Rave, @Description); SELECT SCOPE_IDENTITY();";
                     int recapId;
 
-                    using (SqlCommand command = new SqlCommand(RecapSql, connection))
+                    using (SqlCommand command = new SqlCommand(recapSql, connection))
                     {
-                        command.Parameters.AddWithValue("@User_ID", UserId);
+                        command.Parameters.AddWithValue("@User_ID", userId);
                         command.Parameters.AddWithValue("@Rave", recap.Rave);
                         command.Parameters.AddWithValue("@Description", recap.Description);
 
                         recapId = Convert.ToInt32(command.ExecuteScalar());
                     }
 
-                    string PhotoSql = @"INSERT INTO Album (UserRecapID, Photo) VALUES (@UserRecapID, @Photo)";
+                    string photoSql = @"INSERT INTO Album (UserRecapID, Photo) VALUES (@UserRecapID, @Photo)";
 
                     foreach (var photo in recap.Album)
                     {
-                       
-                        using (SqlCommand photoCommand = new SqlCommand(PhotoSql, connection))
+                        using (SqlCommand photoCommand = new SqlCommand(photoSql, connection))
                         {
                             photoCommand.Parameters.AddWithValue("@UserRecapID", recapId);
                             photoCommand.Parameters.AddWithValue("@Photo", photo);
@@ -49,10 +58,15 @@ namespace Data
                         }
                     }
                 }
+                catch (SqlException ex)
+                {
+                    _logger.LogError(ex, "Failed to insert recap and album data into the database.");
+                    throw new PersistentDatabaseException();
+                }
             }
-            catch (SqlException ex)
+            finally
             {
-                throw new Exception("An error while adding a new recap.", ex);
+                connection?.Close();
             }
         }
 

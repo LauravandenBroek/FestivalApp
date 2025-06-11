@@ -1,8 +1,6 @@
 ﻿using Interfaces;
 using Interfaces.Models;
-using System;
-using System.ComponentModel.DataAnnotations;
-
+using Logic.Exceptions;
 namespace Logic.Managers
 {
     public class FavoriteArtistManager

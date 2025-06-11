@@ -1,23 +1,39 @@
 ﻿using Interfaces.Models;
 using Microsoft.Data.SqlClient;
 using Interfaces;
+using Microsoft.Extensions.Logging;
+using Logic.Exceptions;
 
 namespace Data
 {
     public class LineUpRepository : DatabaseConnection, ILineUpRepository
     {
-        public LineUpRepository(string connectionString) : base(connectionString)
-        {
 
+        private readonly ILogger<LineUpRepository> _logger;
+        public LineUpRepository(ILogger<LineUpRepository> logger, string connectionString) : base(connectionString)
+        {
+            _logger = logger;
         }
 
         public void AddLineUp(LineUp lineUp)
         {
-            using (SqlConnection connection = GetConnection())
+            SqlConnection connection = null;
+
+            try
             {
+                connection = GetConnection();
                 connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "No database connection");
+                throw new TemporaryDatabaseException();
+            }
+
+            try
+            {
                 string sql = @"INSERT INTO Line_up (Rave_ID, Artist_ID, Start_time, End_time, Stage) 
-                           VALUES (@Rave_ID, @Artist_ID, @Start_time, @End_Time, @Stage)";
+                       VALUES (@Rave_ID, @Artist_ID, @Start_time, @End_time, @Stage)";
 
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -30,15 +46,35 @@ namespace Data
                     command.ExecuteNonQuery();
                 }
             }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Failed to add lineup.");
+                throw new PersistentDatabaseException();
+            }
+            finally
+            {
+                connection?.Close();
+            }
         }
 
         public List<LineUp> GetLineUpByRaveId(int raveId)
         {
             List<LineUp> lineUps = new List<LineUp>();
+            SqlConnection connection = null;
 
-            using (SqlConnection connection = GetConnection())
+            try
             {
+                connection = GetConnection();
                 connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "No database connection");
+                throw new TemporaryDatabaseException();
+            }
+
+            try
+            {
                 string sql = @"SELECT l.Id, l.Start_time, l.End_time, l.Stage, 
                               a.Id AS ArtistId, a.Name AS ArtistName,
                               r.Id AS RaveId, r.Name AS RaveName
@@ -79,9 +115,19 @@ namespace Data
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Failed to retrieve line-up by rave id.");
+                throw new PersistentDatabaseException();
+            }
+            finally
+            {
+                connection?.Close();
+            }
 
             return lineUps;
         }
+
 
     }
 }

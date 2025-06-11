@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Interfaces.Models;
 using Logic.ViewModels;
 using Logic.Managers;
-using System.ComponentModel.DataAnnotations;
+using Logic.Exceptions;
 
 
 namespace FestivalApp.Pages
@@ -42,10 +42,19 @@ namespace FestivalApp.Pages
                 _userManager.RegisterUser(Input);
                 return RedirectToPage("Login");
             }
-
             catch (ValidationException ex)
             {
                 ModelState.AddModelError("Input.Birthdate", ex.Message);
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
                 return Page();
             }
         }

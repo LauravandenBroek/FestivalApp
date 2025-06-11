@@ -2,7 +2,7 @@
 using Interfaces;
 using Interfaces.Models;
 using Logic.ViewModels;
-using System.ComponentModel.DataAnnotations;
+using Logic.Exceptions;
 
 namespace Logic.Managers
 
@@ -16,13 +16,9 @@ namespace Logic.Managers
             _artistRepository = artistRepository;
         }
 
-        public void AddArtist(AddArtistViewModel input)
+        public void AddArtist(ArtistViewModel input)
         {
-            if (string.IsNullOrWhiteSpace(input.Name) ||string.IsNullOrWhiteSpace(input.Nationality) || string.IsNullOrWhiteSpace(input.Genre) || string.IsNullOrWhiteSpace(input.Description) || input.Image == null || input.Image.Length == 0)
-                    
-            {
-                throw new ValidationException("Please fill in all the fields.");
-            }
+            ValidateArtistInput(input);
 
             var newArtist = new Artist
             {
@@ -47,12 +43,10 @@ namespace Logic.Managers
             return _artistRepository.GetArtistById(id);
         }
 
-        public void UpdateArtist(EditArtistViewModel input)
+        public void UpdateArtist(ArtistViewModel input)
         {
-            if (string.IsNullOrWhiteSpace(input.Name) ||string.IsNullOrWhiteSpace(input.Nationality) || string.IsNullOrWhiteSpace(input.Genre) || string.IsNullOrWhiteSpace(input.Description) || input.Image == null || input.Image.Length == 0)
-            {
-                throw new ValidationException("Please fill in all the fields.");
-            }
+            ValidateArtistInput(input);
+
 
             var updatedArtist = new Artist
             {
@@ -82,5 +76,32 @@ namespace Logic.Managers
             return GetArtists().Count();
         }
 
+        private void ValidateArtistInput(ArtistViewModel input)
+        {
+            if (string.IsNullOrWhiteSpace(input.Name) || string.IsNullOrWhiteSpace(input.Nationality) || string.IsNullOrWhiteSpace(input.Genre) || string.IsNullOrWhiteSpace(input.Description) || input.Image == null || input.Image.Length == 0)
+            {
+                throw new ValidationException("Please fill in all the fields.");
+            }
+
+            if (input.Name.Length > 50)
+            {
+                throw new ValidationException("Name can be max 50 characters.");
+            }
+
+            if (input.Nationality.Length > 50)
+            {
+                throw new ValidationException("Nationality can be max 50 characters.");
+            }
+
+            if (input.Genre.Length > 50)
+            {
+                throw new ValidationException("Genre can be max 50 characters.");
+            }
+
+            if (input.Description.Length > 800)
+            {
+                throw new ValidationException("Description can be max 800 characters.");
+            }
+        }
     }
 }

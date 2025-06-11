@@ -1,7 +1,7 @@
 ﻿using Interfaces;
 using Interfaces.Models;
 using Logic.ViewModels;
-using System.ComponentModel.DataAnnotations;
+using Logic.Exceptions;
 
 
 namespace Logic.Managers
@@ -15,12 +15,13 @@ namespace Logic.Managers
             _recapRepository = recapRepository;
         }
 
-        public void AddRecap(AddRecapViewModel input, int UserId)
+        public void AddRecap(RecapViewModel input, int UserId)
         {
             if (string.IsNullOrWhiteSpace(input.Rave) || string.IsNullOrWhiteSpace(input.Description))
             { 
                 throw new ValidationException("Please fill in all the fields.");
             }
+
             var newRecap = new Recap
             {
                 Rave = input.Rave,

@@ -34,7 +34,7 @@ namespace FestivalApp.Pages.AdminPages
             var startTime = Rave.Date.ToDateTime(new TimeOnly(13, 0)); // 13:00
             var endTime = Rave.Date.ToDateTime(new TimeOnly(14, 0));   // 14:00
 
-            Input = new AddLineUpViewModel
+            Input = new LineUpViewModel
             {
                 StartTime = startTime,
                 EndTime = endTime
@@ -44,7 +44,7 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty] 
-        public AddLineUpViewModel Input { get; set; }
+        public LineUpViewModel Input { get; set; }
 
         public IActionResult OnPost(int id)
         {

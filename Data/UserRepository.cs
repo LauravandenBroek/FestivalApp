@@ -1,5 +1,4 @@
-﻿using Microsoft.Identity.Client;
-using Interfaces.Models;
+﻿using Interfaces.Models;
 using Microsoft.Data.SqlClient;
 using Interfaces;
 using Logic.Exceptions;
@@ -65,32 +64,57 @@ namespace Data
 
         public User? GetUserByEmail(string email)
         {
-            using (SqlConnection connection = GetConnection())
-            {
-                connection.Open();
-                string sql = "SELECT * FROM [User] WHERE Email = @Email";
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                {
-                    command.Parameters.AddWithValue("@Email", email);
+            SqlConnection connection = null;
 
-                    using (SqlDataReader reader = command.ExecuteReader())
+            try
+            {
+                connection = GetConnection();
+
+                try
+                {
+                    connection.Open();
+                }
+                catch (SqlException ex)
+                {
+                    _logger.LogError(ex, "No database connection");
+                    throw new TemporaryDatabaseException();
+                }
+
+                try
+                {
+                    string sql = "SELECT * FROM [User] WHERE Email = @Email";
+                    using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-                        if (reader.Read())
+                        command.Parameters.AddWithValue("@Email", email);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            return new User(
-                                id: Convert.ToInt32(reader["Id"]),
-                                name: reader["Name"].ToString(),
-                                email: reader["Email"].ToString(),
-                                passwordHash: reader["Password"].ToString(),
-                                birthdate: Convert.ToDateTime(reader["Birthdate"]),
-                                role: reader["Role"].ToString()
-                            );
+                            if (reader.Read())
+                            {
+                                return new User(
+                                    id: Convert.ToInt32(reader["Id"]),
+                                    name: reader["Name"].ToString(),
+                                    email: reader["Email"].ToString(),
+                                    passwordHash: reader["Password"].ToString(),
+                                    birthdate: Convert.ToDateTime(reader["Birthdate"]),
+                                    role: reader["Role"].ToString()
+                                );
+                            }
                         }
                     }
                 }
+                catch (SqlException ex)
+                {
+                    _logger.LogError(ex, "Failed to retrieve user data from the database.");
+                    throw new PersistentDatabaseException();
+                }
             }
+            finally
+            {
+                connection?.Close();
+            }
+
             return null;
         }
-
     }
 }

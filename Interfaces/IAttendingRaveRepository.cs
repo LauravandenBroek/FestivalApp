@@ -9,7 +9,7 @@ namespace Interfaces
 {
     public interface IAttendingRaveRepository
     {
-        public void AddRaveToAttendingList(int UserId, int RaveId);
+        public void AddRaveToAttendingList(int userId, int raveId);
         public List<Rave> GetAttendingRavesByUserId(int userId, int limit = 0);
         public void RemoveRaveFromAttendingList(int userId, int raveId);
     }

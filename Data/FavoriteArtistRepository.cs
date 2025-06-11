@@ -1,45 +1,76 @@
 ﻿using Interfaces.Models;
 using Interfaces;
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Logic.Exceptions;
 
 namespace Data
 {
     public class FavoriteArtistRepository : DatabaseConnection, IFavoriteArtistRepository
     {
-        public FavoriteArtistRepository(string connectionString) : base(connectionString)
+        private readonly ILogger<FavoriteArtistRepository> _logger;
+        public FavoriteArtistRepository(ILogger<FavoriteArtistRepository> logger, string connectionString) : base(connectionString)
         {
+            _logger = logger;
         }
         public void AddArtistToFavorites(int userId, int artistId)
         {
-            using (SqlConnection connection = GetConnection())
+            SqlConnection connection = null;
+
+            try
             {
+                connection = GetConnection();
                 connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "No database connection");
+                throw new TemporaryDatabaseException();
+            }
+
+            try
+            {
                 string sql = @"INSERT INTO UserArtist (User_ID, Artist_ID) 
-                           VALUES (@User_ID, @Artist_ID)";
+                       VALUES (@User_ID, @Artist_ID)";
 
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@User_ID", userId);
                     command.Parameters.AddWithValue("@Artist_ID", artistId);
 
-
                     command.ExecuteNonQuery();
                 }
             }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Failed to add artist to favorites.");
+                throw new PersistentDatabaseException();
+            }
+            finally
+            {
+                connection?.Close();
+            }
         }
+
 
         public List<Artist> GetFavoriteArtistsByUserId(int userId, int limit = 0)
         {
-            var artists = new List<Artist>();
+            SqlConnection connection = null;
 
-            using (var connection = GetConnection())
+            try
             {
+                connection = GetConnection();
                 connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "No database connection");
+                throw new TemporaryDatabaseException();
+            }
+
+            try
+            {
+                var artists = new List<Artist>();
 
                 string sql = @"SELECT A.* 
                        FROM Artist A
@@ -78,17 +109,39 @@ namespace Data
                         }
                     }
                 }
-            }
 
-            return artists;
+                return artists;
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Failed to get favorite artists.");
+                throw new PersistentDatabaseException();
+            }
+            finally
+            {
+                connection?.Close();
+            }
         }
+
 
 
         public void RemoveArtistFromFavorites(int userId, int artistId)
         {
-            using (SqlConnection connection = GetConnection())
+            SqlConnection connection = null;
+
+            try
             {
+                connection = GetConnection();
                 connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "No database connection");
+                throw new TemporaryDatabaseException();
+            }
+
+            try
+            {
                 string sql = @"DELETE FROM UserArtist 
                        WHERE User_ID = @User_ID AND Artist_ID = @Artist_ID";
 
@@ -99,6 +152,15 @@ namespace Data
 
                     command.ExecuteNonQuery();
                 }
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Failed to remove artist from favorites.");
+                throw new PersistentDatabaseException();
+            }
+            finally
+            {
+                connection?.Close();
             }
         }
     }

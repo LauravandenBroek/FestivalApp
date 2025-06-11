@@ -1,8 +1,7 @@
 ﻿using Interfaces;
 using Interfaces.Models;
 using Logic.ViewModels;
-using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
+using Logic.Exceptions;
 
 
 namespace Logic.Managers
@@ -15,34 +14,9 @@ namespace Logic.Managers
         {
             _raveRepository = raveRepository;
         }
-        public void AddRave(AddRaveViewModel input)
+        public void AddRave(RaveViewModel input)
         {
-            if (string.IsNullOrWhiteSpace(input.Name) || string.IsNullOrWhiteSpace(input.Location) || string.IsNullOrWhiteSpace(input.Website) || string.IsNullOrWhiteSpace(input.Ticket_link) || string.IsNullOrWhiteSpace(input.Description) || string.IsNullOrWhiteSpace(input.Time) || input.Image == null || input.Image.Length == 0)
-            {
-                throw new ValidationException("Please fill in all the fields.");
-            }
-
-            if (input.Name.Length > 50)
-            {
-                throw new ValidationException("Name can be max 50 characters.");
-            }
-            if (input.Location.Length > 50)
-            {
-                throw new ValidationException("Location can be max 50 characters.");
-            }
-            if (input.Website.Length > 50)
-            {
-                throw new ValidationException("Website can be max 50 characters.");
-            }
-            if (input.Ticket_link.Length > 50)
-            {
-                throw new ValidationException("Ticket link can be max 50 characters.");
-            }
-
-            if (input.Description.Length > 800)
-            {
-                throw new ValidationException("Description can be max 800 characters.");
-            }
+            ValidateRaveInput(input);
 
             var newRave = new Rave
             {
@@ -66,33 +40,9 @@ namespace Logic.Managers
             return _raveRepository.GetRaves();
         }
 
-        public void UpdateRave(EditRaveViewModel input)
+        public void UpdateRave(RaveViewModel input)
         {
-            if (string.IsNullOrWhiteSpace(input.Name) || string.IsNullOrWhiteSpace(input.Location) || string.IsNullOrWhiteSpace(input.Website) || string.IsNullOrWhiteSpace(input.Ticket_link) || string.IsNullOrWhiteSpace(input.Description) || string.IsNullOrWhiteSpace(input.Time) || input.Image == null || input.Image.Length == 0)
-            {
-                throw new ValidationException("Please fill in all the fields.");
-            }
-            if (input.Name.Length > 50)
-            {
-                throw new ValidationException("Name can be max 50 characters.");
-            }
-            if (input.Location.Length > 50)
-            {
-                throw new ValidationException("Location can be max 50 characters.");
-            }
-            if (input.Website.Length > 50)
-            {
-                throw new ValidationException("Website can be max 50 characters.");
-            }
-            if (input.Ticket_link.Length > 50)
-            {
-                throw new ValidationException("Ticket link can be max 50 characters.");
-            }
-
-            if (input.Description.Length > 800)
-            {
-                throw new ValidationException("Description can be max 800 characters.");
-            }
+            ValidateRaveInput(input);
 
             var updatedRave = new Rave
             {
@@ -135,6 +85,39 @@ namespace Logic.Managers
         public int GetTotalRaveCount()
         {
             return GetRaves().Count();
+        }
+
+        private void ValidateRaveInput(RaveViewModel input)
+        {
+            if (string.IsNullOrWhiteSpace(input.Name) || string.IsNullOrWhiteSpace(input.Location) || string.IsNullOrWhiteSpace(input.Website) || string.IsNullOrWhiteSpace(input.Ticket_link) || string.IsNullOrWhiteSpace(input.Description) || string.IsNullOrWhiteSpace(input.Time) || input.Image == null || input.Image.Length == 0)
+            {
+                throw new ValidationException("Please fill in all the fields.");
+            }
+
+            if (input.Name.Length > 50)
+            {
+                throw new ValidationException("Name can be max 50 characters.");
+            }
+
+            if (input.Location.Length > 50)
+            {
+                throw new ValidationException("Location can be max 50 characters.");
+            }
+
+            if (input.Website.Length > 50)
+            {
+                throw new ValidationException("Website can be max 50 characters.");
+            }
+
+            if (input.Ticket_link.Length > 50)
+            {
+                throw new ValidationException("Ticket link can be max 50 characters.");
+            }
+
+            if (input.Description.Length > 800)
+            {
+                throw new ValidationException("Description can be max 800 characters.");
+            }
         }
 
     }

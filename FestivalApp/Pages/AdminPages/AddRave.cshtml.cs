@@ -19,7 +19,7 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty]
-        public AddRaveViewModel Input { get; set; }
+        public RaveViewModel Input { get; set; }
        
         public void OnGet()
         {

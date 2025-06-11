@@ -1,8 +1,7 @@
 ﻿using Interfaces;
 using Interfaces.Models;
-using BCrypt.Net;
 using Logic.ViewModels;
-using System.ComponentModel.DataAnnotations;
+using Logic.Exceptions;
 
 
 namespace Logic.Managers
@@ -43,11 +42,16 @@ namespace Logic.Managers
                 throw new ValidationException("Password must contain at least one number.");
             }
 
+            if (input.Password != input.ConfirmPassword)
+            {
+                throw new ValidationException("Passwords do not match.");
+            }
+
             var newUser = new User
             {
                 Name = input.Name,
-                Email = input.Email,
-                PasswordHash = input.Password,
+                Email = input.Email.Trim(),
+                PasswordHash = input.Password.Trim(),
                 Birthdate = input.Birthdate,
                 Role = "User"
             };
@@ -77,5 +81,6 @@ namespace Logic.Managers
             var user = _userRepository.GetUserByEmail(email);
             return user?.Role == "Admin";
         }
+
     }
 }

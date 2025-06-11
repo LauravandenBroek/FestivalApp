@@ -2,7 +2,7 @@
 
 namespace Logic.ViewModels
 {
-    public class AddLineUpViewModel
+    public class LineUpViewModel
     {
         [Required(ErrorMessage ="Artist is required")]
         public int ArtistId {  get; set; }

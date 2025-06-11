@@ -12,20 +12,17 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
 
+builder.Services.AddSingleton(connectionString);
 //repo's
-builder.Services.AddScoped<IArtistRepository>(provider => new ArtistRepository(connectionString));
-builder.Services.AddScoped<IRaveRepository>(provider => new RaveRepository(connectionString));
-builder.Services.AddScoped<IUserRepository>(provider =>
-{
-    var logger = provider.GetRequiredService<ILogger<UserRepository>>();
-    return new UserRepository(logger, connectionString);
-});
-builder.Services.AddScoped<ILineUpRepository>(provider => new LineUpRepository(connectionString));
-builder.Services.AddScoped<IRecapRepository>(provider => new RecapRepository(connectionString));
-builder.Services.AddScoped<ITicketRepository>(provider => new TicketRepository(connectionString));
-builder.Services.AddScoped<IAttendingRaveRepository>(provider => new AttendingRaveRepository(connectionString));
-builder.Services.AddScoped<IRaveWishlistRepository>(provider => new RaveWishlistRepository(connectionString));
-builder.Services.AddScoped<IFavoriteArtistRepository>(provider => new FavoriteArtistRepository(connectionString));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
+builder.Services.AddScoped<IRaveRepository, RaveRepository>();
+builder.Services.AddScoped<IRecapRepository, RecapRepository>();
+builder.Services.AddScoped<ILineUpRepository, LineUpRepository>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+builder.Services.AddScoped<IAttendingRaveRepository, AttendingRaveRepository>();
+builder.Services.AddScoped<IRaveWishlistRepository, RaveWishlistRepository>();
+builder.Services.AddScoped<IFavoriteArtistRepository, FavoriteArtistRepository>();
 
 
 //Managers

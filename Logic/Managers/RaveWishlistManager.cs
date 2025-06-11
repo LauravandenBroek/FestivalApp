@@ -1,7 +1,6 @@
 ﻿using Interfaces.Models;
 using Interfaces;
-using System;
-using System.ComponentModel.DataAnnotations;
+using Logic.Exceptions;
 
 
 namespace Logic.Managers
@@ -23,7 +22,7 @@ namespace Logic.Managers
              }
              if (IsRaveOnUserWishlist(UserId, RaveId))
              {
-                throw new ValidationException("User is already attending this rave.");
+                throw new ValidationException("Rave is already on your wishlist");
              }
                 
             _raveWishlistRepository.AddRaveToWishlist(UserId, RaveId);
@@ -48,7 +47,7 @@ namespace Logic.Managers
             }
             if (!IsRaveOnUserWishlist(UserId, RaveId))
             {
-                throw new ValidationException("User is already attending this rave.");
+                throw new ValidationException("Rave is not on your Wishlist");
             }
             _raveWishlistRepository.RemoveRaveFromWishlist(UserId, RaveId);
         }

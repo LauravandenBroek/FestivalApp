@@ -22,7 +22,7 @@ namespace FestivalApp.Pages.AdminPages
 
         [BindProperty]
 
-        public AddArtistViewModel Input { get; set; }
+        public ArtistViewModel Input { get; set; }
         public void OnGet()
         {
         }

@@ -18,7 +18,7 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty]
-        public EditRaveViewModel Input { get; set; }
+        public RaveViewModel Input { get; set; }
         
         public Rave Rave { get; set; }
 
@@ -32,7 +32,7 @@ namespace FestivalApp.Pages.AdminPages
                 return NotFound();
             }
 
-            Input = new EditRaveViewModel
+            Input = new RaveViewModel
             {
                 Id = id,
                 Name = Rave.Name, 

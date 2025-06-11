@@ -1,7 +1,7 @@
 ﻿using Interfaces;
 using Interfaces.Models;
 using Logic.ViewModels;
-using System.ComponentModel.DataAnnotations;
+using Logic.Exceptions;
 
 
 namespace Logic.Managers
@@ -15,11 +15,16 @@ namespace Logic.Managers
             _lineUpRepository = lineUpRepository;
         }
 
-        public void AddLineUp(AddLineUpViewModel input, Rave rave, Artist artist)
+        public void AddLineUp(LineUpViewModel input, Rave rave, Artist artist)
         {
             if (rave == null || artist == null || string.IsNullOrWhiteSpace(input.Stage))
             {
                 throw new ValidationException("Please fill in all the fields.");
+            }
+
+            if (input.Stage.Length > 50) 
+            {
+                throw new ValidationException("Stage can be max 50 characters.");
             }
             var newLineUp = new LineUp
             {

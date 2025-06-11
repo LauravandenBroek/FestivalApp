@@ -1,37 +1,57 @@
 ﻿using Interfaces.Models;
 using Interfaces;
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Logic.Exceptions;
+
 
 namespace Data
 {
     public class AttendingRaveRepository : DatabaseConnection, IAttendingRaveRepository
     {
-        public AttendingRaveRepository(string connectionString) : base(connectionString)
+
+        private readonly ILogger<AttendingRaveRepository> _logger;
+        public AttendingRaveRepository(ILogger<AttendingRaveRepository> logger, string connectionString) : base(connectionString)
         {
+            _logger = logger;
         }
 
-        public void AddRaveToAttendingList(int UserId, int RaveId)
+        public void AddRaveToAttendingList(int userId, int raveId)
         {
-            using (SqlConnection connection = GetConnection())
+            SqlConnection connection = null;
+
+            try
             {
+                connection = GetConnection();
                 connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "No database connection");
+                throw new TemporaryDatabaseException();
+            }
+
+            try
+            {
                 string sql = @"INSERT INTO UserRave (User_ID, Rave_ID) 
-                           VALUES (@User_ID, @Rave_ID)";
+                       VALUES (@User_ID, @Rave_ID)";
 
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    command.Parameters.AddWithValue("@User_ID", UserId);
-                    command.Parameters.AddWithValue("@Rave_ID", RaveId);
-
+                    command.Parameters.AddWithValue("@User_ID", userId);
+                    command.Parameters.AddWithValue("@Rave_ID", raveId);
 
                     command.ExecuteNonQuery();
                 }
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Failed to add rave to attending list.");
+                throw new PersistentDatabaseException();
+            }
+            finally
+            {
+                connection?.Close();
             }
         }
 
@@ -39,12 +59,22 @@ namespace Data
 
         public List<Rave> GetAttendingRavesByUserId(int userId, int limit = 0)
         {
-            var raves = new List<Rave>();
+            List<Rave> raves = new List<Rave>();
+            SqlConnection connection = null;
 
-            using (var connection = GetConnection())
+            try
             {
+                connection = GetConnection();
                 connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "No database connection");
+                throw new TemporaryDatabaseException();
+            }
 
+            try
+            {
                 string sql = @"SELECT R.* 
                        FROM Rave R
                        INNER JOIN UserRave UR ON R.ID = UR.Rave_ID
@@ -55,7 +85,7 @@ namespace Data
                     sql += " ORDER BY R.Date ASC OFFSET 0 ROWS FETCH NEXT @Limit ROWS ONLY";
                 }
 
-                using (var command = new SqlCommand(sql, connection))
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@UserId", userId);
                     if (limit > 0)
@@ -63,7 +93,7 @@ namespace Data
                         command.Parameters.AddWithValue("@Limit", limit);
                     }
 
-                    using (var reader = command.ExecuteReader())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -87,16 +117,38 @@ namespace Data
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Error while retrieving attending raves.");
+                throw new PersistentDatabaseException();
+            }
+            finally
+            {
+                connection?.Close();
+            }
 
             return raves;
         }
 
 
+
         public void RemoveRaveFromAttendingList(int userId, int raveId)
         {
-            using (SqlConnection connection = GetConnection())
+            SqlConnection connection = null;
+
+            try
             {
+                connection = GetConnection();
                 connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "No database connection");
+                throw new TemporaryDatabaseException();
+            }
+
+            try
+            {
                 string sql = @"DELETE FROM UserRave 
                        WHERE User_ID = @User_ID AND Rave_ID = @Rave_ID";
 
@@ -107,6 +159,15 @@ namespace Data
 
                     command.ExecuteNonQuery();
                 }
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "Error while removing rave from attending list");
+                throw new PersistentDatabaseException();
+            }
+            finally
+            {
+                connection?.Close();
             }
         }
 
