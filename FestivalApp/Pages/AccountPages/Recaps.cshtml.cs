@@ -1,12 +1,48 @@
+using Interfaces.Models;
+using Logic.Exceptions;
+using Logic.Managers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using FestivalApp.Pages.Shared;
 
 namespace FestivalApp.Pages.AccountPages
 {
-    public class RecapsModel : PageModel
+    public class RecapsModel : UserPageModel
     {
-        public void OnGet()
+
+        private readonly RecapManager _recapManager;
+
+        public RecapsModel(RecapManager recapManager)
         {
+            _recapManager = recapManager;
+        }
+
+        public List<Recap> Recaps { get; set; } = new List<Recap>();
+
+        public IActionResult OnGet()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return RedirectToPage("/Login");
+            }
+
+            try
+            {
+                Recaps = _recapManager.GetRecapsByUserId(userId.Value);
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
     }
 }

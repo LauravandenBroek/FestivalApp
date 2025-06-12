@@ -3,8 +3,8 @@
     public class Recap
     {
         private int _Id;
-        private string _Description;
         private string _Rave;
+        private string _Description;
         private List<byte[]> _Album;
 
 
@@ -14,11 +14,11 @@
         public List<byte[]> ? Album { get { return _Album; } set { _Album = value; } }
         public Recap() { }
         
-        public Recap (int id, string description, string rave, List<byte[]> ? album)
+        public Recap (int id, string rave, string description, List<byte[]> ? album)
         {
             _Id = id;
-            _Description = description;
             _Rave = rave;
+            _Description = description;
             _Album = album;
         }       
     }

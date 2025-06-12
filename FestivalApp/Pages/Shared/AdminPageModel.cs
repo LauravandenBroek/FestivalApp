@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Logic.Managers;
 using Interfaces.Models;
+using Logic.Exceptions;
 
 
 namespace FestivalApp.Pages.Shared
@@ -21,14 +22,28 @@ namespace FestivalApp.Pages.Shared
         {
             var email = HttpContext.Session.GetString("UserEmail");
 
-            if (string.IsNullOrEmpty(email) || !_userManager.IsAdmin(email))
+            try
             {
-                context.Result = new RedirectToPageResult("/Index");
+                if (string.IsNullOrEmpty(email) || !_userManager.IsAdmin(email))
+                {
+                    context.Result = new RedirectToPageResult("/Index");
+                }
+
+
+
+                base.OnPageHandlerExecuting(context);
             }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                
 
-            
-
-            base.OnPageHandlerExecuting(context);
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                
+            }
         }
     }
 }

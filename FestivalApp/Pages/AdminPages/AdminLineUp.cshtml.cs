@@ -1,9 +1,9 @@
 using Interfaces.Models;
 using Logic.Managers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using FestivalApp.Pages.Shared;
 using Logic.ViewModels;
+using Logic.Exceptions;
 
 namespace FestivalApp.Pages.AdminPages
 {
@@ -21,39 +21,79 @@ namespace FestivalApp.Pages.AdminPages
         }
 
 
-        public List<LineUp> LineUpItems { get; set; }
-        public Rave Rave { get; set; }
-        public List<Artist> AllArtists { get; set; }
+        public List<LineUp> LineUpItems { get; set; } = new List<LineUp>();
+        public Rave Rave { get; set; } = new Rave();
+        public List<Artist> AllArtists { get; set; } = new List<Artist>();
+
+        [BindProperty]
+        public LineUpViewModel Input { get; set; } 
 
         public IActionResult OnGet(int id)
         {
-            LineUpItems = _lineUpManager.GetLineUpByRaveId(id);
-            Rave = _raveManager.GetRaveById(id);
-            AllArtists = _artistManager.GetArtists();
-
-            var startTime = Rave.Date.ToDateTime(new TimeOnly(13, 0)); // 13:00
-            var endTime = Rave.Date.ToDateTime(new TimeOnly(14, 0));   // 14:00
-
-            Input = new LineUpViewModel
+            try
             {
-                StartTime = startTime,
-                EndTime = endTime
-            };
+                LineUpItems = _lineUpManager.GetLineUpByRaveId(id);
+                Rave = _raveManager.GetRaveById(id);
+                AllArtists = _artistManager.GetArtists();
 
-            return Page();
+                var startTime = Rave.Date.ToDateTime(new TimeOnly(13, 0)); // 13:00
+                var endTime = Rave.Date.ToDateTime(new TimeOnly(14, 0));   // 14:00
+
+                Input = new LineUpViewModel
+                {
+                    StartTime = startTime,
+                    EndTime = endTime
+                };
+
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
 
-        [BindProperty] 
-        public LineUpViewModel Input { get; set; }
+ 
 
         public IActionResult OnPost(int id)
         {
-            var rave = _raveManager.GetRaveById(id);
-            var artist = _artistManager.GetArtistById(Input.ArtistId);
 
-            _lineUpManager.AddLineUp(Input, rave, artist);
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            try
+            {
+                var rave = _raveManager.GetRaveById(id);
+                var artist = _artistManager.GetArtistById(Input.ArtistId);
 
-            return RedirectToPage("/AdminPages/AdminLineUp", new { id = id });
+                _lineUpManager.AddLineUp(Input, rave, artist);
+
+                return RedirectToPage("/AdminPages/AdminLineUp", new { id = id });
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
     }
 }

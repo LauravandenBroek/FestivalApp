@@ -1,10 +1,8 @@
 using Logic.Managers;
 using Logic.ViewModels;
-using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using FestivalApp.Pages.Shared;
-using Microsoft.AspNetCore.Identity;
+using Logic.Exceptions;
 
 
 namespace FestivalApp.Pages.AdminPages
@@ -21,20 +19,36 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty]
-
         public ArtistViewModel Input { get; set; }
-        public void OnGet()
-        {
-        }
+     
         public async Task<IActionResult> OnPostAsync(IFormFile UploadedImage)
         {
             using var memoryStream = new MemoryStream();
             await UploadedImage.CopyToAsync(memoryStream);
             Input.Image = memoryStream.ToArray();
 
-            _artistManager.AddArtist(Input);
+            try
+            {
+                _artistManager.AddArtist(Input);
 
-            return RedirectToPage("AdminArtist");
+                return RedirectToPage("AdminArtist");
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
 using FestivalApp.Pages.Shared;
 using Interfaces.Models;
+using Logic.Exceptions;
 using Logic.Managers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FestivalApp.Pages.AccountPages
 {
@@ -18,7 +18,7 @@ namespace FestivalApp.Pages.AccountPages
             _raveWishlistManager = WishlistManager;
         }
 
-        public List<Rave> Wishlist { get; set; }
+        public List<Rave> Wishlist { get; set; } = new List<Rave>();
 
         public IActionResult OnGet()
         {
@@ -29,8 +29,22 @@ namespace FestivalApp.Pages.AccountPages
                 return RedirectToPage("/Login");
             }
 
-            Wishlist = _raveWishlistManager.GetRaveWishlistByUserId(userId.Value);
-            return Page();
+            try
+            {
+                Wishlist = _raveWishlistManager.GetRaveWishlistByUserId(userId.Value);
+                return Page();
+            }
+            catch(TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
 
         

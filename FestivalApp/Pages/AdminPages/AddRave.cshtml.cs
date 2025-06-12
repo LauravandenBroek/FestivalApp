@@ -1,9 +1,8 @@
 using Logic.Managers;
-using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using FestivalApp.Pages.Shared;
 using Logic.ViewModels;
+using Logic.Exceptions;
 
 
 namespace FestivalApp.Pages.AdminPages
@@ -19,11 +18,8 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty]
-        public RaveViewModel Input { get; set; }
+        public RaveViewModel Input { get; set; } 
        
-        public void OnGet()
-        {
-        }
 
         public async Task<IActionResult> OnPostAsync(IFormFile UploadedImage)
         {
@@ -31,11 +27,29 @@ namespace FestivalApp.Pages.AdminPages
             await UploadedImage.CopyToAsync(memoryStream);
             
             Input.Image = memoryStream.ToArray();
-            
-            
-            _raveManager.AddRave(Input);
 
-            return RedirectToPage("AdminRave");
+            try
+            {
+
+                _raveManager.AddRave(Input);
+                return RedirectToPage("AdminRave");
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
     }
 }

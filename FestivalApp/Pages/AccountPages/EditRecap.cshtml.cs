@@ -1,52 +1,64 @@
-using Logic.Managers;
-using Interfaces.Models;
-using Microsoft.AspNetCore.Mvc;
 using FestivalApp.Pages.Shared;
-using Logic.ViewModels;
+using Interfaces.Models;
 using Logic.Exceptions;
+using Logic.Managers;
+using Logic.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FestivalApp.Pages.AccountPages
 {
-    public class AddRecapModel : UserPageModel
+    public class EditRecapModel : UserPageModel
     {
         private readonly RecapManager _recapManager;
-        private readonly AttendingRaveManager _attendingRaveManager;
 
-        public AddRecapModel(RecapManager recapManager, AttendingRaveManager attendingRaveManager) 
-        { 
+        public EditRecapModel(RecapManager recapManager)
+        {
             _recapManager = recapManager;
-            _attendingRaveManager = attendingRaveManager;
         }
+        [BindProperty]
+        public RecapViewModel Input { get; set; } = new RecapViewModel();
 
         [BindProperty]
-        public RecapViewModel Input { get; set; }
         public List<IFormFile> Photos { get; set; }
-        public List<Rave> AttendingRaves { get; set; } = new List<Rave>();
         
-        
-        public void OnGet()
-        {
-            int? userId = HttpContext.Session.GetInt32("UserId");
+        public Recap Recap { get; set; } = new Recap();
+      
 
+        public IActionResult OnGet(int id)
+        {
             try
             {
-                AttendingRaves = _attendingRaveManager.GetAttendingRavesByUserId(userId.Value);
+                Recap = _recapManager.GetRecapById(id);
+
+                if (Recap == null)
+                {
+                    return NotFound();
+                }
+
+                Input = new RecapViewModel
+                {
+                    Id = id,
+                    Rave = Recap.Rave,         
+                    Description = Recap.Description,
+                    Album = Recap.Album
+                };
+                return Page();
             }
             catch (TemporaryDatabaseException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
             }
             catch (PersistentDatabaseException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
             }
         }
-       
-        public async Task<IActionResult> OnPostAsync()
-        {
-            int? userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null) return RedirectToPage("Login");
 
+        public async Task<IActionResult> OnPostAsync(int id)
+        {   
             Input.Album = new List<byte[]>();
             if (Photos != null)
             {
@@ -58,12 +70,18 @@ namespace FestivalApp.Pages.AccountPages
                 }
             }
 
+            else
+            {
+                var existingRecap = _recapManager.GetRecapById(id);
+                Input.Album = existingRecap.Album;
+            }
             try
             {
+                _recapManager.UpdateRecap(Input);
 
-                _recapManager.AddRecap(Input, userId.Value);
-                return RedirectToPage("UserIndex");
+                return RedirectToPage("/AccountPages/RecapDetail", new { id = Input.Id });
             }
+
             catch (ValidationException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);

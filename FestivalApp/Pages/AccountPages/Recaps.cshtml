@@ -2,3 +2,33 @@
 @model FestivalApp.Pages.AccountPages.RecapsModel
 @{
 }
+
+<p class="page-text">
+    Moments that made you lose track of time. The music faded, but the memories didn’t. Take a look back at your rave story so far.
+    <a class="btn btn-primary" asp-page="/AccountPages/AddRecap">Add new recap</a>
+</p>
+<div class="recap-grid">
+    @foreach (var recap in Model.Recaps)
+    {
+        <a asp-page="/AccountPages/RecapDetail" asp-route-id="@recap.Id" class="rave-card-link">
+            <div class="recap-card">
+               
+
+                <h3>@recap.Rave</h3>
+                @if (recap.Album != null && recap.Album.Any())
+                {
+                    foreach (var image in recap.Album.Take(2))
+                    {
+                        var base64Image = Convert.ToBase64String(image);
+                        <img src="data:image/jpeg;base64,@base64Image" alt="Recap image" class="rave-image" />
+                    }
+                }
+                else
+                {
+                    <div class="no-image">No Images</div>
+                }
+
+            </div>
+        </a>
+    }
+</div>

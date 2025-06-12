@@ -1,12 +1,12 @@
 using Interfaces.Models;
+using Logic.Exceptions;
 using Logic.Managers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.IdentityModel.Tokens;
+using FestivalApp.Pages.Shared;
 
 namespace FestivalApp.Pages.AccountPages
 {
-    public class FavoriteArtistsModel : PageModel
+    public class FavoriteArtistsModel : UserPageModel
     {
         private readonly FavoriteArtistManager _favoriteArtistManager;
 
@@ -14,7 +14,7 @@ namespace FestivalApp.Pages.AccountPages
         {
             _favoriteArtistManager = favoriteArtistsManager;
         }
-        public List<Artist> FavoriteArtists { get; set; }
+        public List<Artist> FavoriteArtists { get; set; } = new List<Artist>();
         public string Username { get; set; }
         public IActionResult OnGet()
         {
@@ -25,8 +25,22 @@ namespace FestivalApp.Pages.AccountPages
                 return RedirectToPage("/Login");
             }
 
-            FavoriteArtists = _favoriteArtistManager.GetFavoriteArtistsByUserId(userId.Value);
-            return Page();
+            try
+            {
+                FavoriteArtists = _favoriteArtistManager.GetFavoriteArtistsByUserId(userId.Value);
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
     }
 }

@@ -5,9 +5,11 @@
     ViewData["Title"] = @Model.Username+ "'s rave page";
 }
 
-<a class="btn btn-primary" asp-page="/AccountPages/AddRecap">Add Recap</a>
+
 
 <p class="page-text">Welcome to your ultimate rave dashboard – all your beats, vibes, and memories in one place!</p> 
+
+@* ATTENDING RAVES *@
 @if (!Model.AttendingRaves.Any())
 {
     <div class="empty-state text-center my-5">
@@ -52,6 +54,55 @@ else
     <a asp-page="/RaveOverview" style="float: right;">Add more</a>
 }
 
+@* RECAP! *@
+@if (!Model.Recaps.Any())
+{
+    <div class="empty-state text-center my-5">
+        <i class="bi bi-calendar-x fs-1 text-muted"></i>
+        <p class="text-muted">You haven't added any recaps yet</p>
+        <a class="btn btn-primary" asp-page="/AccountPages/AddRecap">Add Recap</a>
+    </div>
+}
+else
+{
+    <h3>Your rave recap!</h3>
+    <div class="recap-grid">
+        @foreach (var recap in Model.Recaps)
+        {
+            <a asp-page="/AccountPages/RecapDetail" asp-route-id="@recap.Id" class="rave-card-link">
+                <div class="recap-card">
+
+
+                    <h3>@recap.Rave</h3>
+                    @if (recap.Album != null && recap.Album.Any())
+                    {
+                        foreach (var image in recap.Album.Take(2))
+                        {
+                            var base64Image = Convert.ToBase64String(image);
+                            <img src="data:image/jpeg;base64,@base64Image" alt="Recap image" class="rave-image" />
+                        }
+                    }
+                    else
+                    {
+                        <div class="no-image">No Images</div>
+                    }
+
+                </div>
+            </a>
+        }
+    </div>
+}
+
+@if (Model.Recaps.Count >= 3)
+{
+    <a asp-page="/AccountPages/Recaps" style="float: right;">View more</a>
+}
+else
+{
+    <a asp-page="/AccountPages/AddRecap" style="float: right;">Add more</a>
+}
+
+@* WISHLIST *@
 @if (!Model.Wishlist.Any())
 {
     <div class="empty-state text-center my-5">
@@ -96,7 +147,7 @@ else
     <a asp-page="/RaveOverview" style="float: right;">Add more</a>
 }
 
-
+@* FAVORITE ARTISTS *@
 @if (!Model.FavoriteArtists.Any())
 {
     <div class="empty-state text-center my-5">

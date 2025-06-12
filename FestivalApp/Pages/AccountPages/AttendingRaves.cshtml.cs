@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Interfaces.Models;
 using FestivalApp.Pages.Shared;
 using Logic.Managers;
+using Logic.Exceptions;
 
 namespace FestivalApp.Pages.AccountPages
 {
@@ -16,7 +16,7 @@ namespace FestivalApp.Pages.AccountPages
             _attendingRaveManager = attendingRaveManager;
         }
 
-        public List<Rave> AttendingRaves { get; set; }
+        public List<Rave> AttendingRaves { get; set; } = new List<Rave>();
 
         public IActionResult OnGet()
         {
@@ -26,9 +26,22 @@ namespace FestivalApp.Pages.AccountPages
             {
                 return RedirectToPage("/Login");
             }
+            try
+            {
+                AttendingRaves = _attendingRaveManager.GetAttendingRavesByUserId(userId.Value);
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
 
-            AttendingRaves = _attendingRaveManager.GetAttendingRavesByUserId(userId.Value);
-            return Page();
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
 
     }

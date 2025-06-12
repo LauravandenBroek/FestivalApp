@@ -1,8 +1,8 @@
 using Logic.Managers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Interfaces.Models;
 using FestivalApp.Pages.Shared;
+using Logic.Exceptions;
 
 namespace FestivalApp.Pages.AdminPages
 {
@@ -14,16 +14,48 @@ namespace FestivalApp.Pages.AdminPages
         {
             _raveManager = raveManager;
         }
-        public List<Rave> Raves { get; set; }
+        public List<Rave> Raves { get; set; } = new List<Rave>();
         public void OnGet()
         {
-            Raves = _raveManager.GetRaves();
+            try
+            {
+                Raves = _raveManager.GetRaves();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
         }
 
         public IActionResult OnPostDelete(int id)
         {
-            _raveManager.DeleteRave(id);
-            return RedirectToPage();
+            try
+            {
+                _raveManager.DeleteRave(id);
+                return RedirectToPage();
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+
         }
     }
 }

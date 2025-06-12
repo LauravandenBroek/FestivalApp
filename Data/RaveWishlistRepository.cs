@@ -20,8 +20,6 @@ namespace Data
         {
             SqlConnection connection = null;
 
-          
-
                 try
                 {
                     connection = GetConnection();

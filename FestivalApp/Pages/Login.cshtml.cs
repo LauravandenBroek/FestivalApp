@@ -3,6 +3,7 @@ using Logic.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BCrypt.Net;
+using Logic.Exceptions;
 
 namespace FestivalApp.Pages
 {
@@ -33,21 +34,39 @@ namespace FestivalApp.Pages
             if (!ModelState.IsValid)
                 return Page();
 
-            var user = _userManager.ValidateUser(Input.Email, Input.Password);
-            if (user == null)
+            try
             {
-                ModelState.AddModelError(Input.Password, "Invalid email or password");
+                var user = _userManager.ValidateUser(Input.Email, Input.Password);
+                if (user == null)
+                {
+                    ModelState.AddModelError(Input.Password, "Invalid email or password");
+                    return Page();
+                }
+
+
+                HttpContext.Session.SetString("Username", user.Name);
+                HttpContext.Session.SetInt32("UserId", user.Id);
+                HttpContext.Session.SetString("UserRole", user.Role);
+                HttpContext.Session.SetString("UserEmail", user.Email);
+
+
+                return RedirectToPage("Index");
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
                 return Page();
             }
-
-
-            HttpContext.Session.SetString("Username", user.Name);
-            HttpContext.Session.SetInt32("UserId", user.Id);
-            HttpContext.Session.SetString("UserRole", user.Role);
-            HttpContext.Session.SetString("UserEmail", user.Email);
-
-
-            return RedirectToPage("Index");
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
     }
 }

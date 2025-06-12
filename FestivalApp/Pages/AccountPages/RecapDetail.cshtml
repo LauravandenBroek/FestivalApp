@@ -1,4 +1,37 @@
-﻿@page
+﻿@page "{id:int}"
 @model FestivalApp.Pages.AccountPages.RecapDetailModel
 @{
+    ViewData["Title"] = Model.Recap.Rave;
+    var recap = Model.Recap;
 }
+
+<div class="rave-detail-container"> 
+    <a class="btn btn-primary" asp-page="/AccountPages/EditRecap" asp-route-id="@recap.Id">Edit recap</a>
+    <p><strong>Description:</strong> @recap.Description</p>
+
+
+    <div class="image-grid">
+        @if (recap.Album != null && recap.Album.Any())
+        {
+            foreach (var image in recap.Album)
+            {
+                var base64Image = Convert.ToBase64String(image);
+                <img src="data:image/jpeg;base64,@base64Image" alt="Recap image" class="recap-image" />
+            }
+
+            // Voeg lege blokken toe om tot 5 te vullen
+            for (int i = recap.Album.Count; i < 5; i++)
+            {
+                <div class="recap-image placeholder"></div>
+            }
+        }
+        else
+        {
+            // Geen afbeeldingen? Toon 5 lege blokken
+            for (int i = 0; i < 5; i++)
+            {
+                <div class="recap-image placeholder"></div>
+            }
+        }
+    </div>
+</div>

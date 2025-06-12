@@ -1,11 +1,9 @@
 using Logic.Managers;
 using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.IO;
 using FestivalApp.Pages.Shared;
 using Logic.ViewModels;
-using System.ComponentModel.DataAnnotations;
+using Logic.Exceptions;
 
 namespace FestivalApp.Pages.AdminPages
 {
@@ -21,31 +19,45 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty]
-        public ArtistViewModel Input { get; set; }
+        public ArtistViewModel Input { get; set; } = new ArtistViewModel();
 
-        public Artist Artist { get; set; }
+        public Artist Artist { get; set; } = new Artist();
 
         public  IActionResult OnGet(int id)
         {
-            Artist = _artistManager.GetArtistById(id);
-
-            if (Artist == null)
+            try
             {
-                return NotFound();
+                Artist = _artistManager.GetArtistById(id);
+
+                if (Artist == null)
+                {
+                    return NotFound();
+                }
+
+                Input = new ArtistViewModel
+                {
+                    Id = id,
+                    Name = Artist.Name,
+                    Nationality = Artist.Nationality,
+                    Genre = Artist.Genre,
+                    Description = Artist.Description,
+                    Image = Artist.Image
+
+                };
+
+                return Page();
             }
-
-            Input = new ArtistViewModel
+            catch (TemporaryDatabaseException ex)
             {
-                Id = id,
-                Name = Artist.Name,
-                Nationality = Artist.Nationality,
-                Genre = Artist.Genre,
-                Description = Artist.Description,
-                Image = Artist.Image
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
 
-            };
-            
-            return Page();
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
 
         public async Task<IActionResult> OnPostAsync(int id, IFormFile UploadedImage)
@@ -78,7 +90,18 @@ namespace FestivalApp.Pages.AdminPages
             {
                 ModelState.AddModelError("Input.Description", ex.Message);
                 return Page();
-            }  
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
     }
 }

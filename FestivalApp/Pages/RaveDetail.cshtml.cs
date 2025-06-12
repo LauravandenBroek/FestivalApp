@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Interfaces.Models;
 using FestivalApp.Pages.Shared;
+using Logic.Exceptions;
 
 namespace FestivalApp.Pages
 {
@@ -21,8 +22,8 @@ namespace FestivalApp.Pages
             _raveWishlistManager = raveWishlistManager;
         }
 
-        public Rave Rave { get; set; }
-        public List<LineUp> LineUp { get; set; }
+        public Rave Rave { get; set; } = new Rave();
+        public List<LineUp> LineUp { get; set; } = new List<LineUp>();
         public bool IsAttending { get; set; }
         public string IsAttendingText => IsAttending ? "Not attending" : "Attending";
         public bool IsOnWishlist { get; set; }
@@ -31,11 +32,29 @@ namespace FestivalApp.Pages
         public void OnGet(int id)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
-            Rave = _raveManager.GetRaveById(id);
 
-            LineUp = _lineUpManager.GetLineUpByRaveId(id);
-            IsAttending = userId.HasValue && _attendingRaveManager.IsUserAttendingRave(userId.Value, id);
-            IsOnWishlist = userId.HasValue && _raveWishlistManager.IsRaveOnUserWishlist(userId.Value, id);
+            try
+            {
+                Rave = _raveManager.GetRaveById(id);
+                LineUp = _lineUpManager.GetLineUpByRaveId(id);
+
+                IsAttending = userId.HasValue && _attendingRaveManager.IsUserAttendingRave(userId.Value, id);
+                IsOnWishlist = userId.HasValue && _raveWishlistManager.IsRaveOnUserWishlist(userId.Value, id);
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                
+            }
         }
         public async Task<IActionResult> OnPostToggleAttendingAsync(int id)
         {
@@ -45,19 +64,40 @@ namespace FestivalApp.Pages
                 return RedirectToPage("/Login");
             }
 
-            
-            bool isAttending = _attendingRaveManager.IsUserAttendingRave(userId.Value, id);
-
-            if (isAttending)
+            try
             {
-                await _attendingRaveManager.RemoveRaveFromAttendingList(userId.Value, id); 
-            }
-            else
-            {
-                await _attendingRaveManager.AddRaveToAttendingList(userId.Value, id); 
+                bool isAttending = _attendingRaveManager.IsUserAttendingRave(userId.Value, id);
+
+                if (isAttending)
+                {
+                    await _attendingRaveManager.RemoveRaveFromAttendingList(userId.Value, id);
+                }
+                else
+                {
+                    await _attendingRaveManager.AddRaveToAttendingList(userId.Value, id);
+                }
+
+                return RedirectToPage(null, new { id });
             }
 
-            return RedirectToPage(null, new { id });
+
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return RedirectToPage(null, new { id });
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return RedirectToPage(null, new { id });
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return RedirectToPage(null, new { id }); 
+            }
+        
         }
 
         public async Task<IActionResult> OnPostToggleWishlistAsync(int id)
@@ -68,20 +108,39 @@ namespace FestivalApp.Pages
                 return RedirectToPage("/Login");
             }
 
-
-            bool isOnWishlist = _raveWishlistManager.IsRaveOnUserWishlist(userId.Value, id);
-
-            if (isOnWishlist)
+            try
             {
-                await _raveWishlistManager.RemoveRaveFromWishlist(userId.Value, id);
+                bool isOnWishlist = _raveWishlistManager.IsRaveOnUserWishlist(userId.Value, id);
+
+                if (isOnWishlist)
+                {
+                    await _raveWishlistManager.RemoveRaveFromWishlist(userId.Value, id);
+                }
+                else
+                {
+                    await _raveWishlistManager.AddRaveToWishList(userId.Value, id);
+                }
+
+
+                return RedirectToPage(null, new { id });
             }
-            else
+
+            catch (ValidationException ex)
             {
-                await _raveWishlistManager.AddRaveToWishList(userId.Value, id);
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return RedirectToPage(null, new { id });
             }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return RedirectToPage(null, new { id });
 
-
-            return RedirectToPage(null, new { id });
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return RedirectToPage(null, new { id });
+            }
         }
     }
 }

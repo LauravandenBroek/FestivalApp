@@ -1,9 +1,9 @@
 using Logic.Managers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Logic.Exceptions;
 using Interfaces.Models;
 using FestivalApp.Pages.Shared;
-using System.Diagnostics;
+
 
 namespace FestivalApp.Pages
 
@@ -11,7 +11,7 @@ namespace FestivalApp.Pages
     public class RaveOverviewModel : BasePageModel
     {
         private readonly RaveManager _raveManager;
-        public List<Rave> raves { get; set; }
+        public List<Rave> raves { get; set; } = new List<Rave>();
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
         public int PageSize { get; set; } = 15;
@@ -30,14 +30,23 @@ namespace FestivalApp.Pages
         {
 
             CurrentPage = Page;
-            TotalPages = (int)Math.Ceiling(_raveManager.GetTotalRaveCount() / (double)PageSize);
+            
 
-            var stopwatch = Stopwatch.StartNew();
+            try
+            {
+                TotalPages = (int)Math.Ceiling(_raveManager.GetTotalRaveCount() / (double)PageSize);
+                raves = _raveManager.GetRavesPaged(Page, PageSize);
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
 
-            raves = _raveManager.GetRavesPaged(Page, PageSize);
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
 
-            stopwatch.Stop();
-            Console.WriteLine($"Rave query duurde: {stopwatch.ElapsedMilliseconds} ms");
+            }
 
         }
     }

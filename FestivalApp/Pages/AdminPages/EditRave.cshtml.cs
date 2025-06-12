@@ -2,8 +2,8 @@ using Logic.Managers;
 using Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
 using FestivalApp.Pages.Shared;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Logic.ViewModels;
+using Logic.Exceptions;
 
 namespace FestivalApp.Pages.AdminPages
 {
@@ -18,39 +18,53 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         [BindProperty]
-        public RaveViewModel Input { get; set; }
+        public RaveViewModel Input { get; set; } = new RaveViewModel();
         
-        public Rave Rave { get; set; }
+        public Rave Rave { get; set; } = new Rave();
 
 
         public IActionResult OnGet(int id)
         {
-            Rave = _raveManager.GetRaveById(id);
-
-            if (Rave == null)
+            try
             {
-                return NotFound();
+                Rave = _raveManager.GetRaveById(id);
+
+                if (Rave == null)
+                {
+                    return NotFound();
+                }
+
+                Input = new RaveViewModel
+                {
+                    Id = id,
+                    Name = Rave.Name,
+                    Location = Rave.Location,
+                    Date = Rave.Date,
+                    Website = Rave.Website,
+                    Minimum_age = Rave.Minimum_age,
+                    Ticket_link = Rave.Ticket_link,
+                    Description = Rave.Description,
+                    Time = Rave.Time,
+                    Image = Rave.Image
+                };
+                return Page();
             }
-
-            Input = new RaveViewModel
+            catch (TemporaryDatabaseException ex)
             {
-                Id = id,
-                Name = Rave.Name, 
-                Location = Rave.Location,
-                Date = Rave.Date,
-                Website = Rave.Website,
-                Minimum_age = Rave.Minimum_age,
-                Ticket_link = Rave.Ticket_link,
-                Description = Rave.Description,
-                Time = Rave.Time,
-                Image = Rave.Image
-            };
-            return Page();
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
 
         public async Task<IActionResult> OnPostAsync(int id, IFormFile UploadedImage)
         {
-           
+
 
             if (UploadedImage != null)
             {
@@ -59,15 +73,33 @@ namespace FestivalApp.Pages.AdminPages
                 Input.Image = memoryStream.ToArray();
             }
 
-            else 
+            else
             {
                 var existingRave = _raveManager.GetRaveById(id);
                 Input.Image = existingRave.Image;
             }
+            try { 
+                _raveManager.UpdateRave(Input);
 
-            _raveManager.UpdateRave(Input);
+                return RedirectToPage("AdminRave");
+            }
 
-            return RedirectToPage("AdminRave");
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
         }
     }
 }

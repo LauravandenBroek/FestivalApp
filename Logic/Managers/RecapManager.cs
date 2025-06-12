@@ -15,7 +15,7 @@ namespace Logic.Managers
             _recapRepository = recapRepository;
         }
 
-        public void AddRecap(RecapViewModel input, int UserId)
+        public void AddRecap(RecapViewModel input, int userId)
         {
             if (string.IsNullOrWhiteSpace(input.Rave) || string.IsNullOrWhiteSpace(input.Description))
             { 
@@ -29,7 +29,29 @@ namespace Logic.Managers
                 Album = input.Album
             };
 
-            _recapRepository.AddRecap(newRecap, UserId);
+            _recapRepository.AddRecap(newRecap, userId);
+        }
+
+        public List<Recap> GetRecapsByUserId(int userId, int limit = 0)
+        {
+            return _recapRepository.GetRecapsByUserId(userId, limit);
+        }
+
+        public Recap ? GetRecapById(int id)
+        {
+            return _recapRepository.GetRecapById(id);
+        }
+
+        public void UpdateRecap(RecapViewModel input)
+        {
+            var updatedRecap = new Recap
+            {
+                Id = input.Id,
+                Rave = input.Rave,
+                Description = input.Description,
+                Album = input.Album
+            };
+            _recapRepository.UpdateRecap(updatedRecap);
         }
     }
 }

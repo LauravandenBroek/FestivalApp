@@ -1,0 +1,35 @@
+﻿@page "{id:int}"
+@model FestivalApp.Pages.AccountPages.EditRecapModel
+@{
+}
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Input.Id" />
+
+    <label>Rave:*</label>
+    <input asp-for="Input.Rave" class="form-control" />
+
+    <label>Description:</label>
+    <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+
+
+
+    @if (Model.Input.Album != null)
+    {
+        foreach (var image in Model.Input.Album)
+        {
+            var base64Image = Convert.ToBase64String(image);
+            <img src="data:image/jpeg;base64,@base64Image" alt="Recap image" style="max-height: 200px; margin-bottom: 10px;" />
+        }
+      
+        
+    }
+    else
+    {
+        <p><em>No images uploaded yet</em></p>
+    }
+
+    <label>Upload new Images (max 5, Existing images will be deleted)</label>
+    <input type="file" name="Photos" multiple class="form-control" />
+
+    <button type="submit">Save</button>
+</form>

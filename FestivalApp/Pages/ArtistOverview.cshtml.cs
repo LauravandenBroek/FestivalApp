@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using FestivalApp.Pages.Shared;
 using System.Diagnostics;
+using Logic.Exceptions;
 
 
 namespace FestivalApp.Pages
@@ -11,7 +12,7 @@ namespace FestivalApp.Pages
     public class ArtistOverviewModel : BasePageModel
     {
         private readonly ArtistManager _artistManager;
-        public List<Artist> artists { get; set; }
+        public List<Artist> artists { get; set; } = new List<Artist>();
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
         public int PageSize { get; set; } = 15;
@@ -25,15 +26,22 @@ namespace FestivalApp.Pages
         public void OnGet()
         {
             CurrentPage = Page;
-            TotalPages = (int)Math.Ceiling(_artistManager.GetTotalArtistCount() / (double)PageSize);
 
-            var stopwatch = Stopwatch.StartNew();
+            try
+            {
+                TotalPages = (int)Math.Ceiling(_artistManager.GetTotalArtistCount() / (double)PageSize);
+                artists = _artistManager.GetArtistsPaged(Page, PageSize);
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
 
-            artists = _artistManager.GetArtistsPaged(Page, PageSize);
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
 
-            stopwatch.Stop();
-            Console.WriteLine($"Artitst query duurde: {stopwatch.ElapsedMilliseconds} ms");
-            //artists = _artistManager.GetArtists();
+            }
         }
     }
 }
