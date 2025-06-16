@@ -2,7 +2,6 @@
 using Logic.ViewModels;
 using Interfaces.Models;
 using Logic.Exceptions;
-
 using TestFestivalApp.RepositoryMocks;
 
 namespace TestFestivalApp.UnitTests

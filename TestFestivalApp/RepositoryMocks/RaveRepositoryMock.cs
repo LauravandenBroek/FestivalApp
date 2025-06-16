@@ -93,5 +93,10 @@ namespace TestFestivalApp.RepositoryMocks
                 existingRave.Image = updatedRave.Image;
             }
         }
+
+        List<Rave> IRaveRepository.GetRaves(int limit)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

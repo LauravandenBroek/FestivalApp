@@ -12,8 +12,7 @@ namespace FestivalApp.Pages
 
         private readonly RaveManager _raveManager;
         public List<Rave> LatestRaves { get; set; } = new List<Rave>();
-
-
+        public List<Rave> NewlyAddedRaves { get; set; } = new List<Rave>();
 
 
         public IndexModel(RaveManager raveManager)
@@ -26,6 +25,7 @@ namespace FestivalApp.Pages
             try
             {
                 LatestRaves = _raveManager.GetUpcomingRaves(5);
+                NewlyAddedRaves = _raveManager.GetRaves(5);
             }
             catch (TemporaryDatabaseException ex)
             {
@@ -35,8 +35,9 @@ namespace FestivalApp.Pages
             catch (PersistentDatabaseException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
-
             }
+
+           
         }
     }
 }

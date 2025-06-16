@@ -63,5 +63,10 @@ namespace TestFestivalApp.RepositoryMocks
         {
             throw new NotImplementedException();
         }
+
+        List<Recap> IRecapRepository.GetRecapsByUserId(int UserId, int limit)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

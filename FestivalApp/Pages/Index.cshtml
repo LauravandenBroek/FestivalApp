@@ -13,7 +13,7 @@
     </div>
 }
 
-<h2 class="m-3">Upcoming Raves</h2>
+<h2 class="m-3">Upcoming raves</h2>
 
 <div class="rave-grid m-3">
     @foreach (var rave in Model.LatestRaves)
@@ -38,6 +38,64 @@
     }
 </div>
 
-<style>
-   
-</style>
+<section class="cta-banner">
+    <div class="cta-content">
+        <h1>Ready to rave smarter?</h1>
+        <p>Sign up to create your personal wishlist, follow your favorite artists, and unlock your own rave universe.</p>
+        <div class="cta-buttons">
+            <a href="/register" class="btn primary">Create Account</a>        
+        </div>
+    </div>
+</section>
+
+<h2 class="m-3">Newly addded raves</h2>
+
+<div class="rave-grid m-3">
+    @foreach (var rave in Model.NewlyAddedRaves)
+    {
+        <a asp-page="/RaveDetail" asp-route-id="@rave.Id" class="rave-card-link">
+            <div class="rave-card">
+                @if (rave.Image != null)
+                {
+                    var base64Image = Convert.ToBase64String(rave.Image);
+                    <img src="data:image/jpeg;base64,@base64Image" alt="@rave.Name" class="rave-image" />
+                }
+                else
+                {
+                    <div class="no-image">No Image</div>
+                }
+
+                <h3>@rave.Name</h3>
+                <p>@rave.Date.ToString("dd MMM yyyy")</p>
+                <p>@rave.Location</p>
+            </div>
+        </a>
+    }
+</div>
+
+<h2 class="m-3">Featured artists</h2>
+
+<div class="rave-grid m-3">
+    @foreach (var rave in Model.NewlyAddedRaves)
+    {
+        <a asp-page="/RaveDetail" asp-route-id="@rave.Id" class="rave-card-link">
+            <div class="rave-card">
+                @if (rave.Image != null)
+                {
+                    var base64Image = Convert.ToBase64String(rave.Image);
+                    <img src="data:image/jpeg;base64,@base64Image" alt="@rave.Name" class="rave-image" />
+                }
+                else
+                {
+                    <div class="no-image">No Image</div>
+                }
+
+                <h3>@rave.Name</h3>
+                <p>@rave.Date.ToString("dd MMM yyyy")</p>
+                <p>@rave.Location</p>
+            </div>
+        </a>
+    }
+</div>
+
+

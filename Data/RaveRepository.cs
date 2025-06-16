@@ -61,7 +61,7 @@ namespace Data
             }
         }
 
-        public List<Rave> GetRaves()
+        public List<Rave> GetRaves(int limit = 0)
         {
             SqlConnection connection = null;
 
@@ -82,31 +82,45 @@ namespace Data
 
                 string sql = @"SELECT ID, Name, Location, Date, Website, Min_age, Ticket_link, Description, Time, Image FROM Rave";
 
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                using (SqlDataReader reader = command.ExecuteReader())
+                if (limit > 0)
                 {
-                    while (reader.Read())
-                    {
-                        byte[] image = reader.IsDBNull(reader.GetOrdinal("Image"))
-                            ? null
-                            : (byte[])reader["Image"];
-
-                        raves.Add(new Rave(
-                            reader.GetInt32(0), // ID
-                            reader.GetString(1), // Name
-                            reader.GetString(2), // Location
-                            DateOnly.FromDateTime(reader.GetDateTime(3)), // Date
-                            reader.GetString(4), // Website
-                            reader.GetInt32(5), // Min_age
-                            reader.GetString(6), // Ticket_link
-                            reader.GetString(7), // Description
-                            reader.GetString(8), // Time
-                            image
-                        ));
-                    }
+                    sql += " ORDER BY ID ASC OFFSET 0 ROWS FETCH NEXT @Limit ROWS ONLY";
                 }
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
 
-                return raves;
+                    if (limit > 0)
+                    {
+                        command.Parameters.AddWithValue("@Limit", limit);
+                    }
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+
+
+                        while (reader.Read())
+                        {
+                            byte[] image = reader.IsDBNull(reader.GetOrdinal("Image"))
+                                ? null
+                                : (byte[])reader["Image"];
+
+                            raves.Add(new Rave(
+                                reader.GetInt32(0), // ID
+                                reader.GetString(1), // Name
+                                reader.GetString(2), // Location
+                                DateOnly.FromDateTime(reader.GetDateTime(3)), // Date
+                                reader.GetString(4), // Website
+                                reader.GetInt32(5), // Min_age
+                                reader.GetString(6), // Ticket_link
+                                reader.GetString(7), // Description
+                                reader.GetString(8), // Time
+                                image
+                            ));
+                        }
+                    }
+
+                    return raves;
+                }
             }
             catch (SqlException ex)
             {

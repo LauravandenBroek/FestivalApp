@@ -8,7 +8,7 @@ namespace TestFestivalApp.UnitTests
     {
 
         [Fact]
-        public async Task AddArtistToFavoriteArtists_ThrowsValidationExceptionWhenArtistIsAlreadyOnFavorites()
+        public async Task AddArtistToFavorites_ThrowsValidationExceptionWhenArtistIsAlreadyOnFavorites()
         {
             //Arrange
             var repository = new FavoriteArtistRepositoryMock();
@@ -25,7 +25,7 @@ namespace TestFestivalApp.UnitTests
 
 
         [Fact]
-        public async Task AddArtistToFavoriteArtists_ThrowsValidationExceptionWhenArtistOrUserInvalid()
+        public async Task AddArtistToFavorites_ThrowsValidationExceptionWhenArtistOrUserInvalid()
         {
             //Arrange
             var repository = new FavoriteArtistRepositoryMock();
@@ -40,7 +40,7 @@ namespace TestFestivalApp.UnitTests
             Assert.Equal("Invalid user or artist ID.", ex.Message);
         }
         [Fact]
-        public async Task RemoveArtistFromFavoriteArtists_ThrowsValidationExceptionWhenArtistIsNotOnFavorites()
+        public async Task RemoveArtistFromFavorites_ThrowsValidationExceptionWhenArtistIsNotOnFavorites()
         {
             //Arrange
             var repository = new FavoriteArtistRepositoryMock();
@@ -56,7 +56,7 @@ namespace TestFestivalApp.UnitTests
         }
 
         [Fact]
-        public async Task RemoveArtistFromFavoriteArtists_ThrowsValidationExceptionWhenArtistOrUserInvalid()
+        public async Task RemoveArtistFromFavorites_ThrowsValidationExceptionWhenArtistOrUserInvalid()
         {
             //Arrange
             var repository = new FavoriteArtistRepositoryMock();

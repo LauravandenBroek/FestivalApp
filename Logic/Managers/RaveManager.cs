@@ -35,9 +35,9 @@ namespace Logic.Managers
             _raveRepository.AddRave(newRave);
         }
 
-        public List<Rave> GetRaves()
+        public List<Rave> GetRaves(int limit = 0)
         {
-            return _raveRepository.GetRaves();
+            return _raveRepository.GetRaves(limit);
         }
 
         public void UpdateRave(RaveViewModel input)
