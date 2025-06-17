@@ -33,9 +33,9 @@ namespace Logic.Managers
             _artistRepository.AddArtist(newArtist);
         }
 
-        public List<Artist> GetArtists()
+        public List<Artist> GetArtists(int limit = 0)
         {
-            return _artistRepository.GetArtists();
+            return _artistRepository.GetArtists(limit);
         }
 
         public Artist? GetArtistById(int id)

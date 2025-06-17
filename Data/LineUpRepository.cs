@@ -128,6 +128,41 @@ namespace Data
             return lineUps;
         }
 
+        public void DeleteLineUp(int id)
+        {
+            SqlConnection connection = null;
+
+            try
+            {
+                connection = GetConnection();
+                connection.Open();
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "No database connection");
+                throw new TemporaryDatabaseException();
+            }
+
+            try
+            {
+                string sql = "DELETE FROM Line_up WHERE id = @ID";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@ID", id);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, $"Failed to delete Line up with id {id}");
+                throw new PersistentDatabaseException();
+            }
+            finally
+            {
+                connection?.Close();
+            }
+        }
 
     }
 }

@@ -13,9 +13,9 @@
     </div>
 }
 
-<h2 class="m-3">Upcoming raves</h2>
+<h2 class="section-spacing">Upcoming raves</h2>
 
-<div class="rave-grid m-3">
+<div class="rave-grid">
     @foreach (var rave in Model.LatestRaves)
     {
         <a asp-page="/RaveDetail" asp-route-id="@rave.Id" class="rave-card-link">
@@ -48,9 +48,9 @@
     </div>
 </section>
 
-<h2 class="m-3">Newly addded raves</h2>
+<h2 class="section-spacing">Newly addded raves</h2>
 
-<div class="rave-grid m-3">
+<div class="rave-grid">
     @foreach (var rave in Model.NewlyAddedRaves)
     {
         <a asp-page="/RaveDetail" asp-route-id="@rave.Id" class="rave-card-link">
@@ -73,29 +73,31 @@
     }
 </div>
 
-<h2 class="m-3">Featured artists</h2>
+<h2 class="section-spacing">Featured artists</h2>
 
-<div class="rave-grid m-3">
-    @foreach (var rave in Model.NewlyAddedRaves)
+<div class="artist-grid">
+    @foreach (var artist in Model.FeaturedArtists)
     {
-        <a asp-page="/RaveDetail" asp-route-id="@rave.Id" class="rave-card-link">
-            <div class="rave-card">
-                @if (rave.Image != null)
+        <a asp-page="/ArtistDetail" asp-route-id="@artist.Id" class="artist-card-link">
+            <div class="artist-card">
+                @if (artist.Image != null)
                 {
-                    var base64Image = Convert.ToBase64String(rave.Image);
-                    <img src="data:image/jpeg;base64,@base64Image" alt="@rave.Name" class="rave-image" />
+                    var base64Image = Convert.ToBase64String(artist.Image);
+                    <img src="data:image/jpeg;base64,@base64Image" alt="@artist.Name" class="artist-image" />
                 }
                 else
                 {
                     <div class="no-image">No Image</div>
                 }
 
-                <h3>@rave.Name</h3>
-                <p>@rave.Date.ToString("dd MMM yyyy")</p>
-                <p>@rave.Location</p>
+                <h3>@artist.Name</h3>
+                <p>@artist.Nationality</p>
+                <p>@artist.Genre</p>
             </div>
         </a>
     }
 </div>
 
+<style>
 
+</style>

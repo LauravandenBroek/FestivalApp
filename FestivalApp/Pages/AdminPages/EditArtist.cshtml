@@ -1,51 +1,62 @@
 ﻿@page "{id:int}"
 @model EditArtistModel
-<h2>Edit Artist</h2>
+@{
+    ViewData["Title"] = "Edit Artist";
+}
 
-<form method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="Input.Id" />
+<div class="container mt-5">
+    <h2 class="mb-4 fw-bold">Edit Artist</h2>
 
-    <label>Name:</label>
-    <input asp-for="Input.Name" class="form-control" />
-    <p>
-        <span asp-validation-for="Input.Name" class="text-danger"></span>
-    </p>
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <input type="hidden" asp-for="Input.Id" />
 
-    <label>Nationality:</label>
-    <input asp-for="Input.Nationality" class="form-control" />
-    <p>
-        <span asp-validation-for="Input.Nationality" class="text-danger"></span>
-    </p>
+        <div class="mb-3">
+            <label asp-for="Input.Name" class="form-label">Name:</label>
+            <input asp-for="Input.Name" class="form-control" />
+            <span asp-validation-for="Input.Name" class="text-danger small"></span>
+        </div>
 
-    <label>Genre:</label>
-    <input asp-for="Input.Genre" class="form-control" />
-    <p>
-        <span asp-validation-for="Input.Genre" class="text-danger"></span>
-    </p>
-    <label>Description:</label>
-    <textarea asp-for="Input.Description" class="form-control"></textarea>
-    <p>
-        <span asp-validation-for="Input.Description" class="text-danger"></span>
-    </p>
+        <div class="mb-3">
+            <label asp-for="Input.Nationality" class="form-label">Nationality:</label>
+            <input asp-for="Input.Nationality" class="form-control" />
+            <span asp-validation-for="Input.Nationality" class="text-danger small"></span>
+        </div>
 
+        <div class="mb-3">
+            <label asp-for="Input.Genre" class="form-label">Genre:</label>
+            <input asp-for="Input.Genre" class="form-control" />
+            <span asp-validation-for="Input.Genre" class="text-danger small"></span>
+        </div>
 
-    @if (Model.Input.Image != null)
-    {
-        var base64 = Convert.ToBase64String(Model.Input.Image);
-        var imgSrc = $"data:image/jpeg;base64,{base64}";
-        <img src="@imgSrc" alt="Current image" style="max-height: 200px; margin-bottom: 10px;" />
-    }
-    else
-    {
-        <p><em>No image uploaded yet</em></p>
-    }
+        <div class="mb-3">
+            <label asp-for="Input.Description" class="form-label">Description:</label>
+            <textarea asp-for="Input.Description" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Input.Description" class="text-danger small"></span>
+        </div>
 
-    <label>Upload New Image:</label>
-    <input type="file" name="uploadedImage" class="form-control" />
+        <div class="mb-3">
+            <label class="form-label">Current Image:</label><br />
+            @if (Model.Input.Image != null)
+            {
+                var base64 = Convert.ToBase64String(Model.Input.Image);
+                var imgSrc = $"data:image/jpeg;base64,{base64}";
+                <img src="@imgSrc" alt="Current image" class="img-thumbnail" style="max-height: 200px;" />
+            }
+            else
+            {
+                <p class="fst-italic">No image uploaded yet.</p>
+            }
+        </div>
 
-    <button type="submit">Save</button>
-</form>
+        <div class="mb-4">
+            <label class="form-label">Upload New Image:</label>
+            <input type="file" name="uploadedImage" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-

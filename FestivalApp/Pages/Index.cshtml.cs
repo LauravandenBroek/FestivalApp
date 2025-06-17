@@ -11,13 +11,16 @@ namespace FestivalApp.Pages
     {
 
         private readonly RaveManager _raveManager;
+        private readonly ArtistManager _artistManager;
         public List<Rave> LatestRaves { get; set; } = new List<Rave>();
         public List<Rave> NewlyAddedRaves { get; set; } = new List<Rave>();
+        public List<Artist> FeaturedArtists { get; set; } = new List<Artist>();
 
 
-        public IndexModel(RaveManager raveManager)
+        public IndexModel(RaveManager raveManager, ArtistManager artistManager)
         {
             _raveManager = raveManager;
+            _artistManager = artistManager;
         }
 
         public void OnGet()
@@ -26,6 +29,7 @@ namespace FestivalApp.Pages
             {
                 LatestRaves = _raveManager.GetUpcomingRaves(5);
                 NewlyAddedRaves = _raveManager.GetRaves(5);
+                FeaturedArtists = _artistManager.GetArtists(6); 
             }
             catch (TemporaryDatabaseException ex)
             {

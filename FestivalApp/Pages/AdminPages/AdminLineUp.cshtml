@@ -1,52 +1,79 @@
 ﻿@page "{id:int}"
 @model FestivalApp.Pages.AdminPages.AdminLineUpModel
 
-    <h2>Line-up for @Model.Rave.Name</h2>
-    <h2>Date: @Model.Rave.Date</h2>
+@{
+    ViewData["Title"] = "Line-up Management";
+}
 
-    <table>
-        <thead>
-            <tr>
-                <th>Artist</th>
-                <th>Starttijd</th>
-                <th>Eindtijd</th>
-                <th>Stage</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var lineUp in Model.LineUpItems)
-            {
+<div class="container mt-5">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Line-up for: @Model.Rave.Name</h2>
+        <p class="text-muted">Date: @Model.Rave.Date.ToString("dd MMMM yyyy")</p>
+    </div>
+
+    <div class="table-responsive mb-5">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-primary">
                 <tr>
-                    <td>@lineUp.Artist.Name</td>
-                    <td>@lineUp.StartTime.ToString("HH:mm")</td>
-                    <td>@lineUp.EndTime.ToString("HH:mm")</td>
-                    <td>@lineUp.Stage</td>
+                    <th>Artist</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Stage</th>
+                    <th style="width: 60px;">Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var lineUp in Model.LineUpItems)
+                {
+                    <tr>
+                        <td>@lineUp.Artist.Name</td>
+                        <td>@lineUp.StartTime.ToString("HH:mm")</td>
+                        <td>@lineUp.EndTime.ToString("HH:mm")</td>
+                        <td>@lineUp.Stage</td>
+                        <td>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@lineUp.Id" onsubmit="return confirm('Are you sure you want to remove this artist from the line-up?');">
+                                <input type="hidden" name="raveId" value="@Model.Rave.Id" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm">X</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-    <h2>Nieuw item toevoegen aan deze line-up</h2>
-    <form method="post">
-       
+    <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Add Artist to Line-up</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
 
-        <div>
-            <label>Artiest:</label>
-            <select asp-for="Input.ArtistId" asp-items="@(new SelectList(Model.AllArtists, "Id", "Name"))"></select>
-        </div>
-        <div>
-            <label>Starttijd:</label>
-            <input asp-for="Input.StartTime" type="datetime-local" />
-        </div>
-        <div>
-            <label>Eindtijd:</label>
-            <input asp-for="Input.EndTime" type="datetime-local" />
-        </div>
-        <div>
-            <label>Stage:</label>
-            <input asp-for="Input.Stage" />
-        </div>
-        <button type="submit">Toevoegen</button>
-    </form>
+                <div class="mb-3">
+                    <label asp-for="Input.ArtistId" class="form-label">Artist</label>
+                    <select asp-for="Input.ArtistId" asp-items="@(new SelectList(Model.AllArtists, "Id", "Name"))" class="form-select"></select>
+                </div>
 
+                <div class="mb-3">
+                    <label asp-for="Input.StartTime" class="form-label">Start Time</label>
+                    <input asp-for="Input.StartTime" type="datetime-local" class="form-control" />
+                </div>
 
+                <div class="mb-3">
+                    <label asp-for="Input.EndTime" class="form-label">End Time</label>
+                    <input asp-for="Input.EndTime" type="datetime-local" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Stage" class="form-label">Stage</label>
+                    <input asp-for="Input.Stage" class="form-control" />
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success">Add to Line-up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

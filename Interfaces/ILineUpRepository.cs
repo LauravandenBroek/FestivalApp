@@ -11,6 +11,7 @@ namespace Interfaces
     {
         public void AddLineUp(LineUp lineUp);
         public List<LineUp> GetLineUpByRaveId(int raveId);
+        public void DeleteLineUp(int id);
 
     }
 }

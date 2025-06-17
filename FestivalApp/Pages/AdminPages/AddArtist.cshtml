@@ -1,36 +1,59 @@
 ﻿@page
 @model FestivalApp.Pages.AdminPages.AddArtistModel
+
 @{
-    <h2>Add Artist</h2>
-
-    <form method="post" enctype="multipart/form-data">
-
-        <label>Name:</label>
-        <input asp-for="Input.Name" class="form-control" />
-        <p><span asp-validation-for="Input.Name" class="text-danger"></span></p>
-
-        <label>Nationality:</label>
-        <input asp-for="Input.Nationality" class="form-control" />
-        <p><span asp-validation-for="Input.Nationality" class="text-danger"></span></p>
-
-        <label>Genre:</label>
-        <input asp-for="Input.Genre" class="form-control" />
-        <p>
-            <span asp-validation-for="Input.Genre" class="text-danger"></span>
-        </p>
-
-        <label>Description:</label>
-        <textarea asp-for="Input.Description" class="form-control"></textarea>
-        <p> <span asp-validation-for="Input.Description" class="text-danger"></span></p>
-
-        <label>Upload Image:</label>
-        <input type="file" name="uploadedImage" class="form-control" />
-        <p> <span asp-validation-for="Input.Image" class="text-danger"></span> </p>
-
-        <button type="submit">Save</button>
-    </form>
-
+    ViewData["Title"] = "Add Artist";
 }
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Add New Artist</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label asp-for="Input.Name" class="form-label">Name</label>
+                            <input asp-for="Input.Name" class="form-control" />
+                            <span asp-validation-for="Input.Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Nationality" class="form-label">Nationality</label>
+                            <input asp-for="Input.Nationality" class="form-control" />
+                            <span asp-validation-for="Input.Nationality" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Genre" class="form-label">Genre</label>
+                            <input asp-for="Input.Genre" class="form-control" />
+                            <span asp-validation-for="Input.Genre" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Description" class="form-label">Description</label>
+                            <textarea asp-for="Input.Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Input.Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Upload Image</label>
+                            <input type="file" name="uploadedImage" class="form-control" />
+                            <span asp-validation-for="Input.Image" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Save Artist</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

@@ -108,5 +108,10 @@ namespace TestFestivalApp.RepositoryMocks
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteLineUp(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

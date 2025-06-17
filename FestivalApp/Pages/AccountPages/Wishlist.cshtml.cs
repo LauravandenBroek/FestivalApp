@@ -9,8 +9,6 @@ namespace FestivalApp.Pages.AccountPages
     public class WishlistModel : UserPageModel
     {
 
-
-
         private readonly RaveWishlistManager _raveWishlistManager; 
 
         public WishlistModel(RaveWishlistManager WishlistManager)
@@ -19,10 +17,12 @@ namespace FestivalApp.Pages.AccountPages
         }
 
         public List<Rave> Wishlist { get; set; } = new List<Rave>();
+        public string Username { get; set; }
 
         public IActionResult OnGet()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
+            Username = HttpContext.Session.GetString("Username");
 
             if (userId == null)
             {

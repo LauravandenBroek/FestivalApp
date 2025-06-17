@@ -15,7 +15,7 @@ namespace FestivalApp.Pages
         public List<Artist> artists { get; set; } = new List<Artist>();
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
-        public int PageSize { get; set; } = 15;
+        public int PageSize { get; set; } = 18;
         [BindProperty(SupportsGet = true), FromQuery(Name = "artistPage")]
         public int Page { get; set; } = 1;
         public ArtistOverviewModel(ArtistManager artistManager)

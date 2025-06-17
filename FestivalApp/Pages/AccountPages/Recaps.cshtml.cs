@@ -17,10 +17,12 @@ namespace FestivalApp.Pages.AccountPages
         }
 
         public List<Recap> Recaps { get; set; } = new List<Recap>();
+        public string Username { get; set; }
 
         public IActionResult OnGet()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
+            Username = HttpContext.Session.GetString("Username");
 
             if (userId == null)
             {

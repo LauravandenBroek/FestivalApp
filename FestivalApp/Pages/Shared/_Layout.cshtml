@@ -49,12 +49,22 @@ var username = Context.Session.GetString("Username");
                     <ul class="navbar-nav ms-auto">
                         @if ((bool?)ViewData["IsLoggedIn"] == true)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/AccountPages/UserIndex">@username's page</a>
+                            <li class="nav-item dropdown d-flex align-items-center">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/AccountPages/UserIndex">
+                                    @username's page
+                                </a>
+                                <a class="nav-link dropdown-toggle text-dark ps-1" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/AccountPages/AttendingRaves">Rave planning</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/AccountPages/Wishlist">Rave wishlist</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/AccountPages/FavoriteArtists">Fave artists</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/AccountPages/Recaps">Recaps</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-page="/Logout">Log out</a></li>
+                                </ul>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Log out</a>
-                            </li>                           
+
+                                           
                         }
                         else
                         {

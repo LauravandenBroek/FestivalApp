@@ -9,7 +9,7 @@ namespace TestFestivalApp.UnitTests
     public class LineUpManagerTests
     {
         [Fact]
-        public void AddLineUp_ReturnsConvertedRave()
+        public void AddLineUp_ReturnsConvertedLineUp()
         {
             //Arrange
             var repository = new LineUpRepositoryMock();

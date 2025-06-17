@@ -1,47 +1,84 @@
 ﻿@page
 @model FestivalApp.Pages.AdminPages.AddRaveModel
+
 @{
+    ViewData["Title"] = "Add Rave";
+}
 
-    <h2>Add Rave</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Add New Rave</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
 
-    <form method="post" enctype="multipart/form-data">
-        
-        <label>Name:*</label>
-        <input asp-for="Input.Name" class="form-control" />
-        <span asp-validation-for="Input.Name" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Input.Name" class="form-label">Name *</label>
+                            <input asp-for="Input.Name" class="form-control" />
+                            <span asp-validation-for="Input.Name" class="text-danger"></span>
+                        </div>
 
-        <label>Location:*</label>
-        <input asp-for="Input.Location" class="form-control" />
-        <span asp-validation-for="Input.Location" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Input.Location" class="form-label">Location *</label>
+                            <input asp-for="Input.Location" class="form-control" />
+                            <span asp-validation-for="Input.Location" class="text-danger"></span>
+                        </div>
 
-        <label>Date:*</label>
-        <input asp-for="Input.Date" type="date" class="form-control" />
-        <span asp-validation-for="Input.Date" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Input.Date" class="form-label">Date *</label>
+                            <input asp-for="Input.Date" type="date" class="form-control" />
+                            <span asp-validation-for="Input.Date" class="text-danger"></span>
+                        </div>
 
-        <label>Website:</label>
-        <input asp-for="Input.Website" type="url" placeholder="https://" class=" form-control" />
-        <span asp-validation-for="Input.Website" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Input.Time" class="form-label">Time</label>
+                            <input asp-for="Input.Time" class="form-control" />
+                            <span asp-validation-for="Input.Time" class="text-danger"></span>
+                        </div>
 
-        <label>Minimum age:</label>
-        <input asp-for="Input.Minimum_age" type="number" class="form-control"/>
-        <span asp-validation-for="Input.Minimum_age" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Input.Website" class="form-label">Website</label>
+                            <input asp-for="Input.Website" type="url" placeholder="https://" class="form-control" />
+                            <span asp-validation-for="Input.Website" class="text-danger"></span>
+                        </div>
 
-        <label>Ticket link:</label>
-        <input asp-for="Input.Ticket_link" placeholder="https://" type="url" class="form-control" />
-        <span asp-validation-for="Input.Ticket_link" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Input.Ticket_link" class="form-label">Ticket Link</label>
+                            <input asp-for="Input.Ticket_link" type="url" placeholder="https://" class="form-control" />
+                            <span asp-validation-for="Input.Ticket_link" class="text-danger"></span>
+                        </div>
 
-        <label>Description:</label>
-        <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
-        <span asp-validation-for="Input.Description" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Input.Minimum_age" class="form-label">Minimum Age</label>
+                            <input asp-for="Input.Minimum_age" type="number" class="form-control" />
+                            <span asp-validation-for="Input.Minimum_age" class="text-danger"></span>
+                        </div>
 
-        <label>Time:</label>
-        <input asp-for="Input.Time" class="form-control" />
-        <span asp-validation-for="Input.Time" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Input.Description" class="form-label">Description</label>
+                            <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Input.Description" class="text-danger"></span>
+                        </div>
 
-        <label>Image:*</label>
-        <input type="file" name="uploadedImage" class="form-control" />
+                        <div class="mb-4">
+                            <label class="form-label">Image *</label>
+                            <input type="file" name="uploadedImage" class="form-control" />
+                        </div>
 
-        <button type="submit">Save</button>
-    </form>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Save Rave</button>
+                        </div>
 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

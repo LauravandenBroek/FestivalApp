@@ -42,5 +42,10 @@ namespace Logic.Managers
         {
             return _lineUpRepository.GetLineUpByRaveId(raveId);
         }
+
+        public void DeleteLineUp(int id)
+        {
+            _lineUpRepository.DeleteLineUp(id);
+        }
     }
 }

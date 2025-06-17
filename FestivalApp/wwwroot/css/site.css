@@ -23,6 +23,7 @@ body {
     
 }
 
+
 .banner {
     background-image: url('/images/banner.jpg');
     background-size: cover;
@@ -134,17 +135,17 @@ body {
     margin-bottom: 1rem;
 }
 
-.rave-card-link, .artist-card-link {
+.rave-card-link, .artist-card-link, .recap-card-link {
     text-decoration: none;
     color: inherit;
     display: grid;
 }
 
-.rave-card, .artist-card {
+.rave-card, .artist-card, .recap-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.rave-card:hover, .artist-card:hover {
+.rave-card:hover, .artist-card:hover, .recap-card:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     color: black;
@@ -156,7 +157,7 @@ body {
     border-radius: 6px;
 }
 
-.rave-detail-container, .artist-detail-container, .recap-container {
+.rave-detail-container, .artist-detail-container, .recap-detail-container {
     background-color: #f0f0f0;
     padding: 1rem;
     border-radius: 8px;
@@ -173,7 +174,7 @@ body {
 }
 
 .cta-banner {
-    width: 100vw;
+    width: 99.48vw;
     margin-left: calc(-50vw + 50%);
     padding: 80px 20px;
     background: linear-gradient(to right, #1a1a1a, #3a0c5e);
@@ -183,6 +184,8 @@ body {
     overflow: hidden;
     box-shadow: 0 0 60px rgba(166, 78, 255, 0.2);
     z-index: 1;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .cta-banner::before {
@@ -214,7 +217,7 @@ body {
     .cta-content h1 {
         font-size: 2.5rem;
         margin-bottom: 1rem;
-        color: #d1a3ff;
+        color: white;
     }
 
     .cta-content p {
@@ -230,6 +233,17 @@ body {
     flex-wrap: wrap;
 }
 
+.section-spacing {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.more-link {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    float: right;
+}
+
 .btn {
     padding: 0.75rem 1.5rem;
     border-radius: 30px;
@@ -239,8 +253,8 @@ body {
 }
 
     .btn.primary {
-        background-color: #a64eff;
-        color: #fff;
+        background-color: white;
+        color: #a64eff;
     }
 
         .btn.primary:hover {

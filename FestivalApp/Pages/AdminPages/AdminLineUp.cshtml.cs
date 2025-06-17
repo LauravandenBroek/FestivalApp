@@ -95,5 +95,31 @@ namespace FestivalApp.Pages.AdminPages
                 return Page();
             }
         }
+
+        public IActionResult OnPostDelete(int id, int raveId)
+        {
+            try { 
+            
+                _lineUpManager.DeleteLineUp(id);
+                return RedirectToPage("/AdminPages/AdminLineUp", new { id = raveId });
+            }
+            catch (ValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+            catch (TemporaryDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+
+            }
+            catch (PersistentDatabaseException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return Page();
+            }
+
+        }
     }
 }

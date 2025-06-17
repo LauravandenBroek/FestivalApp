@@ -58,7 +58,7 @@ namespace Data
         }
 
 
-        public List<Artist> GetArtists()
+        public List<Artist> GetArtists(int limit = 0)
         {
             List<Artist> artists = new List<Artist>();
             SqlConnection connection = null;
@@ -77,23 +77,36 @@ namespace Data
             {
                 string sql = "SELECT Id, Name, Nationality, Genre, Description, Image FROM Artist";
 
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        byte[] image = reader.IsDBNull(reader.GetOrdinal("Image"))
-                            ? null
-                            : (byte[])reader["Image"];
 
-                        artists.Add(new Artist(
-                            reader.GetInt32(0),
-                            reader.GetString(1),
-                            reader.GetString(2),
-                            reader.GetString(3),
-                            reader.GetString(4),
-                            image
-                        ));
+                if (limit > 0)
+                {
+                    sql += " ORDER BY ID ASC OFFSET 0 ROWS FETCH NEXT @Limit ROWS ONLY";
+                }
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    if (limit > 0)
+                    {
+                        command.Parameters.AddWithValue("@Limit", limit);
+                    }
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            byte[] image = reader.IsDBNull(reader.GetOrdinal("Image"))
+                                ? null
+                                : (byte[])reader["Image"];
+
+                            artists.Add(new Artist(
+                                reader.GetInt32(0),
+                                reader.GetString(1),
+                                reader.GetString(2),
+                                reader.GetString(3),
+                                reader.GetString(4),
+                                image
+                            ));
+                        }
                     }
                 }
             }

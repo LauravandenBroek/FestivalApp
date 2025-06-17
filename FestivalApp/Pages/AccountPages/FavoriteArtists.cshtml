@@ -1,7 +1,7 @@
 ﻿@page
 @model FestivalApp.Pages.AccountPages.FavoriteArtistsModel
 @{
-    ViewData["Title"] = @Model.Username + "'s Favorite artists";
+    ViewData["Title"] = @Model.Username + "'s favorite artists";
 }
 @if (!Model.FavoriteArtists.Any())
 {
@@ -13,7 +13,7 @@
 }
 else
 {
-    <h3>Your favorite artists</h3>
+    <p class="page-text">Lineups don’t lie – these artists own your playlist and your heart. No skips, just bangers. 🎶⚡</p>
     <div class="artist-grid">
         @foreach (var artist in Model.FavoriteArtists)
         {

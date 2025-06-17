@@ -6,6 +6,25 @@ namespace TestFestivalApp.UnitTests
 {
     public class FavoriteArtistManagerTests
     {
+        [Fact]
+        public void AddArtistToFavorites_AddsArtistToFavorites()
+        {
+            //Arrange
+            var repository = new FavoriteArtistRepositoryMock();
+            var manager = new FavoriteArtistManager(repository);
+            int initialUsers = repository.FavoriteArtists.Count();
+
+            //Act & Assert
+            int UserId = 54;
+            int ArtistId = 99;
+
+            _=manager.AddArtistToFavorites(UserId, ArtistId);
+
+            //Assert
+            Assert.Equal(initialUsers + 1, repository.FavoriteArtists.Count());
+
+
+        }
 
         [Fact]
         public async Task AddArtistToFavorites_ThrowsValidationExceptionWhenArtistIsAlreadyOnFavorites()

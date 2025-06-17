@@ -1,47 +1,86 @@
 ﻿@page "{id:int}"
 @model FestivalApp.Pages.AdminPages.EditRaveModel
+@{
+    ViewData["Title"] = "Edit Rave";
+}
 
-<form method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="Input.Id" />
+<div class="container mt-5">
+    <h2 class="mb-4 fw-bold">Edit Rave</h2>
 
-    <label>Name:*</label>
-    <input asp-for="Input.Name" class="form-control" />
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <input type="hidden" asp-for="Input.Id" />
 
-    <label>Location:*</label>
-    <input asp-for="Input.Location" class="form-control" />
+        <div class="mb-3">
+            <label asp-for="Input.Name" class="form-label">Name:*</label>
+            <input asp-for="Input.Name" class="form-control" />
+            <span asp-validation-for="Input.Name" class="text-danger small"></span>
+        </div>
 
-    <label>Date:*</label>
-    <input asp-for="Input.Date" type="date" class="form-control" />
+        <div class="mb-3">
+            <label asp-for="Input.Location" class="form-label">Location:*</label>
+            <input asp-for="Input.Location" class="form-control" />
+            <span asp-validation-for="Input.Location" class="text-danger small"></span>
+        </div>
 
-    <label>Website:</label>
-    <input asp-for="Input.Website" class=" form-control" />
+        <div class="mb-3">
+            <label asp-for="Input.Date" class="form-label">Date:*</label>
+            <input asp-for="Input.Date" type="date" class="form-control" />
+            <span asp-validation-for="Input.Date" class="text-danger small"></span>
+        </div>
 
-    <label>Minimum age:</label>
-    <input asp-for="Input.Minimum_age" type="number" class="form-control" />
+        <div class="mb-3">
+            <label asp-for="Input.Website" class="form-label">Website:</label>
+            <input asp-for="Input.Website" class="form-control" />
+            <span asp-validation-for="Input.Website" class="text-danger small"></span>
+        </div>
 
-    <label>Ticket link:</label>
-    <input asp-for="Input.Ticket_link" class="form-control" />
+        <div class="mb-3">
+            <label asp-for="Input.Minimum_age" class="form-label">Minimum age:</label>
+            <input asp-for="Input.Minimum_age" type="number" class="form-control" />
+            <span asp-validation-for="Input.Minimum_age" class="text-danger small"></span>
+        </div>
 
-    <label>Description:</label>
-    <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+        <div class="mb-3">
+            <label asp-for="Input.Ticket_link" class="form-label">Ticket link:</label>
+            <input asp-for="Input.Ticket_link" class="form-control" />
+            <span asp-validation-for="Input.Ticket_link" class="text-danger small"></span>
+        </div>
 
-    <label>Time:</label>
-    <input asp-for="Input.Time" class="form-control" />
+        <div class="mb-3">
+            <label asp-for="Input.Description" class="form-label">Description:</label>
+            <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Input.Description" class="text-danger small"></span>
+        </div>
 
+        <div class="mb-3">
+            <label asp-for="Input.Time" class="form-label">Time:</label>
+            <input asp-for="Input.Time" class="form-control" />
+            <span asp-validation-for="Input.Time" class="text-danger small"></span>
+        </div>
 
-    @if (Model.Input.Image != null)
-    {
-        var base64 = Convert.ToBase64String(Model.Input.Image);
-        var imgSrc = $"data:image/jpeg;base64,{base64}";
-        <img src="@imgSrc" alt="Current image" style="max-height: 200px; margin-bottom: 10px;" />
-    }
-    else
-    {
-        <p><em>No image uploaded yet</em></p>
-    }
+        <div class="mb-3">
+            <label class="form-label">Current Image:</label><br />
+            @if (Model.Input.Image != null)
+            {
+                var base64 = Convert.ToBase64String(Model.Input.Image);
+                var imgSrc = $"data:image/jpeg;base64,{base64}";
+                <img src="@imgSrc" alt="Current image" class="img-thumbnail mb-2" style="max-height: 200px;" />
+            }
+            else
+            {
+                <p class="fst-italic">No image uploaded yet.</p>
+            }
+        </div>
 
-    <label>Upload New Image:</label>
-    <input type="file" name="UploadedImage" class="form-control" />
+        <div class="mb-4">
+            <label class="form-label">Upload New Image:</label>
+            <input type="file" name="UploadedImage" class="form-control" />
+        </div>
 
-    <button type="submit">Save</button>
-</form>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,10 +1,21 @@
 ﻿@page
 @model FestivalApp.Pages.AccountPages.AttendingRavesModel
 @{
-    ViewData["Title"] = "Your upcoming raves";
+    ViewData["Title"] = @Model.Username + "'s rave planning";
 }
 
-<p>Brace yourself – these are the raves you’re about to survive (or not). Lineup locked, tickets booked, chaos incoming.🔥</p>
+
+@if (!Model.AttendingRaves.Any())
+{
+    <div class="empty-state text-center my-5">
+        <i class="bi bi-calendar-x fs-1 text-muted"></i>
+        <p class="text-muted">You haven't added any raves to your attending list yet.</p>
+        <a class="btn btn-primary" asp-page="/RaveOverview">Browse raves</a>
+    </div>
+}
+else
+{
+<p class ="page-text">Brace yourself – these are the raves you’re about to survive (or not). Lineup locked, tickets booked, chaos incoming.🔥</p>
 <div class="rave-grid">
     @foreach (var rave in Model.AttendingRaves)
     {
@@ -27,3 +38,4 @@
         </a>
     }
 </div>
+} 

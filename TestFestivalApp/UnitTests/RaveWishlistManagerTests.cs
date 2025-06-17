@@ -8,6 +8,25 @@ namespace TestFestivalApp.UnitTests
     public class RaveWishlistManagerTests
     {
         [Fact]
+        public Task AddArtistToFavorites_AddsArtistToFavorites()
+        {
+            //Arrange
+            var repository = new RaveWishlistRepositoryMock();
+            var manager = new RaveWishlistManager(repository);
+            int initialUsers = repository.WishlistEntries.Count();
+
+            //Act & Assert
+            int UserId = 54;
+            int RaveId = 99;
+
+            _=manager.AddRaveToWishList(UserId, RaveId);
+
+            //Assert
+            Assert.Equal(initialUsers + 1, repository.WishlistEntries.Count());
+            return Task.CompletedTask;
+        }
+
+        [Fact]
         public async Task AddRaveToWishList_ThrowsValidationExceptionWhenRaveIsAlreadyOnWishlist()
         {
             //Arrange

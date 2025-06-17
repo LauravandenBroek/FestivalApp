@@ -1,37 +1,50 @@
 ﻿@page
 @model AdminArtistModel
+
 @{
     ViewData["Title"] = "Artist Overview";
 }
 
-<h2>Artist Overview</h2>
-<a href="@Url.Page("AddArtist")" class="btn btn-info"> Add new artist </a>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Nationality</th>
-            <th>Genre</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var artist in Model.Artists)
-        {
-            <tr>
-                <td>@artist.Id</td>
-                <td>@artist.Name</td>
-                <td>@artist.Nationality</td>
-                <td>@artist.Genre</td>
-                <td>
-                    <a asp-page="./EditArtist" asp-route-id="@artist.Id" class="btn btn-info">Edit</a>
-                    <form method="post" asp-page-handler="Delete" asp-route-id="@artist.Id" style="display:inline;">
-                        <button type= "submit" classbtn btn-danger>Delete </button>
-                    </form>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Artist Overview</h2>
+        <a href="@Url.Page("AddArtist")" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> Add New Artist
+        </a>
+    </div>
 
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Nationality</th>
+                    <th>Genre</th>
+                    <th style="width: 180px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var artist in Model.Artists)
+                {
+                    <tr>
+                        <td>@artist.Id</td>
+                        <td>@artist.Name</td>
+                        <td>@artist.Nationality</td>
+                        <td>@artist.Genre</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a asp-page="./EditArtist" asp-route-id="@artist.Id" class="btn btn-outline-primary btn-sm">
+                                    Edit
+                                </a>
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@artist.Id" onsubmit="return confirm('Are you sure you want to delete this artist?');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -6,10 +6,12 @@
 }
 
 <div class="artist-detail-container">
-    <form method="post" asp-page-handler="ToggleFavorite" asp-route-id="@Model.Artist.Id">
-        <input type="hidden" name="id" value="@Model.Artist.Id" />
-        <button type="submit" class="btn btn-outline-danger"> ❤ @Model.IsFavoriteText </button>
-    </form>
+    <div class="d-flex justify-content-end">
+        <form method="post" asp-page-handler="ToggleFavorite" asp-route-id="@Model.Artist.Id">
+            <input type="hidden" name="id" value="@Model.Artist.Id" />
+            <button type="submit" class="btn btn-outline-danger"> ❤ @Model.IsFavoriteText </button>
+        </form>
+    </div>
     <div class="artist-detail-info d-flex gap-3">
         @if (artist.Image != null)
         {

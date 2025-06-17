@@ -17,10 +17,12 @@ namespace FestivalApp.Pages.AccountPages
         }
 
         public List<Rave> AttendingRaves { get; set; } = new List<Rave>();
+        public string Username { get; set; }
 
         public IActionResult OnGet()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
+            Username = HttpContext.Session.GetString("Username");
 
             if (userId == null)
             {

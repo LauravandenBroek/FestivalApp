@@ -28,37 +28,42 @@
         }
 
         <div class="rave-detail-info">
-            <p><strong>Date:</strong> @rave.Date.ToString("dddd dd MMMM yyyy")</p>
-            <p><strong>Location:</strong> @rave.Location</p>
+            <p><strong>Date:</strong> @rave.Date.ToString("dddd dd MMMM yyyy", new System.Globalization.CultureInfo("en-US")) </p>
+            <p><strong>Time:</strong> @rave.Time </p>
+            <p><strong>Location:</strong> @rave.Location</p> 
             <p><strong>Description:</strong> @rave.Description</p>
+            <p>Get your tickets <a href="@rave.Ticket_link">here.</a> </p>
+            <p><strong>Website:</strong> @rave.Website</p>
+            <p><strong>Minimum age:</strong> @rave.Minimum_age</p>
             <p><strong>Line-up</strong></p>
             @if (Model.LineUp == null || !Model.LineUp.Any())
             {
                 <p>The line up is not released yet</p>
             }
             else {
-            <table class="table table-striped table-bordered">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Stage</th>
-                        <th>Starttijd</th>
-                        <th>Eindtijd</th>
-                        <th>Artiest</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var lineUp in Model.LineUp)
-                    {
-                        <tr>
-                            <td>@lineUp.Stage</td>
-                            <td>@lineUp.StartTime.ToString("HH:mm")</td>
-                            <td>@lineUp.EndTime.ToString("HH:mm")</td>
-                            <td>@lineUp.Artist.Name</td>
-                        </tr>
-                    }
-                    
-                </tbody>
-            </table>
+                @foreach (var stageGroup in Model.LineUp.GroupBy(l => l.Stage))
+                {
+                    <h3>@stageGroup.Key</h3>
+                    <table class="table table-striped table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Starttime</th>
+                                <th>Endtime</th>
+                                <th>Artist</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var lineUp in stageGroup)
+                            {
+                                <tr>
+                                    <td>@lineUp.StartTime.ToString("HH:mm")</td>
+                                    <td>@lineUp.EndTime.ToString("HH:mm")</td>
+                                    <td>@lineUp.Artist.Name</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
             }
         </div>
         
