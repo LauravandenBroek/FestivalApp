@@ -104,14 +104,14 @@ namespace Logic.Managers
                 throw new ValidationException("Location can be max 50 characters.");
             }
 
-            if (input.Website.Length > 50)
+            if (input.Website.Length > 150)
             {
-                throw new ValidationException("Website can be max 50 characters.");
+                throw new ValidationException("Website can be max 150 characters.");
             }
 
-            if (input.Ticket_link.Length > 50)
+            if (input.Ticket_link.Length > 150)
             {
-                throw new ValidationException("Ticket link can be max 50 characters.");
+                throw new ValidationException("Ticket link can be max 150 characters.");
             }
 
             if (input.Description.Length > 800)

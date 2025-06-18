@@ -23,12 +23,20 @@ namespace FestivalApp.Pages.AdminPages
      
         public async Task<IActionResult> OnPostAsync(IFormFile UploadedImage)
         {
-            using var memoryStream = new MemoryStream();
-            await UploadedImage.CopyToAsync(memoryStream);
-            Input.Image = memoryStream.ToArray();
-
             try
             {
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+                var extension = Path.GetExtension(UploadedImage.FileName).ToLowerInvariant();
+
+                if (!allowedExtensions.Contains(extension))
+                {
+                    throw new ValidationException("Only JPG, JPEG, and PNG files are allowed.");
+                }
+
+                using var memoryStream = new MemoryStream();
+                await UploadedImage.CopyToAsync(memoryStream);
+                Input.Image = memoryStream.ToArray();
+
                 _artistManager.AddArtist(Input);
 
                 return RedirectToPage("AdminArtist");
@@ -42,7 +50,6 @@ namespace FestivalApp.Pages.AdminPages
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return Page();
-
             }
             catch (PersistentDatabaseException ex)
             {

@@ -60,23 +60,31 @@ namespace FestivalApp.Pages.AccountPages
         public async Task<IActionResult> OnPostAsync(int id)
         {   
             Input.Album = new List<byte[]>();
-            if (Photos != null)
-            {
-                foreach (var file in Photos.Where(f => f != null && f.Length > 0).Take(5))
-                {
-                    using var memoryStream = new MemoryStream();
-                    await file.CopyToAsync(memoryStream);
-                    Input.Album.Add(memoryStream.ToArray());
-                }
-            }
-
-            else
-            {
-                var existingRecap = _recapManager.GetRecapById(id);
-                Input.Album = existingRecap.Album;
-            }
             try
             {
+                if (Photos != null)
+                {
+                    foreach (var file in Photos.Where(f => f != null && f.Length > 0).Take(5))
+                    {
+                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+                        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+                        if (!allowedExtensions.Contains(extension))
+                        {
+                            throw new ValidationException("Only JPG, JPEG, and PNG files are allowed.");
+                        }
+                        using var memoryStream = new MemoryStream();
+                        await file.CopyToAsync(memoryStream);
+                        Input.Album.Add(memoryStream.ToArray());
+                    }
+                }
+
+                else
+                {
+                    var existingRecap = _recapManager.GetRecapById(id);
+                    Input.Album = existingRecap.Album;
+                }
+            
                 _recapManager.UpdateRecap(Input);
 
                 return RedirectToPage("/AccountPages/RecapDetail", new { id = Input.Id });

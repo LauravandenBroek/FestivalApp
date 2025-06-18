@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using FestivalApp.Pages.Shared;
 using Logic.ViewModels;
 using Logic.Exceptions;
+using System.Linq;
 
 namespace FestivalApp.Pages.AccountPages
 {
@@ -48,18 +49,27 @@ namespace FestivalApp.Pages.AccountPages
             if (userId == null) return RedirectToPage("Login");
 
             Input.Album = new List<byte[]>();
-            if (Photos != null)
-            {
-                foreach (var file in Photos.Where(f => f != null && f.Length > 0).Take(5))
-                {
-                    using var memoryStream = new MemoryStream();
-                    await file.CopyToAsync(memoryStream);
-                    Input.Album.Add(memoryStream.ToArray());
-                }
-            }
-
             try
             {
+                if (Photos != null)
+                {
+                    foreach (var file in Photos.Where(f => f != null && f.Length > 0).Take(5))
+                    {
+                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+                        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+                        if (!allowedExtensions.Contains(extension))
+                        {
+                            throw new ValidationException("Only JPG, JPEG, and PNG files are allowed.");
+                        }
+
+                        using var memoryStream = new MemoryStream();
+                        await file.CopyToAsync(memoryStream);
+                        Input.Album.Add(memoryStream.ToArray());
+                    }
+                }
+
+            
 
                 _recapManager.AddRecap(Input, userId.Value);
                 return RedirectToPage("UserIndex");

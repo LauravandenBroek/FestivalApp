@@ -3,6 +3,15 @@
 @{
     ViewData["Title"] = @Model.Username + "'s rave wishlist";
 }
+
+@if (!Model.Wishlist.Any())
+{
+    <div class="empty-state text-center my-5">
+        <i class="bi bi-calendar-x fs-1 text-muted"></i>
+        <p class="text-muted">You haven't added any raves to your wishlist yet.</p>
+        <a class="btn btn-primary" asp-page="/RaveOverview">Browse raves</a>
+    </div>
+} else {
 <p class="page-text">The lineup isn’t out yet. The squad’s not convinced. Your bank account says no. But your soul? It already booked the weekend. Welcome to your rave wishlist — future chaos in the making.</p>
 <div class="rave-grid">
     @foreach (var rave in Model.Wishlist)
@@ -26,3 +35,4 @@
         </a>
     }
 </div>
+}

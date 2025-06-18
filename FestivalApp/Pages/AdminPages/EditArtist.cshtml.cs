@@ -61,31 +61,32 @@ namespace FestivalApp.Pages.AdminPages
         }
 
         public async Task<IActionResult> OnPostAsync(int id, IFormFile UploadedImage)
-        { 
-            if (UploadedImage != null)
-            {
-                using var memoryStream = new MemoryStream();
-                await UploadedImage.CopyToAsync(memoryStream);
-                Input.Image = memoryStream.ToArray();
-            }
-
-            if (UploadedImage == null)
-            {
-                var existingArtist = _artistManager.GetArtistById(id);
-                Input.Image = existingArtist.Image; 
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
+        {
             try
             {
+                if (UploadedImage != null)
+                {
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+                    var extension = Path.GetExtension(UploadedImage.FileName).ToLowerInvariant();
+
+                    if (!allowedExtensions.Contains(extension))
+                    {
+                        throw new ValidationException("Only JPG, JPEG, and PNG files are allowed.");
+                    }
+
+                    using var memoryStream = new MemoryStream();
+                    await UploadedImage.CopyToAsync(memoryStream);
+                    Input.Image = memoryStream.ToArray();
+                }
+                else
+                {
+                    var existingArtist = _artistManager.GetArtistById(id);
+                    Input.Image = existingArtist.Image;
+                }
+
                 _artistManager.UpdateArtist(Input);
                 return RedirectToPage("AdminArtist");
             }
-
             catch (ValidationException ex)
             {
                 ModelState.AddModelError("Input.Description", ex.Message);
@@ -95,7 +96,6 @@ namespace FestivalApp.Pages.AdminPages
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return Page();
-
             }
             catch (PersistentDatabaseException ex)
             {
@@ -103,5 +103,6 @@ namespace FestivalApp.Pages.AdminPages
                 return Page();
             }
         }
+
     }
 }

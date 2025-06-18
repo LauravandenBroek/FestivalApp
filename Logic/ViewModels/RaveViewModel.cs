@@ -26,7 +26,7 @@ namespace Logic.ViewModels
         public DateOnly Date { get; set; }
 
 
-        [StringLength(30, ErrorMessage = "Website can be max 50 characters")]
+        [StringLength(150, ErrorMessage = "Website can be max 150 characters")]
         [Required(ErrorMessage = "Website is required")]
         public string Website { get; set; }
 
@@ -36,7 +36,7 @@ namespace Logic.ViewModels
         public int Minimum_age { get; set; }
 
 
-        [StringLength(30, ErrorMessage = "Ticket link can be max 50 characters")]
+        [StringLength(150, ErrorMessage = "Ticket link can be max 150 characters")]
         [Required(ErrorMessage = "Ticket link is required")]
         public string Ticket_link { get; set; }
 

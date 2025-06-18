@@ -23,8 +23,6 @@ namespace Logic.ViewModels
         [Required(ErrorMessage = "Description is required")]
         [StringLength(800, ErrorMessage = "Name can be max 800 characters")]
         public string Description { get; set; }
-
-
         [Required(ErrorMessage = "Image is required")]
         public byte[] Image { get; set; }
     }

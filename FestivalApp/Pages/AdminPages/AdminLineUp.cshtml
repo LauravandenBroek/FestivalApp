@@ -53,21 +53,25 @@
                 <div class="mb-3">
                     <label asp-for="Input.ArtistId" class="form-label">Artist</label>
                     <select asp-for="Input.ArtistId" asp-items="@(new SelectList(Model.AllArtists, "Id", "Name"))" class="form-select"></select>
+                    <span asp-validation-for="Input.ArtistId" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Input.StartTime" class="form-label">Start Time</label>
                     <input asp-for="Input.StartTime" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="Input.StartTime" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Input.EndTime" class="form-label">End Time</label>
                     <input asp-for="Input.EndTime" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="Input.EndTime" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Input.Stage" class="form-label">Stage</label>
                     <input asp-for="Input.Stage" class="form-control" />
+                    <span asp-validation-for="Input.Stage" class="text-danger"></span>
                 </div>
 
                 <div class="d-grid">
